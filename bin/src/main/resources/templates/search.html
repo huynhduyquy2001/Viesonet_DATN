@@ -1,0 +1,274 @@
+<!doctype html>
+<html ng-app="myApp">
+
+<head>
+<!-- Required meta tags -->
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+
+<!-- Bootstrap CSS -->
+<link
+	href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css"
+	rel="stylesheet"
+	integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC"
+	crossorigin="anonymous">
+<script
+	src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+	integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+	crossorigin="anonymous"></script>
+<script src="https://kit.fontawesome.com/f737751420.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Alumni+Sans+Inline+One&family=Bangers&family=Chakra+Petch:ital,wght@0,400;1,300;1,400;1,700&family=Grenze&family=Patrick+Hand&family=Playfair+Display+SC&family=Road+Rage&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet" href="/css/style.css">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link
+	href="https://fonts.googleapis.com/css2?family=Alumni+Sans+Inline+One&family=Bangers&family=Chakra+Petch:ital,wght@0,400;1,300;1,400;1,700&family=Grenze&family=Patrick+Hand&family=Roboto&display=swap"
+	rel="stylesheet">
+<link rel="stylesheet"
+	href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
+<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/angular-translate/2.19.0/angular-translate.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/angular-translate-loader-static-files@2.19.0/angular-translate-loader-static-files.min.js"></script><title>Trang chủ</title>
+<style type="text/css">
+.dropdown-item {
+	padding-top: 0;
+	padding-bottom: 0;
+}
+
+.red-heart {
+	color: red;
+	/* Màu đỏ cho trái tim đã thích */
+}
+
+.gray-heart {
+	color: gray;
+	/* Màu xám cho trái tim chưa thích */
+}
+
+div.dropdown-menu.baoCao {
+	transform: translate(-80%, 39px);
+}
+
+.container, .container-lg, .container-md, .container-sm, .container-xl {
+	max-width: 100%;
+}
+
+.dropdown {
+	position: relative;
+	display: inline-block;
+}
+
+.dropdown-content {
+	display: none;
+	opacity: 0;
+	position: absolute;
+	background-color: #f9f9f9;
+	min-width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0, 0, 0, 0.2);
+	z-index: 1;
+	padding-right: 10px;
+	border-radius: 3px;
+	transition: 0.5s ease-in-out;
+}
+
+.dropdown-content a {
+	color: black;
+	padding: 12px 16px;
+	text-decoration: none;
+	display: block;
+}
+
+.dropdown:hover .dropdown-content {
+	display: block;
+	transition: 0.5s ease-in-out;
+	opacity: 1;
+}
+
+.uploaded-image {
+	width: 100%;
+	max-width: 100%;
+	height: auto;
+	margin-bottom: 7px;
+}
+</style>
+
+<script
+	src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+<script src="/js/thoiTiet.js"></script>
+</head>
+
+<body style="padding-top: 70px;" ng-controller="myCtrl">
+	<div style="transition: 0.5s;">
+		<div class="row">
+			<div ng-include="'_menuLeft.html'"></div>
+			<nav ng-include="'_header.html'" class="navbar navbar-expand-sm "
+				style="padding: 0; position: fixed; top: 0; z-index: 101">
+				<div class="container" style="width: 100%; padding: 0;">
+					<div class="collapse navbar-collapse" id="collapsibleNavId">
+						<ul class="navbar-nav me-auto mt-2 mt-lg-0">
+						</ul>
+						<div class="body-wrapper">
+							<header class="app-header">
+								<nav class="navbar navbar-expand-lg navbar-light">
+									<div class="navbar-collapse justify-content-end px-0"
+										id="navbarNav">
+										<ul
+											class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+											<li class="nav-item dropdown"><a
+												class="nav-link nav-icon-hover" href="#" id="drop2"
+												data-bs-toggle="dropdown" aria-expanded="false"> <svg
+														class="svg-inline--fa fa-bell" aria-hidden="true"
+														focusable="false" data-prefix="far" data-icon="bell"
+														role="img" xmlns="http://www.w3.org/2000/svg"
+														viewBox="0 0 448 512" data-fa-i2svg="">
+                                                        <path
+															fill="currentColor"
+															d="M224 0c-17.7 0-32 14.3-32 32V49.9C119.5 61.4 64 124.2 64 200v33.4c0 45.4-15.5 89.5-43.8 124.9L5.3 377c-5.8 7.2-6.9 17.1-2.9 25.4S14.8 416 24 416H424c9.2 0 17.6-5.3 21.6-13.6s2.9-18.2-2.9-25.4l-14.9-18.6C399.5 322.9 384 278.8 384 233.4V200c0-75.8-55.5-138.6-128-150.1V32c0-17.7-14.3-32-32-32zm0 96h8c57.4 0 104 46.6 104 104v33.4c0 47.9 13.9 94.6 39.7 134.6H72.3C98.1 328 112 281.3 112 233.4V200c0-57.4 46.6-104 104-104h8zm64 352H224 160c0 17 6.7 33.3 18.7 45.3s28.3 18.7 45.3 18.7s33.3-6.7 45.3-18.7s18.7-28.3 18.7-45.3z">
+                                                        </path>
+                                                    </svg>
+													<div class="circle mb-2"></div>
+											</a>
+												<div style="background: whitesmoke;"
+													class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+													aria-labelledby="drop2">
+													<div class="message-body">
+														<a href="#"
+															class="d-flex align-items-center gap-2 dropdown-item">
+															<i class="ti ti-user fs-6"></i>
+															<p class="mb-0 fs-3">Thông báo 1</p>
+														</a> <a href="#"
+															class="d-flex align-items-center gap-2 dropdown-item">
+															<i class="ti ti-user fs-6"></i>
+															<p class="mb-0 fs-3">Thông báo 2</p>
+														</a> <a href="#"
+															class="d-flex align-items-center gap-2 dropdown-item">
+															<i class="ti ti-user fs-6"></i>
+															<p class="mb-0 fs-3">Thông báo 3</p>
+														</a>
+													</div>
+												</div></li>
+											<li class="nav-item dropdown"><a
+												class="nav-link nav-icon-hover" href="#" id="drop2"
+												data-bs-toggle="dropdown" aria-expanded="false"> <img
+													src="images/duyQuy.jpg" alt="" width="35" height="35"
+													class="rounded-circle">
+											</a>
+												<div style="background: whitesmoke;"
+													class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+													aria-labelledby="drop2">
+													<div class="message-body">
+														<a href="#"
+															class="d-flex align-items-center gap-2 dropdown-item">
+															<i class="ti ti-user fs-6"></i>
+															<p class="mb-0 fs-3">Đổi mật khẩu</p>
+														</a> <a href="#"
+															class="d-flex align-items-center gap-2 dropdown-item">
+															<i class="ti ti-mail fs-6"></i>
+															<p class="mb-0 fs-3">Thông tin điều khoản</p>
+														</a> <a href="#"
+															class="d-flex align-items-center gap-2 dropdown-item">
+															<i class="ti ti-list-check fs-6"></i>
+															<p class="mb-0 fs-3">Nâng cấp</p>
+														</a> <a href="#"
+															class="btn btn-outline-primary mx-3 mt-2 d-block">Đăng
+															xuất</a>
+													</div>
+												</div></li>
+										</ul>
+									</div>
+								</nav>
+							</header>
+							<div class="container-fluid">
+								<div class="row"></div>
+							</div>
+
+						</div>
+					</div>
+				</div>
+			</nav>
+
+			<div class="col-md-6 offset-md-3 " style="z-index: 10;">
+				<center>
+					<div style="width: 85%; text-align: left;" data-bs-toggle="modal">
+						<!--Tìm kiếm-->
+						<div style="width: 85%; text-align: left;" data-bs-toggle="modal">
+							<form class="position-relative">
+								<input type="search" class="form-control search-chat py-2 ps-5"
+									ng-blur="checkInput()" ng-focus="resetError()"
+									ng-submit="LS()" ng-keyup="searchUser()" ng-model="username"
+									id="text-srh" placeholder="{{ 'TK' | translate }}"
+									style="border: 1px solid #ccc;"> <a ng-click="LS()"><i style="cursor: pointer;" class="fa-solid fa-magnifying-glass fa-2xs position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i></a>
+									<!--  <button ng-click="LS()">Tìm kiếm</button> -->	
+							</form>
+							<span ng-show="showError" style="color: red;">Vui lòng nhập kí tự ạ.</span>
+  								
+						</div>
+						
+				</center>
+				<center>
+					<div class="user-container">
+						<div class="user-card" ng-repeat="user in users">
+							<div class="user-info">
+								<img ng-src="images/{{user.avatar}}" class="user-avatar"
+									alt="User Avatar">
+								<div class="user-details">
+									<label class="user-name">{{user.username}}</label>
+									<div class="follow-btn-container">
+										<button
+											ng-if="followings.indexOf(user.userId.toString()) === -1"
+											ng-click="followUser(user.userId)" id="follow-btn"
+											class="btn btn-outline-primary py-1 px-2">Follow</button>
+										<button
+											ng-if="followings.indexOf(user.userId.toString()) !== -1"
+											ng-click="unfollowUser(user.userId)" id="follow-btn"
+											class="btn btn-outline-danger py-1 px-2">Unfollow</button>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</center>
+
+			</div>
+		</div>
+		<div class="col-md-3 menuLeft animate__animated animate__backInRight"
+			style="position: fixed; right: 3%; top: 70px;">
+			<div class="row">
+    			<h5>{{ 'LSTK' | translate }}</h5>
+    				<div class="col-lg-12" ng-repeat="(key,name) in items" style="display: flex; justify-content: space-between;">
+        				<a>{{name.username}}</a>
+        				<a ng-click="deleteLS(key)" style="cursor: pointer;">x</a>
+    				</div>
+			</div>
+
+			
+		</div>
+	</div>
+	<!-- load ảnh-->
+	<script>
+  // $http.get(url).then(resp=>{ code đúng r nè 
+//	  $scope.items = resp.data;
+//	  console.log("Load OK", response);
+ // }).catch(function(error) {
+ //     console.log("Load Error", error);
+ // });
+</script>
+<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
+	<script
+		src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
+	
+<script src="js/search.js"></script>
+<script src="js/addActive.js"></script>
+</body>
+
+</html>
+
+</html>

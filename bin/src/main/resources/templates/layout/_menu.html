@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<body>
+				<!-- Chia layout menu-->
+				<div th:fragment="navbar">
+				<div
+					class="brand-logo d-flex align-items-center justify-content-between">
+					<a th:href="@{/admin/report}" class="text-nowrap logo-img"
+						style="color: #222; font-weight: bolder; font-family: 'robo';">
+						<img src="/images/chimLac.png" height="30px" alt="">
+						VIE_SONET
+					</a>
+				</div>
+				<nav class="sidebar-nav scroll-sidebar" >
+					<ul id="sidebarnav">
+						<li class="nav-small-cap"><i
+							class="ti ti-dots nav-small-cap-icon fs-4"></i> <span
+							class="hide-menu" th:text="#{nav.report}">Thống kê</span></li>
+						<li class="sidebar-item"><a class="sidebar-link"
+							th:href="@{/admin/report}" aria-expanded="false"> <span> <i
+									class="fa-regular fa-chart-tree-map"></i>
+							</span> <span class="hide-menu" th:text="#{nav.general}">&nbsp; Chung</span>
+						</a></li>
+						<li class="nav-small-cap"><i
+							class="ti ti-dots nav-small-cap-icon fs-4"></i> <span
+							class="hide-menu" th:text="#{nav.admin}">Quản Lý</span></li>
+						<li class="sidebar-item"><a class="sidebar-link"
+							th:href="@{/admin/usermanager}" aria-expanded="false"> <span>
+									<i class="fa-regular fa-users"></i>
+							</span> <span class="hide-menu" th:text="#{nav.user}">Người dùng</span>
+						</a> <a class="sidebar-link" th:href="@{/admin/postsviolation}"
+							aria-expanded="false"> <span> <i
+									class="fa-regular fa-memo-circle-info"></i>
+							</span> <span class="hide-menu" th:text="#{nav.post}"> &nbsp; Bài viết vi phạm</span>
+						</a>
+						<a class="sidebar-link" href="#"
+							aria-expanded="false"> <span> 
+							<i class="fa-regular fa-comments"></i>
+							</span> <span th:text="#{nav.chat}" class="hide-menu"> &nbsp; Chat Message</span>
+						</a>
+						</li>
+					</ul>
+				</nav>	
+				<!--  -->
+			</div>
+</body>
+</html>

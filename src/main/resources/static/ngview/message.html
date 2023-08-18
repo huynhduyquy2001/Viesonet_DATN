@@ -1,0 +1,131 @@
+<div ng-controller="MessController">
+	<div class="col-md-7" style="z-index: 10;">
+
+		<!-- Your HTML template -->
+		<center>
+			<h4 ng-show="isEmptyObject(userMess)">Hãy chọn người nào đó để
+				trò chuyện ngay nào</h4>
+		</center>
+		<div class="msger " style="width: 100%; text-align: left; margin-left: 0; border-radius: 5px">
+			<header class="msger-header" style="border-right: 1px solid #dee2e6 !important;">
+				<div class="msger-header-title">
+					<a href="#" style="font-weight: 700; color: #212529"><img ng-src="/images/{{ userMess.avatar }}"
+							style="border-radius: 100%; width: 35px; height: 35px; object-fit: cover;" alt=""> {{
+						userMess.username }}</a>
+				</div>
+			</header>
+
+			<main class="msger-chat" ng-drop="onDrop($event)"
+				style="padding-top: 1rem; border-top: 1px solid #dee2e6 !important;">
+				<div class="msg" ng-class="{'left-msg animate__animated animate__backInLeft': mess.sender.userId !== myAccount.user.userId,
+  'right-msg animate__animated animate__backInRight': mess.sender.userId === myAccount.user.userId
+}" ng-repeat="mess in ListMess">
+					<div class="msg-img"
+						style="background-image: url(/images/{{mess.sender.avatar}}); border: 1px solid gray"></div>
+					<div class="msg-bubble" ng-style="{'background-color': mess.image ? 'transparent' : ''}">
+						<div class="msg-info">
+							<!-- Hiển thị nút "Thu hồi" -->
+							<button class="btn-revoke"
+								ng-if="mess.status != 'Đã ẩn' && mess.sender.userId === myAccount.user.userId"
+								ng-click="revokeMessage(mess.messId)">Thu hồi</button>
+						</div>
+						<div class="msg-text" ng-if="mess.status != 'Đã ẩn'">{{mess.content}}</div>
+						<div class="msg-text" ng-if="mess.status == 'Đã ẩn'" style="color: #adb5bd">Tin nhắn đã được thu
+							hồi</div>
+
+						<img alt="" ng-if="mess.image && mess.status != 'Đã ẩn' " src="/images/{{mess.image}}"
+							style="max-width: 20rem; border-radius: 5px">
+
+						<div class="msg-info-time">{{getFormattedTimeAgo(mess.sendDate)}}</div>
+					</div>
+
+				</div>
+			</main>
+
+
+
+			<form enctype="multipart/form-data">
+				<div class="input-group mb-3" style="margin-bottom: 0 !important">
+
+					<button ng-click="uploadFile()">Gửi</button>
+				</div>
+			</form>
+
+			<form ng-show="userMess" class="msger-inputarea" style="background: transparent;">
+
+				<input ng-model="newMess" type="text" class=" form-control" placeholder="Nhập tin nhắn của bạn...">
+
+				<label><i class="fa-regular fa-camera-retro"></i><input hidden type="file" name="mediaFiles"
+						id="inputGroupFile01" multiple></label>
+				<button type="submit" class="msger-send-btn"
+					style="background: transparent; padding: 0; border-radius: 10px; border: 1px solid #3a57e8; color: #3a57e8"
+					ng-click="sendMessage(myAccount.user.userId, newMess, userMess.userId)">
+					<i class="fa-regular fa-paper-plane" style="padding-top: 0; padding-bottom: 0;"></i>
+				</button>
+
+			</form>
+		</div>
+
+	</div>
+
+	<div class="col-md-3" style="position: fixed; right: 2rem; top: 70px;">
+		<input class="form-control" placeholder="{{ 'TK' | translate }}">
+		<ul class="list-unstyled mb-0">
+			<li ng-repeat="UsersMess in ListUsersMess" class="p-2 border-bottom" style="background-color: white;">
+				<div class="user-profile" ng-if="UsersMess[0] === myAccount.user.userId"
+					ng-click="getmess2(UsersMess[0] , UsersMess[9], UsersMess[8])">
+					<!-- Nội dung khi UsersMess[0] = 'UI010' -->
+					<a href="#!/message/{{UsersMess[2]}}"><img ng-src="/images/{{ UsersMess[5] }}"
+							style="border-radius: 100%; width: 4rem; height: 4rem;" alt=""></a>
+					<div style="width: 100%; line-height: 0.7rem;">
+						<div style="display: flex;">
+							<label class="ng-binding" style="font-weight: 500; color: #393e41; font-size: 14px;">{{
+								UsersMess[3] }}</label>
+							<div ng-show="UsersMess[8] == 'Đã gửi' && UsersMess[0] != myAccount.user.userId"
+								class="circle mb-2" style="margin-left: 2rem; font-size: 14px"></div>
+						</div>
+						<!-- <i class="fa-solid fa-earth-americas fa-xs"></i> -->
+						<br>
+						<div style="display: flex; justify-content: space-between;">
+							<small ng-if="UsersMess[8] !== 'Đã ẩn'"
+								style="font-size: 13px; overflow: hidden; width: 60%; white-space: nowrap; text-overflow: ellipsis;">
+								{{ UsersMess[6] }} </small> <small ng-if="UsersMess[8] === 'Đã ẩn'"
+								style="font-size: 13px; overflow: hidden; width: 60%; white-space: nowrap; text-overflow: ellipsis;">
+								Tin nhắn đã được thu hồi </small> <small style="font-size: 12px; color: #65676b"
+								class="ng-binding">
+								{{getFormattedTimeAgo(UsersMess[7]) }} </small>
+						</div>
+					</div>
+				</div>
+
+				<div class="user-profile" ng-if="UsersMess[0] !== myAccount.user.userId"
+					ng-click="getmess2(UsersMess[2], -1)">
+					<!-- Nội dung khi UsersMess[0] khác 'UI010' -->
+					<a href="#!/message/{{UsersMess[0]}}"><img ng-src="/images/{{ UsersMess[4] }}"
+							style="border-radius: 100%; width: 4rem; height: 4rem;" alt=""></a>
+					<div style="width: 100%; line-height: 0.7rem">
+						<div style="display: flex;">
+							<label class="ng-binding" style="font-weight: 500; color: #393e41; font-size: 14px;">{{
+								UsersMess[1] }}</label>
+							<div ng-show="UsersMess[8] == 'Đã gửi'" class="circle2 mb-2"
+								style="margin-left: 2rem; font-size: 14px"></div>
+						</div>
+						<!-- <i class="fa-solid fa-earth-americas fa-xs"></i> -->
+						<br>
+						<div style="display: flex; justify-content: space-between;">
+							<small ng-if="UsersMess[8] !== 'Đã ẩn'" style="font-size: 13px;">{{UsersMess[6]}}</small>
+							<small ng-if="UsersMess[8] === 'Đã ẩn'"
+								style="font-size: 13px; overflow: hidden; width: 60%; white-space: nowrap; text-overflow: ellipsis;">
+								Tin nhắn đã được thu hồi </small> <small style="font-size: 12px; color: #65676b"
+								class="ng-binding">
+								{{getFormattedTimeAgo(UsersMess[7]) }} </small>
+						</div>
+
+					</div>
+				</div>
+
+			</li>
+
+		</ul>
+	</div>
+</div>

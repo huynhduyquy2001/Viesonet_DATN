@@ -1,0 +1,651 @@
+<!doctype html>
+<html lang="en">
+
+<head>
+	<meta charset="utf-8">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<title>Post Violations Management</title>
+	<link rel="stylesheet" href="/css/styles.min.css" />
+	<link rel="stylesheet"
+		href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap">
+	<script src="https://kit.fontawesome.com/f737751420.js"></script>
+	<link rel="preconnect" href="https://fonts.googleapis.com">
+	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
+		integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+		integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
+		crossorigin="anonymous"></script>
+	<script src="https://cdn.jsdelivr.net/npm/sweetalert2@10"></script>
+	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+</head>
+<style>
+	body {
+		font-family: 'Plus Jakarta Sans', sans-serif;
+	}
+
+	input.hover-effect:hover {
+		border-color: #1261c2;
+		/* Màu viền thay đổi khi hover */
+		box-shadow: 0 0 5px #1d4bcc;
+		/* Hiển thị đổ bóng khi hover */
+		cursor: pointer;
+	}
+
+	.circle {
+		width: 7px;
+		height: 7px;
+		background-color: rgb(225, 15, 15);
+		border-radius: 50%;
+	}
+
+	.image-link {
+		display: flex;
+		align-items: center;
+		text-decoration: none;
+		color: #989692;
+		margin-left: 30px;
+	}
+
+	.content {
+		display: flex;
+		flex-direction: column;
+		margin-left: 10px;
+	}
+
+	.sidebar-scrollable {
+		max-height: 540px;
+		/* Đặt chiều cao tối đa của vùng cuộn */
+		overflow-y: auto;
+		/* Tạo thanh cuộn dọc */
+	}
+
+	.sidebar-scrollable::-webkit-scrollbar {
+		width: 4px;
+		/* Độ rộng của thanh cuộn */
+	}
+
+	.sidebar-scrollable::-webkit-scrollbar-thumb {
+		background-color: #888;
+		/* Màu sắc của thanh cuộn */
+		border-radius: 4px;
+		/* Bo tròn viền thanh cuộn */
+	}
+
+	.sidebar-scrollable::-webkit-scrollbar-track {
+		background-color: #f5f5f5;
+		/* Màu sắc của vùng di chuyển thanh cuộn */
+	}
+</style>
+
+<body ng-app="PvmApp" ng-controller="PvmCtrl">
+	<!--  Body Wrapper -->
+	<div class="page-wrapper" id="main-wrapper" data-layout="vertical" data-navbarbg="skin6" data-sidebartype="full"
+		data-sidebar-position="fixed" data-header-position="fixed">
+		<!-- Sidebar Start -->
+		<aside class="left-sidebar">
+			<!-- Sidebar scroll-->
+			<div>
+				<div class="brand-logo d-flex align-items-center justify-content-between">
+					<a href="/admin/postsviolation" class="text-nowrap logo-img"
+						style="color: #222; font-weight: bolder; font-family: 'robo';">
+						<img src="/images/chimLac.png" height="30px" alt="">
+						VIE_SONET
+					</a>
+				</div>
+				<!-- Sidebar navigation-->
+				<nav class="sidebar-nav scroll-sidebar" data-simplebar="">
+					<ul id="sidebarnav">
+						<li class="nav-small-cap"><i class="ti ti-dots nav-small-cap-icon fs-4"></i> <span
+								class="hide-menu">Quản Lý</span></li>
+						<li class="sidebar-item"><a class="sidebar-link" href="/admin/usermanager"
+								aria-expanded="false"> <span>
+									<i class="fa-solid fa-list"></i>
+								</span> <span class="hide-menu">Điều khoản</span>
+							</a> <a class="sidebar-link active" href="/admin/postsviolation" aria-expanded="false">
+								<span> <i class="fa-regular fa-memo-circle-info"></i>
+								</span> <span class="hide-menu"> &nbsp; Tố cáo bài viết</span>
+							</a></li>
+					</ul>
+
+				</nav>
+				<!-- End Sidebar navigation -->
+			</div>
+			<!-- End Sidebar scroll-->
+		</aside>
+		<!--  Sidebar End -->
+		<!--  Main wrapper -->
+		<div class="body-wrapper">
+			<!--  Header Start -->
+			<header class="app-header" style="border-bottom: 1px solid rgb(229, 234, 239);">
+				<nav class="navbar navbar-expand-lg navbar-light">
+					<div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+						<ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+							<li class="nav-item dropdown"><a class="nav-link nav-icon-hover" href="#" id="drop2"
+									data-bs-toggle="dropdown" aria-expanded="false"> <i class="fa-regular fa-bell"></i>
+									<div class="circle mb-2"></div>
+								</a>
+								<div style="background: whitesmoke;"
+									class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+									aria-labelledby="drop2">
+									<div class="message-body">
+										<a href="#" class="d-flex align-items-center gap-2 dropdown-item"> <i
+												class="ti ti-user fs-6"></i>
+											<p class="mb-0 fs-3">Thông báo 1</p>
+										</a> <a href="#" class="d-flex align-items-center gap-2 dropdown-item"> <i
+												class="ti ti-user fs-6"></i>
+											<p class="mb-0 fs-3">Thông báo 2</p>
+										</a> <a href="#" class="d-flex align-items-center gap-2 dropdown-item"> <i
+												class="ti ti-user fs-6"></i>
+											<p class="mb-0 fs-3">Thông báo 3</p>
+										</a>
+									</div>
+								</div>
+							</li>
+							<li class="nav-item dropdown"><a class="nav-link nav-icon-hover" href="#" id="drop2"
+									data-bs-toggle="dropdown" aria-expanded="false"> <img src="/images/user-1.jpg"
+										alt="" width="35" height="35" class="rounded-circle">
+								</a>
+								<div style="background: whitesmoke;"
+									class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
+									aria-labelledby="drop2">
+									<div class="message-body">
+										<div class="py-3 px-7 pb-0">
+											<h5 class="mb-0 fs-5 fw-semibold">Cá nhân</h5>
+										</div>
+										<a href="#" class="d-flex align-items-center gap-2 dropdown-item">
+											<div class="d-flex align-items-center py-9 mx-7 border-bottom">
+												<img src="/images/user-1.jpg" class="rounded-circle" width="80"
+													height="80" alt="">
+												<div class="ms-3">
+													<h5 class="mb-1 fs-3">Mathew Anderson</h5>
+													<span class="mb-1 d-block text-dark">Designer</span>
+													<p class="mb-0 d-flex text-dark align-items-center gap-2">
+														<i class="ti ti-mail fs-4"></i> info@modernize.com
+													</p>
+												</div>
+											</div>
+										</a> <a href="#" class="d-flex align-items-center gap-2 dropdown-item"> <i
+												class="ti ti-user fs-6"></i>
+											<p class="mb-0 fs-3">Đổi mật khẩu</p>
+										</a> <a href="#" class="d-flex align-items-center gap-2 dropdown-item"> <i
+												class="ti ti-mail fs-6"></i>
+											<p class="mb-0 fs-3">Thông tin điều khoản</p>
+										</a> <a href="#" class="d-flex align-items-center gap-2 dropdown-item"> <i
+												class="ti ti-list-check fs-6"></i>
+											<p class="mb-0 fs-3">Nâng cấp</p>
+										</a> <a href="#" class="btn btn-outline-primary mx-3 mt-2 d-block">Đăng
+											xuất</a>
+									</div>
+								</div>
+							</li>
+						</ul>
+					</div>
+				</nav>
+			</header>
+			<!--  Header End -->
+			<div class="container-fluid">
+				<!--  Row 1 -->
+				<div class="row">
+					<div class="card-title fw-semibold mb-2">
+						<nav class="navbar navbar-expand-lg navbar-light">
+							<ul class="navbar-nav">
+								<input type="checkbox" ng-click="selectAll()" ng-model="selectAllCheckbox"
+									class="form-check-input ms-3 me-4 hover-effect"
+									style="border: 3px solid rgb(34, 31, 31);">
+								<a href="#" ng-click="deletePostViolations()" class="me-5" data-bs-placement="top"
+									title="Xóa tố cáo bài viết vi phạm">
+									<i class="fa-regular fa-trash-can fa-lg"></i>
+								</a>
+								<a href="#" ng-click="acceptPostViolations()" class="me-5" data-bs-placement="top"
+									title="Chấp nhận tố cáo bài viết vi phạm"><i class="fa-solid fa-check fa-lg"></i>
+								</a>
+								<small class="mt-1" ng-if="selectedCountText > 0"> Đã
+									chọn <b style="color: red">{{ selectedCountText }}</b> mục
+								</small>
+							</ul>
+							<div class="navbar-collapse justify-content-end px-0">
+								<ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+									<!-- Hiển thị thông tin trang hiện tại và tổng số trang -->
+									<small class="me-3">{{currentPage + 1}} /
+										{{totalPages}}</small>
+									<!-- Nút chuyển đến trang trước -->
+									<a href="#" class="me-4" ng-click="prevPage()"> <i
+											class="fa-solid fa-chevron-left fa-xs"></i>
+									</a>
+									<!-- Nút chuyển đến trang kế tiếp -->
+									<a href="#" class="me-4" ng-click="nextPage()"> <i
+											class="fa-solid fa-chevron-right fa-xs"></i>
+									</a>
+
+									<form class="position-relative">
+										<input type="text" class="form-control search-chat py-2 ps-5" id="text-srh"
+											placeholder="Nhập tên người đăng" ng-change="searchByAuthor()"
+											ng-model="searchText" style="border: 1px solid #ccc;"> <i
+											class="fa-solid fa-magnifying-glass fa-2xs position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
+									</form>
+								</ul>
+							</div>
+
+						</nav>
+					</div>
+					<div class="table-responsive sidebar-scrollable">
+						<table class="table text-nowrap mb-0 align-middle">
+							<thead class="text-dark fs-4">
+								<tr>
+									<th class="border-bottom-0">#</th>
+									<th class="border-bottom-0">
+										<h6 class="fw-semibold mb-0">Tiêu đề bài viết</h6>
+									</th>
+									<th class="border-bottom-0">
+										<h6 class="fw-semibold mb-0">Người đăng</h6>
+									</th>
+									<th class="border-bottom-0">
+										<h6 class="fw-semibold mb-0">Ngày đăng</h6>
+									</th>
+									<th class="border-bottom-0">
+										<h6 class="fw-semibold mb-0 text-center">Chi tiết</h6>
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								<tr ng-repeat="list in listViolations.content" id="row-{{list.postId}}">
+									<td class="border-bottom-0"><input type="checkbox" ng-click="checkboxClicked()"
+											ng-model="list.checked" class="form-check-input hover-effect"></td>
+									<td class="border-bottom-0"><span class="fw-normal mb-0"
+											style="max-width: 250px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+											{{list[1]}} </span></td>
+									<td class="border-bottom-0"
+										style="max-width: 200px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+										<span class="fw-normal">{{list[2]}}</span>
+									</td>
+									<td class="border-bottom-0">
+										<p class="mb-0 fw-normal">{{list[3] | date: 'dd/MM/yyyy'}}</p>
+									</td>
+									<td class="border-bottom-0 text-center"><a href="#" data-bs-placement="top"
+											title="Xem chi tiết bài viết" ng-click="detailPost(list[0])"> <i
+												class="fa-light fa-eye" style="color: #336cce;"></i>
+										</a></td>
+								</tr>
+							</tbody>
+						</table>
+
+					</div>
+				</div>
+			</div>
+			<!-- Modal -->
+			<div class="modal fade" id="exampleModal" tabindex="-1" aria-labelledby="exampleModalLabel"
+				aria-hidden="true">
+				<div class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+					<div class="modal-content">
+						<div class="modal-header">
+							<h4>Chi tiết</h4>
+							<button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+						</div>
+						<div class="modal-body">
+							<div class="row">
+								<div class="col-5">
+									<div style="margin-bottom: 20px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);">
+										<a href="#" target="_blank" class="image-link"> <img
+												ng-src="/images/{{post.user.avatar}}" alt="" width="55" height="55"
+												class="rounded-circle mt-3">
+											<div class="content mt-3">
+												<span class="name">{{post.user.username}}</span> <small>{{post.postDate
+													| date: 'dd/MM/yyyy'}}</small>
+											</div>
+										</a>
+										<div id="detailContent" style="margin-top: 15px; margin-left: 25px;"
+											ng-bind="post.content"></div>
+										<center style="margin-right: 20px; margin-top: 10px;">
+											<div id="carouselExampleFade"
+												class="carousel slide carousel-fade carousel-dark"
+												ng-if="post.images && post.images.length > 0">
+												<div class="carousel-inner" style="width: 75%;">
+													<div class="carousel-item" ng-class="{active: $index === 0}"
+														ng-repeat="imageUrl in post.images">
+														<img width="75%" ng-src="/images/{{imageUrl.imageUrl}}"
+															class="d-block w-100" alt="">
+													</div>
+												</div>
+												<button class="carousel-control-prev" type="button"
+													data-bs-target="#carouselExampleFade" data-bs-slide="prev"
+													ng-if="post.images.length > 1">
+													<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+												</button>
+												<button class="carousel-control-next" type="button"
+													data-bs-target="#carouselExampleFade" data-bs-slide="next"
+													ng-if="post.images.length > 1">
+													<span class="carousel-control-next-icon" aria-hidden="true"></span>
+												</button>
+
+											</div>
+										</center>
+										<div class="post-reaction mt-3">
+											<div class="activity-icons d-flex justify-content ms-3">
+												<div>
+													<i class="fa-regular fa-thumbs-up"></i> &nbsp;
+													{{post.likeCount}}
+												</div>
+												&nbsp;&nbsp;&nbsp;&nbsp;
+												<div>
+													<i class="fa-regular fa-comment"></i>&nbsp;
+													{{post.commentCount}}
+												</div>
+											</div>
+											<br>
+										</div>
+									</div>
+								</div>
+								<div class="col-1"></div>
+								<div class="col-6">
+									<div class="table-responsive">
+										<table class="table">
+											<thead>
+												<tr>
+													<th scope="col">Lý do bị vi phạm</th>
+													<th scope="col" class="text-center">Số lượng</th>
+												</tr>
+											</thead>
+											<tbody>
+												<tr ng-repeat="violation in listViolation">
+													<td>{{violation[0]}}</td>
+													<td class="text-center">{{violation[1]}}</td>
+												</tr>
+											</tbody>
+										</table>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+
+
+
+
+
+		<script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+		<script src="https://cdn.jsdelivr.net/npm/simplebar@5.3.0/dist/simplebar.min.js"></script>
+</body>
+<script>
+	var app = angular.module('PvmApp', []);
+	var originalList = [];
+	app.controller('PvmCtrl', function ($scope, $http) {
+		$scope.listViolations = [];
+		$scope.listViolation = [];
+		$scope.post = {};
+		$scope.currentPage = 0;
+		$scope.totalPages = 0;
+		$scope.pageSize = 9;
+		$scope.selectedCountText = 0; // Số lượng mục đã chọn
+
+		$http.get('/staff/postsviolations/load').then(function (response) {
+			// Gán dữ liệu từ API vào biến $scope.listViolations
+			$scope.listViolations = response.data;
+		}).catch(function (error) {
+			console.error('Lỗi khi lấy dữ liệu bài viết vi phạm:', error);
+		});
+
+		//Hàm tải dữ liệu ban đầu
+		function loadInitialData() {
+			$http.get('/staff/postsviolations/load')
+				.then(function (response) {
+					// Lưu trữ danh sách gốc vào biến originalList
+					originalList = response.data.content;
+					// Gán danh sách cho biến $scope.listViolations để hiển thị
+					$scope.listViolations = response.data;
+				})
+				.catch(function (error) {
+					console.error('Lỗi khi tải dữ liệu:', error);
+				});
+		}
+
+		// Gọi hàm tải dữ liệu ban đầu khi trang được tải lần đầu
+		loadInitialData();
+
+		$scope.searchByAuthor = function () {
+			var username = $scope.searchText;
+			username = username.trim();
+			if (!username) {
+				// Nếu ô tìm kiếm rỗng, gán lại giá trị ban đầu cho biến $scope.listViolations.content
+				$scope.listViolations.content = originalList;
+				return;
+			}
+			$http.get('/staff/searchUserViolation', { params: { username: username } })
+				.then(function (response) {
+					// Xử lý kết quả tìm kiếm ở đây
+					console.log(response.data);
+					$scope.listViolations.content = response.data;
+				})
+				.catch(function (error) {
+					console.error('Lỗi khi tìm kiếm bài viết:', error);
+				});
+		};
+
+
+		//Hàm để cập nhật dữ liệu từ API và số trang khi chuyển đến trang mới
+		function loadViolationsData(page) {
+			$http.get('/staff/postsviolations/load', { params: { page: page, size: $scope.pageSize } })
+				.then(function (response) {
+					$scope.listViolations = response.data;
+					updatePagination();
+				})
+				.catch(function (error) {
+					console.error('Lỗi khi lấy dữ liệu bài viết vi phạm:', error);
+				});
+		}
+
+		// Hàm để cập nhật số trang dựa vào số lượng bài viết vi phạm
+		function calculateTotalPages() {
+			$scope.totalPages = $scope.listViolations.totalPages;
+		}
+
+
+		// Hàm để chuyển đến trang trước
+		$scope.prevPage = function () {
+			if ($scope.currentPage > 0) {
+				$scope.currentPage--;
+				loadViolationsData($scope.currentPage);
+			}
+		};
+
+		// Hàm để chuyển đến trang kế tiếp
+		$scope.nextPage = function () {
+			if ($scope.currentPage < $scope.totalPages - 1) {
+				$scope.currentPage++;
+				loadViolationsData($scope.currentPage);
+			}
+		};
+
+		// Hàm để cập nhật số trang khi dữ liệu thay đổi
+		function updatePagination() {
+			calculateTotalPages();
+			// Đảm bảo rằng trang hiện tại không vượt quá tổng số trang
+			$scope.currentPage = Math.min($scope.currentPage, $scope.totalPages - 1);
+		}
+
+		// Gọi hàm để cập nhật dữ liệu từ API khi controller khởi tạo
+		loadViolationsData($scope.currentPage);
+
+		// Hàm để tạo mảng các trang cụ thể
+		$scope.getPagesArray = function () {
+			return Array.from({ length: $scope.totalPages }, (_, i) => i);
+		};
+
+
+		// Hàm xem chi tiết bài viết
+		$scope.detailPost = function (postId) {
+			// Gọi API để lấy thông tin chi tiết bài viết dựa vào postId
+			$http.get('/staff/postsviolations/detailPost/' + postId)
+				.then(function (response) {
+					$scope.post = response.data;
+					console.log($scope.post);
+					$('#exampleModal').modal('show'); // Hiển thị modal khi có dữ liệu bài viết
+				})
+				.catch(function (error) {
+					console.error('Lỗi khi lấy thông tin chi tiết bài viết:', error);
+				});
+			$http.get('/staff/postsviolations/detailViolation/' + postId)
+				.then(function (response) {
+					$scope.listViolation = response.data;
+				})
+				.catch(function (error) {
+					console.error('Lỗi khi lấy thông tin chi tiết vi phạm:', error);
+				});
+		};
+
+		//Xử lý các checkbox
+		$scope.selectAll = function () {
+			var isChecked = $scope.selectAllCheckbox;
+			angular.forEach($scope.listViolations.content, function (violation) {
+				violation.checked = !isChecked;
+			});
+			$scope.updateSelectedCount();
+		};
+
+		$scope.updateSelectedCount = function () {
+			var selectedCount = $scope.listViolations.content.filter(function (violation) {
+				return violation.isVisible && violation.checked; // Chỉ đếm các checkbox được chọn trong các dòng không ẩn
+			}).length;
+			$scope.selectedCountText = selectedCount;
+		};
+
+
+		$scope.checkboxClicked = function () {
+			var allChecked = true;
+			angular.forEach($scope.listViolations.content, function (violation) {
+				if (!violation.checked) {
+					allChecked = false;
+				}
+			});
+			$scope.selectAllCheckbox = allChecked;
+			$scope.updateSelectedCount();
+		};
+
+		// Hàm để xóa các mục đã chọn
+		$scope.deletePostViolations = function () {
+			// Lấy danh sách các postId được chọn
+			var listPostId = $scope.listViolations.content
+				.filter(item => item.checked)
+				.map(item => item[0]);
+
+			if (listPostId.length === 0) {
+				Swal.fire({
+					position: 'top',
+					icon: 'warning',
+					text: 'Chưa chọn bài viết vi phạm để xóa!',
+					showConfirmButton: false,
+					timer: 1800
+				});
+			} else {
+				Swal.fire({
+					text: 'Bạn có chắc muốn xóa bài viết vi phạm không?',
+					icon: 'warning',
+					confirmButtonText: 'Có, chắc chắn',
+					showCancelButton: true,
+					confirmButtonColor: '#159b59',
+					cancelButtonColor: '#d33'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$http({
+							method: 'POST',
+							url: '/staff/postsviolations/delete',
+							data: JSON.stringify(listPostId),
+							contentType: 'application/json'
+						}).then(function (response) {
+							// Cập nhật dữ liệu mới nhận được từ server
+							$scope.listViolations = response.data;
+							// Reset số lượng mục đã chọn về 0
+							$scope.selectedCountText = 0;
+
+							Swal.fire({
+								position: 'top',
+								icon: 'success',
+								text: 'Xóa bài viết vi phạm thành công!',
+								showConfirmButton: false,
+								timer: 1800
+							});
+						}).catch(function (error) {
+							console.error('Lỗi khi xóa các bài viết:', error);
+
+							Swal.fire({
+								position: 'top',
+								icon: 'error',
+								text: 'Không xóa được bài viết vi phạm!',
+								showConfirmButton: false,
+								timer: 1800
+							});
+						});
+					}
+				});
+			}
+		};
+
+		$scope.acceptPostViolations = function () {
+			// Lấy danh sách các postId được chọn
+			var listPostId = $scope.listViolations.content
+				.filter(item => item.checked)
+				.map(item => item[0]);
+
+			if (listPostId.length === 0) {
+				Swal.fire({
+					position: 'top',
+					icon: 'warning',
+					text: 'Chưa chọn bài viết vi phạm để chấp nhận yêu cầu!',
+					showConfirmButton: false,
+					timer: 1800
+				});
+			} else {
+				Swal.fire({
+					text: 'Bạn có chắc muốn chấp nhận tố cáo bài viết vi phạm không?',
+					icon: 'warning',
+					confirmButtonText: 'Có, chắc chắn',
+					showCancelButton: true,
+					confirmButtonColor: '#159b59',
+					cancelButtonColor: '#d33'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$http({
+							method: 'POST',
+							url: '/staff/postsviolations/accept',
+							data: JSON.stringify(listPostId),
+							contentType: 'application/json'
+						}).then(function (response) {
+							// Cập nhật dữ liệu mới nhận được từ server
+							$scope.listViolations = response.data;
+							// Reset số lượng mục đã chọn về 0
+							$scope.selectedCountText = 0;
+
+							Swal.fire({
+								position: 'top',
+								icon: 'success',
+								text: 'Chấp nhận yêu cầu bài viết vi phạm thành công!',
+								showConfirmButton: false,
+								timer: 1800
+							});
+						}).catch(function (error) {
+							console.error('Lỗi khi chấp nhận yêu cầu các bài viết:', error);
+
+							Swal.fire({
+								position: 'top',
+								icon: 'error',
+								text: 'Không chấp nhận yêu cầu được bài viết vi phạm!',
+								showConfirmButton: false,
+								timer: 1800
+							});
+						});
+					}
+				});
+			}
+		};
+
+		$scope.reloadPage = function () {
+			location.reload();
+		}
+	});
+</script>
+
+</html>
