@@ -1,229 +1,16 @@
 <div class="row" ng-controller="HomeController">
 	<div class="col-md-7" style="z-index: 10;">
-		<!-- Nav tabs -->
-		<ul class="nav nav-tabs" id="myTab" role="tablist">
-			<li class="nav-item" role="presentation">
-				<button class="nav-link active" id="home-tab" data-bs-toggle="tab" data-bs-target="#home" type="button"
-					role="tab" aria-controls="home" aria-selected="true">Bài viết</button>
-			</li>
-			<li class="nav-item" role="presentation">
-				<button class="nav-link" id="profile-tab" data-bs-toggle="tab" data-bs-target="#profile" type="button"
-					role="tab" aria-controls="profile" aria-selected="false">Mua sắm</button>
-			</li>
-		</ul>
-
-		<!-- Tab panes -->
-		<div class="tab-content">
-			<div class="tab-pane active" id="home" role="tabpanel" aria-labelledby="home-tab">
-
-				<div ng-repeat="post in Posts">
-					<div class="write-post-container   animate__animated animate__backInLeft"
-						style="margin-bottom: 20px; border-radius: 2px; padding: 0; padding-top: 10px; padding-bottom: 10px; width: 100%; text-align: left; background: white;">
-						<div style="margin: 0;">
-							<div
-								style="display: flex; align-items: center; justify-content: space-between; padding-left: 10px">
-								<div class="dropdown">
-									<span class="dropbtn">
-										<div class="user-profile ">
-											<a href="#!/profile/{{post.user.userId}}"><img
-													ng-src="/images/{{post.user.avatar }}" style="border-radius: 100%;"
-													alt=""></a>
-											<div>
-
-												<span
-													style="font-weight: 600 !important; font-size: 1rem !important; margin: 0; color: #2A3547">{{
-													post.user.username }}</span> &nbsp;&nbsp; <span><small
-														style="font-size: 12px; color: #65676b"> {{
-														getFormattedTimeAgo(post.postDate) }} </small></span>
-											</div>
-										</div>
-									</span>
-									<div class="dropdown-content">
-										<div class="user-profile ">
-											<a href="/profile/{{post.user.userId}}"><img
-													ng-src="/images/{{ post.user.avatar }}" style="border-radius: 100%;"
-													alt=""></a>
-											<div>
-												<label>{{ post.user.username }}</label>
-												<!-- <i class="fa-solid fa-earth-americas fa-xs"></i> -->
-												<br> <small style="font-size: 12px; color: #65676b">
-													<b>{{ 'ST' | translate }}:</b> {{ post.user.address }}
-												</small> <br> <small style="font-size: 12px; color: #65676b">
-													<b>{{ 'MQH' | translate }}:</b> {{ post.user.relationship }}
-												</small>
-
-											</div>
-										</div>
-									</div>
-								</div>
-
-								<div>
-									<div class="btn-group" style="margin-right: 10px;">
-										<div class="dropdown">
-											<span class="  dropdown-toggle" id="triggerId" data-bs-toggle="dropdown"
-												aria-haspopup="true" aria-expanded="false"> </span>
-											<div class="dropdown-menu" aria-labelledby="triggerId">
-												<a class="dropdown-item" ng-click="openModalBaoCao(post.postId)"
-													style="color: #E53F31; font-size: 13px">{{ 'BCVP' |
-													translate }}</a>
-											</div>
-										</div>
-									</div>
-								</div>
-							</div>
-							<div style="margin-top: 10px;">
-								<div>
-									<div
-										style="box-sizing: border-box; padding: 10px; font-size: 14px; text-align: justify;">
-										{{ post.content }}</div>
-									<center>
-										<div ng-if="post.images.length > 1">
-											<!-- Carousel HTML code -->
-											<div id="carouselId{{post.postId}}" class="carousel slide"
-												data-bs-ride="carousel">
-												<!-- Carousel indicators -->
-												<ol class="carousel-indicators">
-													<li data-bs-target="#carouselId"
-														ng-repeat="image in post.images track by $index"
-														ng-class="{ 'active': $index === 0 }"
-														data-bs-slide-to="{{$index}}" aria-current="{{$index === 0}}"
-														aria-label="Slide {{$index + 1}}"></li>
-												</ol>
-												<!-- Carousel items -->
-												<div class="carousel-inner" role="listbox">
-													<div class="carousel-item"
-														style="background-color: #313131; height: 90vh;"
-														ng-repeat="image in post.images track by $index"
-														ng-class="{ 'active': $index === 0 }">
-
-														<img ng-click="getPostDetails(post.postId)"
-															ng-if="image.type === true"
-															ng-src="/images/{{ image.imageUrl }}" class="w-100 d-block"
-															alt="Slide {{$index + 1}}"
-															style="max-height: 90vh; object-fit: contain; width: 100%; transform: translateY(-50%); top: 50%; position: absolute;">
-
-														<video ng-if="image.type === false" autoplay controls
-															style="max-height: 90vh; object-fit: contain; width: 100%; transform: translate(-50%, -50%); top: 50%; position: absolute;">
-															<source ng-src="images/{{ image.imageUrl }}"
-																type="video/mp4">
-															Your browser does not support the video tag.
-														</video>
-													</div>
-												</div>
-
-												<!-- Carousel controls -->
-												<button class="carousel-control-prev" type="button"
-													data-bs-target="#carouselId{{post.postId}}" data-bs-slide="prev">
-													<span class="carousel-control-prev-icon" aria-hidden="true"></span>
-													<span class="visually-hidden">Previous</span>
-												</button>
-												<button class="carousel-control-next" type="button"
-													data-bs-target="#carouselId{{post.postId}}" data-bs-slide="next">
-													<span class="carousel-control-next-icon" aria-hidden="true"></span>
-													<span class="visually-hidden">Next</span>
-												</button>
-											</div>
-										</div>
-										<div ng-if="post.images.length === 1">
-											<video ng-if="post.images[0].type === false" autoplay controls
-												style="width: 100%;">
-												<source ng-src="images/{{ post.images[0].imageUrl }}" type="video/mp4">
-												Your browser does not support the video tag.
-											</video>
-											<!-- Single image HTML code -->
-											<img ng-if="post.images[0].type === true"
-												ng-click="getPostDetails(post.postId)"
-												ng-src="/images/{{ post.images[0].imageUrl }}" class="w-100"
-												alt="Single image"
-												style="max-height: 90vh; object-fit: contain; width: 100%">
-										</div>
-
-
-
-									</center>
-								</div>
-
-								<div class="post-reaction" style="padding: 10px; margin-top: 8px;">
-									<div class="activity-icons">
-										<div>
-											<span ng-click="likePost(post.postId);"
-												ng-if="likedPosts.indexOf(post.postId.toString()) !== -1"
-												style="color: #f50000;">❤️&nbsp;{{ post.likeCount }}</span> <span
-												ng-click="likePost(post.postId)"
-												ng-if="likedPosts.indexOf(post.postId.toString()) === -1">🤍&nbsp;{{
-												post.likeCount }}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
-												ng-click="getPostDetails(post.postId)"><i
-													class="fa-light fa-comments"></i>&nbsp;{{ post.commentCount}}</span>
-											&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span><i
-													class="fa-light fa-share-nodes"></i></span>
-										</div>
-									</div>
-								</div>
-
-							</div>
-						</div>
-					</div>
-				</div>
-			</div>
-			<div class="tab-pane" id="profile" role="tabpanel" aria-labelledby="profile-tab"> 
-			
-				<section class="product">
-					<div class="product__photo">
-						<div class="photo-container">
-							<div class="photo-main">
-								<div class="controls" >
-									<i class="material-icons" >share</i>
-									<i class="material-icons">favorite_border</i>
-								</div>
-								<img src="https://i.pinimg.com/564x/64/40/dc/6440dc5a4df66c127e8dd557b891b783.jpg" alt="green apple slice">
-							</div>
-							
-						</div>
-					</div>
-					<div class="product__info">
-						<div class="user-profile ">
-							<a href="#!/profile/TNFH99027885"><img ng-src="/images/z4573535113309_9dc466de06ab57d437903fa120cbb5de.jpg-20230804_100207.jpg" style="border-radius: 100%;" alt="" src="/images/z4573535113309_9dc466de06ab57d437903fa120cbb5de.jpg-20230804_100207.jpg"></a>
-							<div>
-								<span style="font-weight: 600 !important; font-size: 1rem !important; margin: 0; color: #2A3547" class="ng-binding">Vân Anh</span> &nbsp;&nbsp; <span><small style="font-size: 12px; color: #65676b" class="ng-binding"> 4-8-2023 </small></span>
-							</div>
-						</div>
-						<hr>
-						<div class="title">
-							<h2>Rồng Bông Xanh</h2>
-						</div>
-						
-						<div class="price">
-							<span style="font-weight: 600;">Giá bán:</span> <span>75.000 VND</span>
-						</div>						
-						<div class="description">
-							<h3>Mô tả ngắn</h3>
-							<span>Nó là một côn giống như rồng, làm bằng vải bông, mại dô mại dô</span>
-						</div>
-						<button class="buy--btn">Thêm vào giỏ hàng</button>
-						<div class="photo-album">
-							<h3>Hình ảnh khác</h3>
-							<ul>
-								<li><img src="https://i.pinimg.com/564x/f4/95/c3/f495c375bd19124900e784d75cf74ebe.jpg" alt="green apple"></li>
-								<li><img src="https://i.pinimg.com/564x/c1/ce/38/c1ce389613b0710374484c744df9a7d4.jpg" alt="yellow apple"></li>
-								<li><img src="https://i.pinimg.com/564x/d6/e2/ee/d6e2ee9c5335240b889d045e35473c22.jpg" alt="orange apple"></li>
-								<li><img src="https://i.pinimg.com/564x/57/30/f9/5730f9fc9b18d54bcec283316478f839.jpg" alt="red apple"></li>
-							</ul>
-						</div>
-					</div>
-				</section>		
-			</div>
-		</div>
-
-	</div>
-	<div class="col-md-3 menuLeft animate__animated animate__backInRight"
-		style="position: fixed; right: 3%; top: 70px;">
 		<div style="width: 100%; text-align: left; background-color: transparent;" data-bs-toggle="modal"
 			href="#exampleModalToggle">
 			<div>
 				<div class="write-post-container  img-thumbnail animate__animated animate__backInLeft"
-					style="margin-bottom: 15px; background: white 0.5; border-radius: 3px 3px 0 0; padding-top: 10px; padding-bottom: 10px; background-color: transparent;">
-					<div class="d-flex align-items-center gap-2" style="    display: flex !important;
-							justify-content: center;">
+					style="margin-bottom: 15px; background: white 0.5; border-radius: 3px 3px 0 0; padding-top: 10px; padding-bottom: 10px; background-color: transparent; border-top: none;">
+					<form id="postForm">
+						<input class="form-control"
+							style="border-top: none; border-left: none; border-right: none; border-radius: 0;"
+							placeholder="{{ 'HV' | translate }}" id="floatingTextarea2"></input>
+					</form>
+					<div class="d-flex align-items-center gap-2" style="padding-top: 0.5rem;">
 						<div class="text-white d-flex align-items-center justify-content-center bg-primary p-2 fs-4 rounded-circle"
 							href="javascript:void(0)">
 							<svg class="svg-inline--fa fa-image fa-xs" aria-hidden="true" focusable="false"
@@ -234,32 +21,168 @@
 								</path>
 							</svg><!-- <i class="fa-solid fa-image fa-xs"></i> -->
 						</div> Chọn Ảnh
-						<a href="javascript:void(0)" class="d-flex align-items-center gap-2">
-							<div
-								class="text-white d-flex align-items-center justify-content-center bg-secondary p-2 fs-4 rounded-circle">
-								<svg class="svg-inline--fa fa-shop fa-xs" aria-hidden="true" focusable="false"
-									data-prefix="fas" data-icon="shop" role="img" xmlns="http://www.w3.org/2000/svg"
-									viewBox="0 0 640 512" data-fa-i2svg="">
-									<path fill="currentColor"
-										d="M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z">
-									</path>
-								</svg><!-- <i class="fa-solid fa-shop fa-xs"></i> -->
-							</div>
-						</a>Cửa hàng
+
 
 
 					</div>
-					<br>
-					<form id="postForm">
 
-						<input class="form-control" style="border-top: none; border-left: none; border-right: none; border-radius: 0;" placeholder="{{ 'HV' | translate }}"
-							id="floatingTextarea2"></input>
-					</form>
 					<div class="d-flex  gap-2" style="margin-top: 5px; text-align: right;"></div>
 				</div>
 
 			</div>
 		</div>
+		<div ng-repeat="post in Posts">
+			<div class="write-post-container   animate__animated animate__backInLeft"
+				style="margin-bottom: 20px; border-radius: 2px; padding: 0; padding-top: 10px; padding-bottom: 10px; width: 100%; text-align: left; background: white;">
+				<div style="margin: 0;">
+					<div
+						style="display: flex; align-items: center; justify-content: space-between; padding-left: 10px">
+						<div class="dropdown">
+							<span class="dropbtn">
+								<div class="user-profile ">
+									<a href="#!/profile/{{post.user.userId}}"><img
+											ng-src="/images/{{post.user.avatar }}" style="border-radius: 100%;"
+											alt=""></a>
+									<div>
+
+										<span
+											style="font-weight: 600 !important; font-size: 1rem !important; margin: 0; color: #2A3547">{{
+											post.user.username }}</span> &nbsp;&nbsp; <span><small
+												style="font-size: 12px; color: #65676b"> {{
+												getFormattedTimeAgo(post.postDate) }} </small></span>
+									</div>
+								</div>
+							</span>
+							<div class="dropdown-content">
+								<div class="user-profile ">
+									<a href="/profile/{{post.user.userId}}"><img
+											ng-src="/images/{{ post.user.avatar }}" style="border-radius: 100%;"
+											alt=""></a>
+									<div>
+										<label>{{ post.user.username }}</label>
+										<!-- <i class="fa-solid fa-earth-americas fa-xs"></i> -->
+										<br> <small style="font-size: 12px; color: #65676b">
+											<b>{{ 'ST' | translate }}:</b> {{ post.user.address }}
+										</small> <br> <small style="font-size: 12px; color: #65676b">
+											<b>{{ 'MQH' | translate }}:</b> {{ post.user.relationship }}
+										</small>
+
+									</div>
+								</div>
+							</div>
+						</div>
+
+						<div>
+							<div class="btn-group" style="margin-right: 10px;">
+								<div class="dropdown">
+									<span class="  dropdown-toggle" id="triggerId" data-bs-toggle="dropdown"
+										aria-haspopup="true" aria-expanded="false"> </span>
+									<div class="dropdown-menu" aria-labelledby="triggerId">
+										<a class="dropdown-item" ng-click="openModalBaoCao(post.postId)"
+											style="color: #E53F31; font-size: 13px">{{ 'BCVP' |
+											translate }}</a>
+									</div>
+								</div>
+							</div>
+						</div>
+					</div>
+					<div style="margin-top: 10px;">
+						<div>
+							<div
+								style="box-sizing: border-box; padding: 10px; font-size: 14px; text-align: justify;">
+								{{ post.content }}</div>
+							<center>
+								<div ng-if="post.images.length > 1">
+									<!-- Carousel HTML code -->
+									<div id="carouselId{{post.postId}}" class="carousel slide"
+										data-bs-ride="carousel">
+										<!-- Carousel indicators -->
+										<ol class="carousel-indicators">
+											<li data-bs-target="#carouselId"
+												ng-repeat="image in post.images track by $index"
+												ng-class="{ 'active': $index === 0 }"
+												data-bs-slide-to="{{$index}}" aria-current="{{$index === 0}}"
+												aria-label="Slide {{$index + 1}}"></li>
+										</ol>
+										<!-- Carousel items -->
+										<div class="carousel-inner" role="listbox">
+											<div class="carousel-item"
+												style="background-color: #313131; height: 90vh;"
+												ng-repeat="image in post.images track by $index"
+												ng-class="{ 'active': $index === 0 }">
+
+												<img ng-click="getPostDetails(post.postId)"
+													ng-if="image.type === true"
+													ng-src="/images/{{ image.imageUrl }}" class="w-100 d-block"
+													alt="Slide {{$index + 1}}"
+													style="max-height: 90vh; object-fit: contain; width: 100%; transform: translateY(-50%); top: 50%; position: absolute;">
+
+												<video ng-if="image.type === false" autoplay controls
+													style="max-height: 90vh; object-fit: contain; width: 100%; transform: translate(-50%, -50%); top: 50%; position: absolute;">
+													<source ng-src="images/{{ image.imageUrl }}"
+														type="video/mp4">
+													Your browser does not support the video tag.
+												</video>
+											</div>
+										</div>
+
+										<!-- Carousel controls -->
+										<button class="carousel-control-prev" type="button"
+											data-bs-target="#carouselId{{post.postId}}" data-bs-slide="prev">
+											<span class="carousel-control-prev-icon" aria-hidden="true"></span>
+											<span class="visually-hidden">Previous</span>
+										</button>
+										<button class="carousel-control-next" type="button"
+											data-bs-target="#carouselId{{post.postId}}" data-bs-slide="next">
+											<span class="carousel-control-next-icon" aria-hidden="true"></span>
+											<span class="visually-hidden">Next</span>
+										</button>
+									</div>
+								</div>
+								<div ng-if="post.images.length === 1">
+									<video ng-if="post.images[0].type === false" autoplay controls
+										style="width: 100%;">
+										<source ng-src="images/{{ post.images[0].imageUrl }}" type="video/mp4">
+										Your browser does not support the video tag.
+									</video>
+									<!-- Single image HTML code -->
+									<img ng-if="post.images[0].type === true"
+										ng-click="getPostDetails(post.postId)"
+										ng-src="/images/{{ post.images[0].imageUrl }}" class="w-100"
+										alt="Single image"
+										style="max-height: 90vh; object-fit: contain; width: 100%; background-color: #313131;">
+								</div>
+
+
+
+							</center>
+						</div>
+
+						<div class="post-reaction" style="padding: 10px; margin-top: 8px;">
+							<div class="activity-icons">
+								<div>
+									<span ng-click="likePost(post.postId);"
+										ng-if="likedPosts.indexOf(post.postId.toString()) !== -1"
+										style="color: #f50000;">❤️&nbsp;{{ post.likeCount }}</span> <span
+										ng-click="likePost(post.postId)"
+										ng-if="likedPosts.indexOf(post.postId.toString()) === -1">🤍&nbsp;{{
+										post.likeCount }}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+										ng-click="getPostDetails(post.postId)"><i
+											class="fa-light fa-comments"></i>&nbsp;{{ post.commentCount}}</span>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span><i
+											class="fa-light fa-share-nodes"></i></span>
+								</div>
+							</div>
+						</div>
+
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<div class="col-md-3 menuLeft animate__animated animate__backInRight"
+		style="position: fixed; right: 3%; top: 70px;">
+		
 		<div class="user-data full-width" style="margin-bottom: 5px; margin-left: 0">
 			<div class="user-profile" style="display: block;">
 				<div class="username-dt dpbg-1"
@@ -417,7 +340,7 @@
 									<!-- Single image HTML code -->
 									<img ng-src="/images/{{ postDetails.images[0].imageUrl }}" class="w-100"
 										alt="Single image"
-										style="margin-top: 10px; margin-bottom: 10px; object-fit: cover;">
+										style="margin-top: 10px; margin-bottom: 10px; object-fit: contain; max-height: 90vh; border-radius: 10px; background-color: #313131;">
 
 								</div>
 
@@ -468,7 +391,7 @@
 									</div>
 								</form>
 							</div>
-							<div style="overflow-y: scroll; max-height: 85vh; padding-right: 0.2rem">
+							<div style="overflow-y: scroll; max-height: 70vh; padding-right: 0.2rem">
 								<div
 									ng-repeat="comment in postComments | limitTo:numOfCommentsToShow track by comment.commentId">
 									<div class="msg ng-scope left-msg" ng-class="left-msg">

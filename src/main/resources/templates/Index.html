@@ -46,6 +46,9 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 
+	<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css'>
+
+
 	<title>Trang chủ</title>
 	<style type="text/css">
 		body {
@@ -169,6 +172,22 @@
 			#menuLeft {
 				display: none;
 			}
+
+			#view.offset-lg-3 {
+				margin-left: 0;
+			}
+
+			#view.col-lg-9 {
+				width: 100%;
+				flex: 0 0 100%;
+				max-width: 100%;
+			}
+
+			#view.col-lg-12 {
+				width: 100%;
+				flex: 0 0 100%;
+				max-width: 100%;
+			}
 		}
 	</style>
 
@@ -239,7 +258,7 @@
 					</div>
 				</div>
 			</nav>
-			<div ng-view class="offset-md-3 col-md-9"></div>
+			<div ng-view id="view" class="offset-lg-3 col-lg-9"></div>
 		</div>
 	</div>
 
@@ -647,7 +666,8 @@
 	<script src="/js/recommend.js"></script>
 	<script src="/js/Message.js"></script>
 	<script src="/js/profile.js"></script>
-
+	<script src="/js/shopping.js"></script>
+	<script src="/js/product.js"></script>
 </body>
 
 </html>

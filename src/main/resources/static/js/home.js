@@ -14,9 +14,6 @@ app.controller('HomeController', function($scope, $http, $translate, $window, $r
 	$scope.selectedPostId = '';
 	$scope.numOfCommentsToShow = 20; // Số lượng bình luận hiển thị ban đầu
 	$scope.commentsToShowMore = 10; // Số lượng bình luận hiển thị khi nhấp vào "hiển thị thêm"
-	
-	
-
 
 	if (!$location.path().startsWith('/profile/')) {
 		// Tạo phần tử link stylesheet
