@@ -2070,3 +2070,13 @@ footer {
 		object-fit: cover;
 	}
 }
+
+.imghover {
+	transition: transform 0.3s ease-in-out;
+}
+
+.imghover:hover {
+	transform: scale(1.05);
+	z-index: 3;
+	border:1px solid #ff3f40;
+}

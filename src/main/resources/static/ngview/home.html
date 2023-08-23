@@ -1,9 +1,9 @@
-<div class="row" ng-controller="HomeController">
+<div class="row animate__animated animate__fadeIn" ng-controller="HomeController">
 	<div class="col-md-7" style="z-index: 10;">
 		<div style="width: 100%; text-align: left; background-color: transparent;" data-bs-toggle="modal"
 			href="#exampleModalToggle">
 			<div>
-				<div class="write-post-container  img-thumbnail animate__animated animate__backInLeft"
+				<div class="write-post-container  img-thumbnail "
 					style="margin-bottom: 15px; background: white 0.5; border-radius: 3px 3px 0 0; padding-top: 10px; padding-bottom: 10px; background-color: transparent; border-top: none;">
 					<form id="postForm">
 						<input class="form-control"
@@ -32,7 +32,7 @@
 			</div>
 		</div>
 		<div ng-repeat="post in Posts">
-			<div class="write-post-container   animate__animated animate__backInLeft"
+			<div class="write-post-container   "
 				style="margin-bottom: 20px; border-radius: 2px; padding: 0; padding-top: 10px; padding-bottom: 10px; width: 100%; text-align: left; background: white;">
 				<div style="margin: 0;">
 					<div
@@ -180,7 +180,7 @@
 			</div>
 		</div>
 	</div>
-	<div class="col-md-3 menuLeft animate__animated animate__backInRight"
+	<div class="col-md-3 menuLeft "
 		style="position: fixed; right: 3%; top: 70px;">
 		
 		<div class="user-data full-width" style="margin-bottom: 5px; margin-left: 0">
@@ -431,7 +431,7 @@
 									</div>
 
 									<div ng-show="o_reply"
-										class="user-profile animate__animated animate__headShake img-thumbnail ng-scope"
+										class="user-profile  img-thumbnail ng-scope"
 										style="box-sizing: border-box; padding: 4px; border-radius: 5px; background-color: white; margin-bottom: 5px; margin-left: 5rem; width: 85%; border: 1px solid #dee2e6;">
 										<img ng-src="/images/{{myAccount.user.avatar}}" class="img-thumbnail" alt="">
 										<div style="width: 70%">
@@ -507,7 +507,7 @@
 											</div>
 
 											<div ng-show="o_reply2"
-												class="user-profile animate__animated animate__headShake img-thumbnail ng-scope"
+												class="user-profile  img-thumbnail ng-scope"
 												style="box-sizing: border-box; padding: 4px; border-radius: 5px; background-color: white; margin-bottom: 5px; margin-left: 5rem; width: 85%">
 												<img ng-src="/images/{{myAccount.user.avatar}}" class="img-thumbnail"
 													alt="">
