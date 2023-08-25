@@ -1,5 +1,5 @@
 
-app.controller('MessController', function($scope, $rootScope, $window, $http, $timeout, $translate, $location, $routeParams) {
+app.controller('MessController', function ($scope, $rootScope, $window, $http, $timeout, $translate, $location, $routeParams) {
 	$scope.LikePost = [];
 	$scope.ListUsersMess = [];
 	$scope.ListMessWith = [];
@@ -13,7 +13,7 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 	});
 
 	// Hàm để phát âm thanh
-	$scope.playNotificationSound = function() {
+	$scope.playNotificationSound = function () {
 		sound.play();
 	};
 
@@ -27,14 +27,14 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 		document.head.appendChild(styleLink);
 	}
 
-	$scope.isEmptyObject = function(obj) {
+	$scope.isEmptyObject = function (obj) {
 		return Object.keys(obj).length === 0 && obj.constructor === Object;
 	};
 
 
 
 
-	$scope.uploadFile = function() {
+	$scope.uploadFile = function () {
 		var fileInput = document.getElementById('inputGroupFile01');
 		if (fileInput.files.length > 0) {
 			var formData = new FormData();
@@ -49,7 +49,7 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 					'Content-Type': undefined
 				}
 			})
-				.then(function(response) {
+				.then(function (response) {
 					var newListMess = response.data;
 					$scope.ListMess = $scope.ListMess.concat(newListMess);
 
@@ -60,7 +60,7 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 					}
 					fileInput.value = null;
 				})
-				.catch(function(error) {
+				.catch(function (error) {
 					console.error('Lỗi tải lên tệp:', error);
 				});
 		} else {
@@ -74,23 +74,23 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 	//tìm sách nhắn tin nhắn với người nào đó
 	if ($routeParams.otherId) {
 		$http.get('/getUser/' + $routeParams.otherId)
-			.then(function(response) {
+			.then(function (response) {
 				$scope.userMess = response.data;
 			})
 		$http.get('/getmess2/' + $routeParams.otherId)
-			.then(function(response) {
+			.then(function (response) {
 				$scope.ListMess = response.data;
-				$timeout(function() {
+				$timeout(function () {
 					$scope.scrollToBottom();
 				}, 100);
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				console.log(error);
 			});
 
 	}
 	//kéo thả ảnh
-	$scope.onDrop = function(event) {
+	$scope.onDrop = function (event) {
 		event.preventDefault();
 		var file = event.dataTransfer.files[0]; // Lấy tệp ảnh từ sự kiện kéo và thả
 
@@ -101,48 +101,48 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 	};
 	//đánh dấu là đã xem
 	$http.post('/seen/' + $routeParams.otherId)
-		.then(function(response) {
+		.then(function (response) {
 		});
 	$http.get('/getunseenmessage')
-		.then(function(response) {
+		.then(function (response) {
 			$rootScope.check = response.data > 0;
 			$rootScope.unseenmess = response.data;
 		})
-		.catch(function(error) {
+		.catch(function (error) {
 			console.log(error);
 		});
 
 	//Đa ngôn ngữ	
-	$scope.changeLanguage = function(langKey) {
+	$scope.changeLanguage = function (langKey) {
 		$translate.use(langKey);
 		localStorage.setItem('myAppLangKey', langKey); // Lưu ngôn ngữ đã chọn vào localStorages
 	};
 
 	// Tìm acc của mình
 	$http.get('/findmyaccount')
-		.then(function(response) {
+		.then(function (response) {
 			$scope.myAccount = response.data;
 		})
-		.catch(function(error) {
+		.catch(function (error) {
 			console.log(error);
 		});
 
 	// Kiểm tra xem còn tin nhắn nào chưa đọc không
 	$http.get('/getunseenmessage')
-		.then(function(response) {
+		.then(function (response) {
 			$rootScope.check = response.data > 0;
 			$rootScope.unseenmess = response.data;
 		})
-		.catch(function(error) {
+		.catch(function (error) {
 			console.log(error);
 		});
 
 	// Sử dụng $http để lấy danh sách người đã từng nhắn tin
 	$http.get('/getusersmess')
-		.then(function(response) {
+		.then(function (response) {
 			$scope.ListUsersMess = response.data;
 		})
-		.catch(function(error) {
+		.catch(function (error) {
 			console.log(error);
 		});
 
@@ -160,17 +160,17 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 	var stompClient = Stomp.over(socket);
 
 	// Khi kết nối WebSocket thành công
-	stompClient.connect({}, function(frame) {
+	stompClient.connect({}, function (frame) {
 		console.log('Connected: ' + frame);
 
 		// Đăng ký hàm xử lý khi nhận thông điệp từ server
 		// Lắng nghe các tin nhắn được gửi về cho người dùng
-		stompClient.subscribe('/user/' + $scope.myAccount.user.userId + '/queue/receiveMessage', function(message) {
+		stompClient.subscribe('/user/' + $scope.myAccount.user.userId + '/queue/receiveMessage', function (message) {
 			try {
 
 				var newMess = JSON.parse(message.body);
 				// Xử lý tin nhắn mới nhận được ở đây khi nhắn đúng người
-				var checkMess = $scope.ListMess.find(function(obj) {
+				var checkMess = $scope.ListMess.find(function (obj) {
 					return obj.messId === newMess.messId; // Sửa dấu === ở đây
 				});
 				if (checkMess) {
@@ -181,15 +181,15 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 
 				//cập nhật lại danh sách người đang nhắn tin với mình
 				$http.get('/getusersmess')
-					.then(function(response) {
+					.then(function (response) {
 						$scope.ListUsersMess = response.data;
 						$scope.playNotificationSound();
 					})
-					.catch(function(error) {
+					.catch(function (error) {
 						console.log(error);
 					});
 
-				$timeout(function() {
+				$timeout(function () {
 					$scope.scrollToBottom();
 				}, 10);
 
@@ -198,7 +198,7 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 				alert('Error handling received message:', error);
 			}
 		});
-	}, function(error) {
+	}, function (error) {
 		console.error('Lỗi kết nối WebSocket:', error);
 	});
 
@@ -206,7 +206,7 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 
 
 	// Hàm gửi tin nhắn
-	$scope.sendMessage = function(senderId, content, receiverId) {
+	$scope.sendMessage = function (senderId, content, receiverId) {
 		if (content == '' || content.trim() === undefined) {
 			return;
 		}
@@ -217,22 +217,22 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 		};
 		//lưu tin nhắn vào cơ sở dữ liệu
 		$http.post('/savemess', message)
-			.then(function(response) {
+			.then(function (response) {
 				//hàm gửi tin nhắn qua websocket
 				stompClient.send('/app/sendnewmess', {}, JSON.stringify(response.data));
 				//cập nhật lại tin nhắn và những người đã gửi bên cột những người đã gửi
 				var check = response.data;
-				var existingUserIndex = $scope.ListUsersMess.findIndex(function(obj) {
+				var existingUserIndex = $scope.ListUsersMess.findIndex(function (obj) {
 					return check.receiver.userId === obj[0] || check.receiver.userId === obj[2];
 				});
 				$http.post('/seen/' + $routeParams.otherId)
-					.then(function(response) {
+					.then(function (response) {
 						$http.get('/getunseenmessage')
-							.then(function(response) {
+							.then(function (response) {
 								$rootScope.check = response.data > 0;
 								$rootScope.unseenmess = response.data;
 							})
-							.catch(function(error) {
+							.catch(function (error) {
 								console.log(error);
 							});
 					});
@@ -269,20 +269,20 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 
 				$scope.ListMess.push(newMess);
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				console.log(error);
 			});
 		console.log('Tin nhắn đã được gửi thành công!');
 		$scope.newMess = '';
 
-		var foundUser = $scope.ListUsersMess.find(function(user) {
+		var foundUser = $scope.ListUsersMess.find(function (user) {
 			return user.userId === receiverId;
 		});
 		if (foundUser) {
 			foundUser.status = 'Đã gửi';
 		}
 
-		$timeout(function() {
+		$timeout(function () {
 			$scope.scrollToBottom();
 		}, 100);
 	};
@@ -290,31 +290,31 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 
 
 	// Tìm người đang nhắn với mình
-	$scope.getmess2 = function(userId, messId, status) {
+	$scope.getmess2 = function (userId, messId, status) {
 		$http.post('/seen/' + userId)
-			.then(function(response) {
+			.then(function (response) {
 				return $http.get('/getunseenmessage');
 			})
-			.then(function(response) {
+			.then(function (response) {
 				$scope.check = response.data > 0;
 			})
-			.catch(function(error) {
+			.catch(function (error) {
 				console.log(error);
 			});
 		if (messId !== -1 && status === 'Đã gửi') {
-			var messToUpdate = $scope.ListUsersMess.find(function(mess) {
+			var messToUpdate = $scope.ListUsersMess.find(function (mess) {
 				return mess[9] === messId;
 			});
 			messToUpdate[8] = "Đã xem";
 		}
 	};
 
-	$scope.scrollToBottom = function() {
+	$scope.scrollToBottom = function () {
 		var chatContainer = document.querySelector('.msger-chat');
 		chatContainer.scrollTop = chatContainer.scrollHeight;
 	};
 
-	$scope.getFormattedTimeAgo = function(date) {
+	$scope.getFormattedTimeAgo = function (date) {
 		var currentTime = new Date();
 		var activityTime = new Date(date);
 		var timeDiff = currentTime.getTime() - activityTime.getTime();
@@ -353,17 +353,17 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 
 
 
-	$scope.revokeMessage = function(messId) {
+	$scope.revokeMessage = function (messId) {
 		$http.post('/removemess/' + messId)
-			.then(function(reponse) {
-				var messToUpdate = $scope.ListMess.find(function(mess) {
+			.then(function (reponse) {
+				var messToUpdate = $scope.ListMess.find(function (mess) {
 					return mess.messId === messId;
 				})
 				messToUpdate.status = "Đã ẩn";
 
 				var mess = reponse.data;
 
-				var objUpdate = $scope.ListUsersMess.find(function(obj) {
+				var objUpdate = $scope.ListUsersMess.find(function (obj) {
 					return (mess.receiver.userId === obj[0] || mess.receiver.userId === obj[2]) && mess.messId === obj[9];
 				});
 				if (objUpdate) {
@@ -384,7 +384,7 @@ app.controller('MessController', function($scope, $rootScope, $window, $http, $t
 
 
 
-			}, function(error) {
+			}, function (error) {
 				console.log(error);
 			});
 	};

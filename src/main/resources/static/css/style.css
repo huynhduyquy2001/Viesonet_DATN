@@ -1412,11 +1412,9 @@ img {
 	justify-content: space-between;
 	width: 100%;
 	max-width: 867px;
-	height: 85vh;
+	height: 89vh;
 	margin-left: 20px;
-	border: 1px solid #ebf1f6;
 	background: var(--msger-bg);
-	box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
 }
 
 .msger-header {
@@ -1425,8 +1423,6 @@ img {
 	padding: 5px;
 	color: #666;
 	padding: 10px;
-
-
 }
 
 .msger-chat {
@@ -1470,9 +1466,11 @@ img {
 
 .msg-bubble {
 	max-width: 450px;
-	padding: 15px;
-	border-radius: 15px;
-	background: #F6F9FC;
+	padding: 5px;
+	border-radius: 7px;
+	background-color: transparent;
+	padding-left: 8px;
+	padding-right: 8px;
 }
 
 .msg-info {
@@ -1491,17 +1489,21 @@ img {
 	color: #aaaaaa;
 }
 
-.left-msg .msg-bubble {
-	border-bottom-left-radius: 0;
-	background-color: #EFF2F6;
-}
-
 .right-msg {
 	flex-direction: row-reverse;
 }
 
-.right-msg .msg-bubble {
+.right-msg .msg-bubble .mess {
 	background: #e8f1f3;
+	padding: 0.7rem;
+	border-radius: 7px;
+	border-bottom-right-radius: 0;
+}
+
+.left-msg .msg-bubble .mess {
+	background: #EFF2F6;
+	padding: 0.7rem;
+	border-radius: 7px;
 	border-bottom-right-radius: 0;
 }
 
@@ -1614,18 +1616,11 @@ img {
 /* Định dạng cho nút "Thu hồi" */
 .btn-revoke {
 	position: absolute;
-	right: -55px;
+	left: 0;
 	/* Điều chỉnh khoảng cách nút so với tin nhắn */
-	top: 50%;
-	transform: translateY(-50%);
+	transform: translateY(50%);
+	transform: translateX(-100%);
 	/* Canh giữa theo chiều dọc */
-	background-color: #007ACC;
-	color: white;
-	border: none;
-	padding: 5px 10px;
-	border-radius: 5px;
-	font-size: 12px;
-	cursor: pointer;
 	display: none;
 }
 
@@ -1634,7 +1629,15 @@ img {
 	display: inline-block;
 }
 
+.msg-bubble:hover .dot {
+	display: inline-block;
+}
 
+.dot {
+	display: none;
+	position: absolute;
+	left: 0;
+}
 
 
 /* ----- Global ----- */
@@ -2078,5 +2081,5 @@ footer {
 .imghover:hover {
 	transform: scale(1.05);
 	z-index: 3;
-	border:1px solid #ff3f40;
+	border: 1px solid #ff3f40;
 }

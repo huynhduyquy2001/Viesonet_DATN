@@ -1,42 +1,12 @@
-<div class="row animate__animated animate__fadeIn" ng-controller="HomeController">
-	<div class="col-md-7" style="z-index: 10;">
-		<div style="width: 100%; text-align: left; background-color: transparent;" data-bs-toggle="modal"
-			href="#exampleModalToggle">
-			<div>
-				<div class="write-post-container  img-thumbnail "
-					style="margin-bottom: 15px; background: white 0.5; border-radius: 3px 3px 0 0; padding-top: 10px; padding-bottom: 10px; background-color: transparent; border-top: none;">
-					<form id="postForm">
-						<input class="form-control"
-							style="border-top: none; border-left: none; border-right: none; border-radius: 0;"
-							placeholder="{{ 'HV' | translate }}" id="floatingTextarea2"></input>
-					</form>
-					<div class="d-flex align-items-center gap-2" style="padding-top: 0.5rem;">
-						<div class="text-white d-flex align-items-center justify-content-center bg-primary p-2 fs-4 rounded-circle"
-							href="javascript:void(0)">
-							<svg class="svg-inline--fa fa-image fa-xs" aria-hidden="true" focusable="false"
-								data-prefix="fas" data-icon="image" role="img" xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 512 512" data-fa-i2svg="">
-								<path fill="currentColor"
-									d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM323.8 202.5c-4.5-6.6-11.9-10.5-19.8-10.5s-15.4 3.9-19.8 10.5l-87 127.6L170.7 297c-4.6-5.7-11.5-9-18.7-9s-14.2 3.3-18.7 9l-64 80c-5.8 7.2-6.9 17.1-2.9 25.4s12.4 13.6 21.6 13.6h96 32H424c8.9 0 17.1-4.9 21.2-12.8s3.6-17.4-1.4-24.7l-120-176zM112 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z">
-								</path>
-							</svg><!-- <i class="fa-solid fa-image fa-xs"></i> -->
-						</div> Chọn Ảnh
+<div class="row " ng-controller="HomeController">
+	<div class="col-md-5 animate__animated animate__zoomIn"
+		style="z-index: 10;overflow-y: scroll; max-height: 90vh; padding-right: 0.2rem">
 
-
-
-					</div>
-
-					<div class="d-flex  gap-2" style="margin-top: 5px; text-align: right;"></div>
-				</div>
-
-			</div>
-		</div>
-		<div ng-repeat="post in Posts">
+		<div ng-repeat="post in Posts" style="width: 100%;">
 			<div class="write-post-container   "
 				style="margin-bottom: 20px; border-radius: 2px; padding: 0; padding-top: 10px; padding-bottom: 10px; width: 100%; text-align: left; background: white;">
 				<div style="margin: 0;">
-					<div
-						style="display: flex; align-items: center; justify-content: space-between; padding-left: 10px">
+					<div style="display: flex; align-items: center; justify-content: space-between; padding-left: 10px">
 						<div class="dropdown">
 							<span class="dropbtn">
 								<div class="user-profile ">
@@ -53,13 +23,12 @@
 									</div>
 								</div>
 							</span>
-							<div class="dropdown-content">
+							<div class="dropdown-content" style="padding-bottom: 0.5rem; padding-top: 0.5rem;">
 								<div class="user-profile ">
-									<a href="/profile/{{post.user.userId}}"><img
-											ng-src="/images/{{ post.user.avatar }}" style="border-radius: 100%;"
-											alt=""></a>
+									<a href="/profile/{{post.user.userId}}"><img ng-src="/images/{{ post.user.avatar }}"
+											style="border-radius: 100%;" alt=""></a>
 									<div>
-										<label>{{ post.user.username }}</label>
+										<b>{{ post.user.username }}</b>
 										<!-- <i class="fa-solid fa-earth-americas fa-xs"></i> -->
 										<br> <small style="font-size: 12px; color: #65676b">
 											<b>{{ 'ST' | translate }}:</b> {{ post.user.address }}
@@ -88,39 +57,33 @@
 					</div>
 					<div style="margin-top: 10px;">
 						<div>
-							<div
-								style="box-sizing: border-box; padding: 10px; font-size: 14px; text-align: justify;">
+							<div style="box-sizing: border-box; padding: 10px; font-size: 14px; text-align: justify;">
 								{{ post.content }}</div>
 							<center>
 								<div ng-if="post.images.length > 1">
 									<!-- Carousel HTML code -->
-									<div id="carouselId{{post.postId}}" class="carousel slide"
-										data-bs-ride="carousel">
+									<div id="carouselId{{post.postId}}" class="carousel slide" data-bs-ride="carousel">
 										<!-- Carousel indicators -->
 										<ol class="carousel-indicators">
 											<li data-bs-target="#carouselId"
 												ng-repeat="image in post.images track by $index"
-												ng-class="{ 'active': $index === 0 }"
-												data-bs-slide-to="{{$index}}" aria-current="{{$index === 0}}"
-												aria-label="Slide {{$index + 1}}"></li>
+												ng-class="{ 'active': $index === 0 }" data-bs-slide-to="{{$index}}"
+												aria-current="{{$index === 0}}" aria-label="Slide {{$index + 1}}"></li>
 										</ol>
 										<!-- Carousel items -->
 										<div class="carousel-inner" role="listbox">
-											<div class="carousel-item"
-												style="background-color: #313131; height: 90vh;"
+											<div class="carousel-item" style="background-color: #313131; height: 90vh;"
 												ng-repeat="image in post.images track by $index"
 												ng-class="{ 'active': $index === 0 }">
 
-												<img ng-click="getPostDetails(post.postId)"
-													ng-if="image.type === true"
+												<img ng-click="getPostDetails(post.postId)" ng-if="image.type === true"
 													ng-src="/images/{{ image.imageUrl }}" class="w-100 d-block"
 													alt="Slide {{$index + 1}}"
 													style="max-height: 90vh; object-fit: contain; width: 100%; transform: translateY(-50%); top: 50%; position: absolute;">
 
 												<video ng-if="image.type === false" autoplay controls
 													style="max-height: 90vh; object-fit: contain; width: 100%; transform: translate(-50%, -50%); top: 50%; position: absolute;">
-													<source ng-src="images/{{ image.imageUrl }}"
-														type="video/mp4">
+													<source ng-src="images/{{ image.imageUrl }}" type="video/mp4">
 													Your browser does not support the video tag.
 												</video>
 											</div>
@@ -140,17 +103,14 @@
 									</div>
 								</div>
 								<div ng-if="post.images.length === 1">
-									<video ng-if="post.images[0].type === false" autoplay controls
-										style="width: 100%;">
+									<video ng-if="post.images[0].type === false" autoplay controls style="width: 100%;">
 										<source ng-src="images/{{ post.images[0].imageUrl }}" type="video/mp4">
 										Your browser does not support the video tag.
 									</video>
 									<!-- Single image HTML code -->
-									<img ng-if="post.images[0].type === true"
-										ng-click="getPostDetails(post.postId)"
-										ng-src="/images/{{ post.images[0].imageUrl }}" class="w-100"
-										alt="Single image"
-										style="max-height: 90vh; object-fit: contain; width: 100%; background-color: #313131;">
+									<img ng-if="post.images[0].type === true" ng-click="getPostDetails(post.postId)"
+										ng-src="/images/{{ post.images[0].imageUrl }}" class="w-100" alt="Single image"
+										style="max-height: 90vh; object-fit: contain; width: 100%; background-color: black;">
 								</div>
 
 
@@ -179,63 +139,87 @@
 				</div>
 			</div>
 		</div>
+		<button class="form-control" style="margin-bottom: 1rem;" ng-click="loadMore()">Hiển thị thêm bài viết</button>
 	</div>
-	<div class="col-md-3 menuLeft "
-		style="position: fixed; right: 3%; top: 70px;">
-		
-		<div class="user-data full-width" style="margin-bottom: 5px; margin-left: 0">
-			<div class="user-profile" style="display: block;">
-				<div class="username-dt dpbg-1"
-					style="background-image: url(images/{{myAccount.user.background}}); background-size: cover;">
-					<div class="usr-pic">
-						<img ng-src="/images/{{myAccount.user.avatar}}" alt="">
+	<div class="col-md-7 row menuLeft animate__animated animate__zoomIn">
+		<div class="col-md-6">
+
+			<div class="user-data full-width" style="margin-bottom: 5px; margin-left: 0">
+				<div class="user-profile" style="display: block;">
+					<div class="username-dt dpbg-1"
+						style="background-image: url(images/{{myAccount.user.background}}); background-size: cover;">
+						<div class="usr-pic">
+							<img ng-src="/images/{{myAccount.user.avatar}}" alt="">
+						</div>
+					</div>
+					<div class="user-main-details">
+						<h6 style="font-weight: 600">{{myAccount.user.username}}</h6>
+						<!-- <span><i class="feather-map-pin"></i>India</span> -->
+					</div>
+					<ul class="followers-dts">
+						<li>
+							<div class="followers-dt-sm">
+								<h4>{{ 'NTD' | translate }}</h4>
+								<span>{{myAccount.followers}}</span>
+							</div>
+						</li>
+						<li>
+							<div class="followers-dt-sm">
+								<h4>{{ 'DTD' | translate }}</h4>
+								<span>{{myAccount.following}}</span>
+							</div>
+						</li>
+					</ul>
+
+					<div class="profile-link">
+
+						<a class="btn-blue" data-bs-toggle="modal" href="#exampleModalToggle"
+							style="background-color: #3a57e8; border-radius: 2px; border: 1px solid #3a57e8; box-sizing: border-box; color: white; display: inline-block; font-family: Arial, sans-serif; font-size: 14px; line-height: 16.8px; margin: 0px 3px 10px; padding: 10px 14px; text-decoration-line: none; transition: all 0.2s; width: 98%;"
+							rel="noopener noreferrer"><i class="fa-light fa-address-card"></i> {{
+							'DBV' | translate }} </a>
+					</div>
+
+				</div>
+			</div>
+			<div class="row">
+				<div>
+					<div
+						style="background-color: #f2f2f2; border: 1px solid grey; background: url(images/beach.jpg); background-size: cover; color: #234662; padding: 0; width: 100%; max-height: 188px; border-radius: 3px">
+						<div id="weather-info"
+							style="background-color: rgba(0, 0, 0, 0.4); margin: 0; padding: 10px; color: #F2E5C9;">
+
+							<ul style="font-size: 13px">
+								<li><b>{{ 'TP' | translate }}:</b> <span id="city"></span></li>
+								<li><b>{{ 'NDD' | translate }}:</b> <span id="temperature"></span>
+									°C</li>
+								<li><b>{{ 'MT' | translate }}:</b> <span id="description"></span></li>
+								<li><b>{{ 'DA' | translate }}:</b> <span id="humidity"></span>%</li>
+								<li><b>{{ 'TDG' | translate }}:</b> <span id="wind-speed"></span>
+									m/s</li>
+							</ul>
+						</div>
 					</div>
 				</div>
-				<div class="user-main-details">
-					<h6 style="font-weight: 600">{{myAccount.user.username}}</h6>
-					<!-- <span><i class="feather-map-pin"></i>India</span> -->
-				</div>
-				<ul class="followers-dts">
-					<li>
-						<div class="followers-dt-sm">
-							<h4>{{ 'NTD' | translate }}</h4>
-							<span>{{myAccount.followers}}</span>
-						</div>
-					</li>
-					<li>
-						<div class="followers-dt-sm">
-							<h4>{{ 'DTD' | translate }}</h4>
-							<span>{{myAccount.following}}</span>
-						</div>
-					</li>
-				</ul>
-				<div class="profile-link">
-
-					<a class="btn-blue" href="#!/profile/{{myAccount.user.userId}}"
-						style="background-color: #3a57e8; border-radius: 2px; border: 1px solid #3a57e8; box-sizing: border-box; color: white; display: inline-block; font-family: Arial, sans-serif; font-size: 14px; line-height: 16.8px; margin: 0px 3px 10px; padding: 10px 14px; text-decoration-line: none; transition: all 0.2s; width: 98%;"
-						rel="noopener noreferrer"><i class="fa-light fa-address-card"></i>{{
-						'XTCN' | translate }} </a>
-				</div>
-
 			</div>
 		</div>
-		<div class="row">
-			<div>
-				<div
-					style="background-color: #f2f2f2; border: 1px solid grey; background: url(images/beach.jpg); background-size: cover; color: #234662; padding: 0; width: 100%; max-height: 188px; border-radius: 3px">
-					<div id="weather-info"
-						style="background-color: rgba(0, 0, 0, 0.4); margin: 0; padding: 10px; color: #F2E5C9;">
-
-						<ul style="font-size: 13px">
-							<li><b>{{ 'TP' | translate }}:</b> <span id="city"></span></li>
-							<li><b>{{ 'NDD' | translate }}:</b> <span id="temperature"></span>
-								°C</li>
-							<li><b>{{ 'MT' | translate }}:</b> <span id="description"></span></li>
-							<li><b>{{ 'DA' | translate }}:</b> <span id="humidity"></span>%</li>
-							<li><b>{{ 'TDG' | translate }}:</b> <span id="wind-speed"></span>
-								m/s</li>
-						</ul>
+		<div class="col-md-6">
+			<b>Đang theo dõi ({{totalFollowing}})</b>
+			<br>
+			<br>
+			<div class="card" ng-repeat="user in followings"
+				style="box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px; border: none; margin-bottom: 1rem;">
+				<div class="card-body p-4 d-flex align-items-center gap-3">
+					<a href="#!/profile/BZOL98493464"><img class="rounded-circle" width="40" height="40"
+							style="object-fit: cover;" src="/images/{{user.avatar}}"></a>
+					<div>
+						<h5 class="fw-semibold mb-0 ng-binding" style="font-size: 1rem;font-weight: 600 !important">
+							{{user.username}}</h5>
+						<div class=" d-flex  ng-binding" style="font-size: .75rem !important">
+							<b>Hoạt động:</b> &nbsp; {{getFormattedTimeAgo(user.acessTime)}}
+						</div>
 					</div>
+
+
 				</div>
 			</div>
 		</div>
@@ -340,7 +324,7 @@
 									<!-- Single image HTML code -->
 									<img ng-src="/images/{{ postDetails.images[0].imageUrl }}" class="w-100"
 										alt="Single image"
-										style="margin-top: 10px; margin-bottom: 10px; object-fit: contain; max-height: 90vh; border-radius: 10px; background-color: #313131;">
+										style="margin-top: 10px; margin-bottom: 10px; object-fit: contain; max-height: 90vh; border-radius: 10px;">
 
 								</div>
 
@@ -430,8 +414,7 @@
 										</div>
 									</div>
 
-									<div ng-show="o_reply"
-										class="user-profile  img-thumbnail ng-scope"
+									<div ng-show="o_reply" class="user-profile  img-thumbnail ng-scope"
 										style="box-sizing: border-box; padding: 4px; border-radius: 5px; background-color: white; margin-bottom: 5px; margin-left: 5rem; width: 85%; border: 1px solid #dee2e6;">
 										<img ng-src="/images/{{myAccount.user.avatar}}" class="img-thumbnail" alt="">
 										<div style="width: 70%">
@@ -506,8 +489,7 @@
 												</div>
 											</div>
 
-											<div ng-show="o_reply2"
-												class="user-profile  img-thumbnail ng-scope"
+											<div ng-show="o_reply2" class="user-profile  img-thumbnail ng-scope"
 												style="box-sizing: border-box; padding: 4px; border-radius: 5px; background-color: white; margin-bottom: 5px; margin-left: 5rem; width: 85%">
 												<img ng-src="/images/{{myAccount.user.avatar}}" class="img-thumbnail"
 													alt="">
@@ -583,4 +565,120 @@
 			</div>
 		</div>
 	</div>
+	<!-- load ảnh -->
+	<script>
+		var selectedMedia = []; // Mảng để lưu trữ các tệp đã chọn từ cả hai lần chọn hình ảnh
+
+		document.getElementById('dropArea').addEventListener('click',
+			function () {
+				document.getElementById('inputGroupFile01').click();
+			});
+
+		document.getElementById('inputGroupFile01').addEventListener('change',
+			function () {
+				handleFiles(this.files);
+			});
+
+		function dropHandler(event) {
+			event.preventDefault();
+			var files = event.dataTransfer.files;
+			handleFiles(files);
+		}
+
+		function handleFiles(files) {
+			var mediaType = /^image\//;
+			var videoType = /^video\//;
+			var mediaList = document.getElementById('mediaList');
+
+			for (var i = 0; i < files.length; i++) {
+				var file = files[i];
+				if (mediaType.test(file.type) || videoType.test(file.type)) {
+					var reader = new FileReader();
+					reader.onload = (function (file) {
+						return function () {
+							if (mediaType.test(file.type)) {
+								var media = new Image();
+								media.src = this.result;
+								media.classList.add('previewMedia');
+								var container = createMediaContainer(media,
+									file);
+								mediaList.appendChild(container);
+							} else if (videoType.test(file.type)) {
+								var media = document.createElement('video');
+								media.src = this.result;
+								media.setAttribute('controls', 'controls');
+								media.classList.add('previewMedia');
+								var container = createMediaContainer(media,
+									file);
+								mediaList.appendChild(container);
+							}
+						};
+					})(file);
+					reader.readAsDataURL(file);
+					selectedMedia.push(file);
+				}
+			}
+
+			// Cập nhật lại những ảnh hoặc video đã chọn trong phần tử <input>
+			var dataTransfer = new DataTransfer();
+			for (var i = 0; i < selectedMedia.length; i++) {
+				dataTransfer.items.add(selectedMedia[i]);
+			}
+			document.getElementById('inputGroupFile01').files = dataTransfer.files;
+		}
+
+		function createMediaContainer(media, file) {
+			var container = document.createElement('div');
+			container.classList.add('previewMediaContainer');
+			container.appendChild(media);
+
+			var deleteButton = document.createElement('button');
+			deleteButton.innerHTML = 'X';
+			deleteButton.classList.add('deleteButton');
+			deleteButton
+				.addEventListener(
+					'click',
+					function () {
+						// Xóa hình ảnh khỏi giao diện và khỏi mảng selectedMedia khi người dùng xóa
+						var index = selectedMedia.indexOf(file);
+						if (index !== -1) {
+							selectedMedia.splice(index, 1);
+						}
+						// Cập nhật lại những ảnh hoặc video đã chọn trong phần tử <input>
+						var dataTransfer = new DataTransfer();
+						for (var i = 0; i < selectedMedia.length; i++) {
+							dataTransfer.items.add(selectedMedia[i]);
+						}
+						document.getElementById('inputGroupFile01').files = dataTransfer.files;
+
+						container.remove();
+					});
+
+			container.appendChild(deleteButton);
+
+			return container;
+		}
+
+		function dragOverHandler(event) {
+			event.preventDefault();
+			event.target.classList.add('active');
+		}
+
+		function dragLeaveHandler(event) {
+			event.preventDefault();
+			event.target.classList.remove('active');
+		}
+		function toggleColor(link) {
+			var allLinks = document.getElementsByClassName("colorful-link");
+
+			for (var i = 0; i < allLinks.length; i++) {
+				var currentLink = allLinks[i];
+				currentLink.classList.remove("active"); // Loại bỏ lớp 'active' từ tất cả các thẻ
+
+				if (currentLink === link) {
+					link.classList.add("active"); // Thêm lớp 'active' vào thẻ được bấm
+				}
+			}
+		}
+	</script>
 </div>

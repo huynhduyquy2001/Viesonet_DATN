@@ -1,6 +1,6 @@
 const input = document.getElementById("search");
 //Sự kiện nhấn phím
-input.addEventListener("keyup", function(event) {
+input.addEventListener("keyup", function (event) {
 	var searchText = input.value;
 	if (!searchText) {
 		searchText = "all";
@@ -8,7 +8,7 @@ input.addEventListener("keyup", function(event) {
 	$.ajax({
 		url: "/admin/usermanager/search/" + searchText,
 		method: 'GET',
-		success: function(data) {
+		success: function (data) {
 			//Xóa form
 			var nav = document.getElementById("Nav")
 			nav.innerHTML = "";
@@ -24,7 +24,7 @@ input.addEventListener("keyup", function(event) {
                       </li>`;
 			} else {
 				//Thêm nội dung vào form
-				data.forEach(function(item) {
+				data.forEach(function (item) {
 					var icon = ``;
 					if (item[4] >= 5) {
 						icon = ` <i class="fa-solid fa-circle-exclamation fa-sm mt-1" style="color: #e12814;"></i>`;
@@ -42,7 +42,7 @@ input.addEventListener("keyup", function(event) {
 				})
 			}
 		},
-		error: function(xhr, status, error) {
+		error: function (xhr, status, error) {
 			console.error('Lỗi khi gửi dữ liệu:', error);
 		}
 	});
@@ -52,7 +52,7 @@ function detailUser(userId) {
 	$.ajax({
 		url: "/admin/usermanager/detailUser/" + userId,
 		method: 'GET',
-		success: function(data) {
+		success: function (data) {
 			var fn = document.getElementById("function")
 			var detail = document.getElementById("card_user")
 			//Xóa form
@@ -132,7 +132,7 @@ function detailUser(userId) {
 								</div>`;
 
 		},
-		error: function(xhr, status, error) {
+		error: function (xhr, status, error) {
 			console.error('Lỗi khi gửi dữ liệu:', error);
 		}
 	});
@@ -173,22 +173,22 @@ async function showToastRole(id, sdt) {
 			if (result.isConfirmed) {
 				//Thực hiện ajax
 				$.ajax({
-					url: "/admin/usermanager/userRole/" + role + "/" + id +"/" + sdt,
+					url: "/admin/usermanager/userRole/" + role + "/" + id + "/" + sdt,
 					method: 'GET',
-					success: function(data) {
+					success: function (data) {
 						//Kiểm tra có giống vai trò đã có không
-						if(data == "warning"){
+						if (data == "warning") {
 							Swal.fire({
-							position: 'top',
-							icon: 'warning',
-							text: 'Người dùng đã có vai trò này!',
-							showConfirmButton: false,
-							timer: 1800
-						})
-						  return;
+								position: 'top',
+								icon: 'warning',
+								text: 'Người dùng đã có vai trò này!',
+								showConfirmButton: false,
+								timer: 1800
+							})
+							return;
 						}
-						
-						
+
+
 						var fn = document.getElementById("function")
 						var detail = document.getElementById("card_user")
 						//Xóa form
@@ -275,7 +275,7 @@ async function showToastRole(id, sdt) {
 							timer: 1800
 						})
 					},
-					error: function(xhr, status, error) {
+					error: function (xhr, status, error) {
 						Swal.fire({
 							position: 'top',
 							icon: 'error',
@@ -294,41 +294,41 @@ async function showToastRole(id, sdt) {
 
 function showToastViolations(id) {
 	Swal.fire({
-			text: 'Bạn có chắc muốn gỡ vi phạm không?',
-			icon: 'warning',
-			confirmButtonText: 'Có, chắc chắn',
-			showCancelButton: true,
-			confirmButtonColor: '#159b59',
-			cancelButtonColor: '#d33'
-		}).then((result) => {
-			if (result.isConfirmed) {
-				//Thực hiện ajax
-				$.ajax({
-					url: "/admin/usermanager/userViolations/" + id ,
-					method: 'GET',
-					success: function(data) {
-						//Kiểm tra có giống vai trò đã có không
-						if(data == "warning"){
-							Swal.fire({
+		text: 'Bạn có chắc muốn gỡ vi phạm không?',
+		icon: 'warning',
+		confirmButtonText: 'Có, chắc chắn',
+		showCancelButton: true,
+		confirmButtonColor: '#159b59',
+		cancelButtonColor: '#d33'
+	}).then((result) => {
+		if (result.isConfirmed) {
+			//Thực hiện ajax
+			$.ajax({
+				url: "/admin/usermanager/userViolations/" + id,
+				method: 'GET',
+				success: function (data) {
+					//Kiểm tra có giống vai trò đã có không
+					if (data == "warning") {
+						Swal.fire({
 							position: 'top',
 							icon: 'warning',
 							text: 'Người dùng không có lượt vi phạm để gỡ!',
 							showConfirmButton: false,
 							timer: 1800
 						})
-						  return;
-						}
-						
-						
-						var fn = document.getElementById("function")
-						var detail = document.getElementById("card_user")
-						//Xóa form
-						fn.innerHTML = "";
-						detail.innerHTML = "";
+						return;
+					}
 
-						//Thêm nội dung vào form
-						if (data[7] != "Admin") {
-							fn.innerHTML += `<ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end me-3">
+
+					var fn = document.getElementById("function")
+					var detail = document.getElementById("card_user")
+					//Xóa form
+					fn.innerHTML = "";
+					detail.innerHTML = "";
+
+					//Thêm nội dung vào form
+					if (data[7] != "Admin") {
+						fn.innerHTML += `<ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end me-3">
                       	<li class="nav-item dropdown">
                         <a class="nav-link nav-icon-hover" href="#" id="drop2" data-bs-toggle="dropdown"
                           aria-expanded="false">
@@ -348,14 +348,14 @@ function showToastViolations(id) {
                         </div>
                       </li>
                     </ul>`;
-						}
-						//Chuyển định dạng ngày tháng năm
-						let date = new Date(data[3]);
-						let day = date.getUTCDate().toString().padStart(2, '0');
-						let month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-						let year = date.getUTCFullYear().toString();
-						let birthday = `${day}/${month}/${year}`;
-						detail.innerHTML += `<div class="sidebar-scrollable">
+					}
+					//Chuyển định dạng ngày tháng năm
+					let date = new Date(data[3]);
+					let day = date.getUTCDate().toString().padStart(2, '0');
+					let month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
+					let year = date.getUTCFullYear().toString();
+					let birthday = `${day}/${month}/${year}`;
+					detail.innerHTML += `<div class="sidebar-scrollable">
 									<div class="image-link">
 										<img src="/images/${data[1]}" alt="" width="100" height="100"
 											class="rounded-circle"
@@ -398,25 +398,25 @@ function showToastViolations(id) {
 									</div>
 								</div>`;
 
-						Swal.fire({
-							position: 'top',
-							icon: 'success',
-							text: 'Gỡ vi phạm thành công',
-							showConfirmButton: false,
-							timer: 1800
-						})
-					},
-					error: function(xhr, status, error) {
-						Swal.fire({
-							position: 'top',
-							icon: 'error',
-							text: 'Gỡ vi phạm thất bại!',
-							showConfirmButton: false,
-							timer: 1800
-						})
-						console.error('Lỗi khi gửi dữ liệu:', error);
-					}
-				});
-			}
-		})
+					Swal.fire({
+						position: 'top',
+						icon: 'success',
+						text: 'Gỡ vi phạm thành công',
+						showConfirmButton: false,
+						timer: 1800
+					})
+				},
+				error: function (xhr, status, error) {
+					Swal.fire({
+						position: 'top',
+						icon: 'error',
+						text: 'Gỡ vi phạm thất bại!',
+						showConfirmButton: false,
+						timer: 1800
+					})
+					console.error('Lỗi khi gửi dữ liệu:', error);
+				}
+			});
+		}
+	})
 }

@@ -1,11 +1,11 @@
-$(document).ready(function() {
-	$('#mySelect').on('change', function() {
+$(document).ready(function () {
+	$('#mySelect').on('change', function () {
 		var selectedValue = $(this).val();
 		// Gửi giá trị đã chọn đến máy chủ bằng Ajax
 		$.ajax({
 			url: "/admin/report/filterYear/" + selectedValue, // Thay đổi đường dẫn tới máy chủ của bạn
 			method: 'GET', // Hoặc 'GET' tùy vào phương thức gửi dữ liệu
-			success: function(data) {
+			success: function (data) {
 				let bieuDo = document.getElementById("chart");
 				bieuDo.innerHTML = "";
 
@@ -104,7 +104,7 @@ $(document).ready(function() {
 				var chart = new ApexCharts(document.querySelector("#chart"), chart);
 				chart.render();
 			},
-			error: function(xhr, status, error) {
+			error: function (xhr, status, error) {
 				// Xử lý lỗi (nếu có)
 				console.error('Lỗi khi gửi dữ liệu:', error);
 			}
@@ -116,7 +116,7 @@ function detail(postId) {
 	$.ajax({
 		url: "/admin/report/detail/" + postId, // Thay đổi đường dẫn tới máy chủ của bạn
 		method: 'GET', // Hoặc 'GET' tùy vào phương thức gửi dữ liệu
-		success: function(item) {
+		success: function (item) {
 			//Xóa trống form
 			let t2 = document.getElementById("detailContent");
 			let t3 = document.getElementById("avatar");
@@ -146,18 +146,19 @@ function detail(postId) {
 				//Lấy ra từng ảnh
 				var imgs = item.images;
 				var imageUrls = imgs.split(", ");
-				
+
 				var img = `<div id="carouselExampleFade" class="carousel slide carousel-fade carousel-dark">
  							 <div class="carousel-inner" style="width: 75%;">`;
 
-				imageUrls.forEach(function(imageUrl, index) {
+				imageUrls.forEach(function (imageUrl, index) {
 					var activeClass = index === 0 ? "active" : "";
 					img += `
    					 <div class="carousel-item ${activeClass}">
       					<img width="75%" src="/images/${imageUrl}" class="d-block w-100" alt="">
-   					 </div>`;});
-					if(imageUrls.length > 1){
-						img += `
+   					 </div>`;
+				});
+				if (imageUrls.length > 1) {
+					img += `
 					  </div>
 					  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
 					    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
@@ -166,9 +167,9 @@ function detail(postId) {
 					    <span class="carousel-control-next-icon" aria-hidden="true"></span>
 					  </button>
 					</div>`;
-					}
+				}
 			}
-			
+
 			var detailContent = `${item.content}
 							<center style="margin-right: 20px; margin-top: 10px;">
 								${img}
@@ -190,7 +191,7 @@ function detail(postId) {
 			t3.innerHTML += avatar;
 			$("#exampleModal").modal("show");
 		},
-		error: function(xhr, status, error) {
+		error: function (xhr, status, error) {
 			// Xử lý lỗi (nếu có)
 			console.error('Lỗi khi gửi dữ liệu:', error);
 		}
