@@ -168,6 +168,8 @@
 			/* Màu sắc của vùng di chuyển thanh cuộn */
 		}
 
+
+
 		@media screen and (max-width: 1180px) {
 			#menuLeft {
 				display: none;
@@ -202,7 +204,7 @@
 
 			<nav ng-include="'_header.html'" class="navbar navbar-expand-sm "
 				style="padding: 0; position: fixed; top: 0; z-index: 101">
-				<div class="container" style="width: 100%; padding: 0;">
+				<!-- <div class="container" style="width: 100%; padding: 0;">
 					<div class="collapse navbar-collapse" id="collapsibleNavId">
 						<ul class="navbar-nav me-auto mt-2 mt-lg-0">
 						</ul>
@@ -256,9 +258,9 @@
 
 						</div>
 					</div>
-				</div>
+				</div> -->
 			</nav>
-			<div ng-view id="view" class="offset-lg-3 col-lg-9"></div>
+			<div ng-view id="view" class="col-lg-9 offset-lg-3"></div>
 		</div>
 	</div>
 

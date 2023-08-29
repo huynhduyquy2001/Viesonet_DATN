@@ -142,16 +142,60 @@
 		<button class="form-control" style="margin-bottom: 1rem;" ng-click="loadMore()">Hiển thị thêm bài viết</button>
 	</div>
 	<div class="col-md-7 row menuLeft animate__animated animate__zoomIn">
+
+		<div class="col-md-6">
+			<div class="row">
+				<div>
+					<div
+						style="background-color: #f2f2f2;  background: url(images/thoiTiet.png); background-size: cover; color: #234662; padding: 0; width: 100%; max-height: 188px; border-radius: 3px">
+						<div id="weather-info"
+							style="background-color: rgba(217, 197, 197, 0.4); margin: 0; padding: 10px;">
+
+							<ul style="font-size: 13px">
+								<li><b>{{ 'TP' | translate }}:</b> <span id="city"></span></li>
+								<li><b>{{ 'NDD' | translate }}:</b> <span id="temperature"></span>
+									°C</li>
+								<li><b>{{ 'MT' | translate }}:</b> <span id="description"></span></li>
+								<li><b>{{ 'DA' | translate }}:</b> <span id="humidity"></span>%</li>
+								<li><b>{{ 'TDG' | translate }}:</b> <span id="wind-speed"></span>
+									m/s</li>
+							</ul>
+						</div>
+					</div>
+				</div>
+			</div>
+			<b>Đang theo dõi ({{totalFollowing}})</b>
+			<br>
+			<br>
+			<div class="card" ng-repeat="user in followings"
+				style=" border: none; background-color: #f8f9fa!important;">
+				<div class="card-body p-4 d-flex align-items-center gap-3">
+					<a href="#!/profile/BZOL98493464"><img class="rounded-circle" width="40" height="40"
+							style="object-fit: cover;" src="/images/{{user.avatar}}"></a>
+					<div>
+						<h5 class="fw-semibold mb-0 ng-binding" style="font-size: 1rem;font-weight: 600 !important">
+							{{user.username}}</h5>
+						<div class=" d-flex  ng-binding" style="font-size: .75rem !important">
+							<b>Hoạt động:</b> &nbsp; {{getFormattedTimeAgo(user.acessTime)}}
+						</div>
+					</div>
+
+
+				</div>
+			</div>
+		</div>
 		<div class="col-md-6">
 
 			<div class="user-data full-width" style="margin-bottom: 5px; margin-left: 0">
 				<div class="user-profile" style="display: block;">
-					<div class="username-dt dpbg-1"
-						style="background-image: url(images/{{myAccount.user.background}}); background-size: cover;">
-						<div class="usr-pic">
-							<img ng-src="/images/{{myAccount.user.avatar}}" alt="">
+					<a href="#!/profile/{{myAccount.user.userId}}">
+						<div class="username-dt dpbg-1"
+							style="background-image: url(images/{{myAccount.user.background}}); background-size: cover;">
+							<div class="usr-pic">
+								<img ng-src="/images/{{myAccount.user.avatar}}" alt="">
+							</div>
 						</div>
-					</div>
+					</a>
 					<div class="user-main-details">
 						<h6 style="font-weight: 600">{{myAccount.user.username}}</h6>
 						<!-- <span><i class="feather-map-pin"></i>India</span> -->
@@ -174,54 +218,14 @@
 					<div class="profile-link">
 
 						<a class="btn-blue" data-bs-toggle="modal" href="#exampleModalToggle"
-							style="background-color: #3a57e8; border-radius: 2px; border: 1px solid #3a57e8; box-sizing: border-box; color: white; display: inline-block; font-family: Arial, sans-serif; font-size: 14px; line-height: 16.8px; margin: 0px 3px 10px; padding: 10px 14px; text-decoration-line: none; transition: all 0.2s; width: 98%;"
+							style=" border-radius: 2px; border: 1px solid #3a57e8; box-sizing: border-box; display: inline-block; font-family: Arial, sans-serif; font-size: 14px; line-height: 16.8px; margin: 0px 3px 10px; padding: 10px 14px; text-decoration-line: none; transition: all 0.2s; width: 98%; background-color: transparent; color: #3a57e8;"
 							rel="noopener noreferrer"><i class="fa-light fa-address-card"></i> {{
 							'DBV' | translate }} </a>
 					</div>
 
 				</div>
 			</div>
-			<div class="row">
-				<div>
-					<div
-						style="background-color: #f2f2f2; border: 1px solid grey; background: url(images/beach.jpg); background-size: cover; color: #234662; padding: 0; width: 100%; max-height: 188px; border-radius: 3px">
-						<div id="weather-info"
-							style="background-color: rgba(0, 0, 0, 0.4); margin: 0; padding: 10px; color: #F2E5C9;">
 
-							<ul style="font-size: 13px">
-								<li><b>{{ 'TP' | translate }}:</b> <span id="city"></span></li>
-								<li><b>{{ 'NDD' | translate }}:</b> <span id="temperature"></span>
-									°C</li>
-								<li><b>{{ 'MT' | translate }}:</b> <span id="description"></span></li>
-								<li><b>{{ 'DA' | translate }}:</b> <span id="humidity"></span>%</li>
-								<li><b>{{ 'TDG' | translate }}:</b> <span id="wind-speed"></span>
-									m/s</li>
-							</ul>
-						</div>
-					</div>
-				</div>
-			</div>
-		</div>
-		<div class="col-md-6">
-			<b>Đang theo dõi ({{totalFollowing}})</b>
-			<br>
-			<br>
-			<div class="card" ng-repeat="user in followings"
-				style="box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px, rgba(145, 158, 171, 0.12) 0px 12px 24px -4px; border: none; margin-bottom: 1rem;">
-				<div class="card-body p-4 d-flex align-items-center gap-3">
-					<a href="#!/profile/BZOL98493464"><img class="rounded-circle" width="40" height="40"
-							style="object-fit: cover;" src="/images/{{user.avatar}}"></a>
-					<div>
-						<h5 class="fw-semibold mb-0 ng-binding" style="font-size: 1rem;font-weight: 600 !important">
-							{{user.username}}</h5>
-						<div class=" d-flex  ng-binding" style="font-size: .75rem !important">
-							<b>Hoạt động:</b> &nbsp; {{getFormattedTimeAgo(user.acessTime)}}
-						</div>
-					</div>
-
-
-				</div>
-			</div>
 		</div>
 
 	</div>
