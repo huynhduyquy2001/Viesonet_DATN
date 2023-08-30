@@ -1,28 +1,9 @@
-<div class="row" ng-controller="HomeController">
-	<div class="col-md-7" style="z-index: 10;">
-		<div style="width: 100%; text-align: left; background-color: transparent;" data-bs-toggle="modal"
-			href="#exampleModalToggle">
-			<div>
-				<div class="write-post-container  img-thumbnail animate__animated animate__backInLeft"
-					style="margin-bottom: 15px; background: white 0.5; border-radius: 3px 3px 0 0; padding-top: 10px; padding-bottom: 10px; background-color: transparent; min-height: 10rem;">
-					<span style="font-weight: 600 !important; font-size: 1rem !important; margin: 0;"><i
-							class="fa-solid fa-pencil"></i> {{ 'DBV' | translate }}</span>
-					<form id="postForm">
-						<center>
-							<img id="img" src="" width="45%"
-								style="border-radius: 10px; border: 1px solid rgb(184, 182, 182)">
-						</center>
-						<textarea class="form-control" placeholder="{{ 'HV' | translate }}" id="floatingTextarea2"
-							style="height: 137px; "></textarea>
-					</form>
-					<div class="d-flex  gap-2" style="margin-top: 5px; text-align: right;"></div>
-				</div>
+<div class="row " ng-controller="HomeController">
+	<div class="col-md-6 animate__animated animate__zoomIn"
+		style="z-index: 10;overflow-y: scroll; max-height: 90vh; padding-right: 0.2rem">
 
-			</div>
-		</div>
-
-		<div ng-repeat="post in Posts">
-			<div class="write-post-container   animate__animated animate__backInLeft"
+		<div ng-repeat="post in Posts" style="width: 100%;">
+			<div class="write-post-container   "
 				style="margin-bottom: 20px; border-radius: 2px; padding: 0; padding-top: 10px; padding-bottom: 10px; width: 100%; text-align: left; background: white;">
 				<div style="margin: 0;">
 					<div style="display: flex; align-items: center; justify-content: space-between; padding-left: 10px">
@@ -42,12 +23,12 @@
 									</div>
 								</div>
 							</span>
-							<div class="dropdown-content">
+							<div class="dropdown-content" style="padding-bottom: 0.5rem; padding-top: 0.5rem;">
 								<div class="user-profile ">
 									<a href="/profile/{{post.user.userId}}"><img ng-src="/images/{{ post.user.avatar }}"
 											style="border-radius: 100%;" alt=""></a>
 									<div>
-										<label>{{ post.user.username }}</label>
+										<b>{{ post.user.username }}</b>
 										<!-- <i class="fa-solid fa-earth-americas fa-xs"></i> -->
 										<br> <small style="font-size: 12px; color: #65676b">
 											<b>{{ 'ST' | translate }}:</b> {{ post.user.address }}
@@ -129,7 +110,7 @@
 									<!-- Single image HTML code -->
 									<img ng-if="post.images[0].type === true" ng-click="getPostDetails(post.postId)"
 										ng-src="/images/{{ post.images[0].imageUrl }}" class="w-100" alt="Single image"
-										style="max-height: 90vh; object-fit: contain; width: 100%">
+										style="max-height: 90vh; object-fit: contain; width: 100%; background-color: black;">
 								</div>
 
 
@@ -158,66 +139,94 @@
 				</div>
 			</div>
 		</div>
-
+		<button class="form-control" style="margin-bottom: 1rem;" ng-click="loadMore()">Hiển thị thêm bài viết</button>
 	</div>
-	<div class="col-md-3 menuLeft animate__animated animate__backInRight"
-		style="position: fixed; right: 3%; top: 70px;">
-		<div class="user-data full-width" style="margin-bottom: 5px; margin-left: 0">
-			<div class="user-profile" style="display: block;">
-				<div class="username-dt dpbg-1"
-					style="background-image: url(images/{{myAccount.user.background}}); background-size: cover;">
-					<div class="usr-pic">
-						<img ng-src="/images/{{myAccount.user.avatar}}" alt="">
-					</div>
-				</div>
-				<div class="user-main-details">
-					<h6 style="font-weight: 600">{{myAccount.user.username}}</h6>
-					<!-- <span><i class="feather-map-pin"></i>India</span> -->
-				</div>
-				<ul class="followers-dts">
-					<li>
-						<div class="followers-dt-sm">
-							<h4>{{ 'NTD' | translate }}</h4>
-							<span>{{myAccount.followers}}</span>
+	<div class="col-md-6 row menuLeft animate__animated animate__zoomIn">
+
+		<div class="col-md-7 offset-md-3">
+			<div class="row">
+				<div>
+					<div
+						style="background-color: #f2f2f2;  background: url(images/thoiTiet.png); background-size: cover; color: #234662; padding: 0; width: 100%; max-height: 188px; border-radius: 3px">
+						<div id="weather-info"
+							style="background-color: rgba(217, 197, 197, 0.4); margin: 0; padding: 10px;">
+
+							<ul style="font-size: 13px">
+								<li><b>{{ 'TP' | translate }}:</b> <span id="city"></span></li>
+								<li><b>{{ 'NDD' | translate }}:</b> <span id="temperature"></span>
+									°C</li>
+								<li><b>{{ 'MT' | translate }}:</b> <span id="description"></span></li>
+								<li><b>{{ 'DA' | translate }}:</b> <span id="humidity"></span>%</li>
+								<li><b>{{ 'TDG' | translate }}:</b> <span id="wind-speed"></span>
+									m/s</li>
+							</ul>
 						</div>
-					</li>
-					<li>
-						<div class="followers-dt-sm">
-							<h4>{{ 'DTD' | translate }}</h4>
-							<span>{{myAccount.following}}</span>
-						</div>
-					</li>
-				</ul>
-				<div class="profile-link">
-
-					<a class="btn-blue" href="#!/profile/{{myAccount.user.userId}}"
-						style="background-color: #3a57e8; border-radius: 2px; border: 1px solid #3a57e8; box-sizing: border-box; color: white; display: inline-block; font-family: Arial, sans-serif; font-size: 14px; line-height: 16.8px; margin: 0px 3px 10px; padding: 10px 14px; text-decoration-line: none; transition: all 0.2s; width: 98%;"
-						rel="noopener noreferrer"><i class="fa-light fa-address-card"></i>{{
-						'XTCN' | translate }} </a>
-				</div>
-
-			</div>
-		</div>
-		<div class="row">
-			<div>
-				<div
-					style="background-color: #f2f2f2; border: 1px solid grey; background: url(images/beach.jpg); background-size: cover; color: #234662; padding: 0; width: 100%; max-height: 188px; border-radius: 3px">
-					<div id="weather-info"
-						style="background-color: rgba(0, 0, 0, 0.4); margin: 0; padding: 10px; color: #F2E5C9;">
-
-						<ul style="font-size: 13px">
-							<li><b>{{ 'TP' | translate }}:</b> <span id="city"></span></li>
-							<li><b>{{ 'NDD' | translate }}:</b> <span id="temperature"></span>
-								°C</li>
-							<li><b>{{ 'MT' | translate }}:</b> <span id="description"></span></li>
-							<li><b>{{ 'DA' | translate }}:</b> <span id="humidity"></span>%</li>
-							<li><b>{{ 'TDG' | translate }}:</b> <span id="wind-speed"></span>
-								m/s</li>
-						</ul>
 					</div>
 				</div>
 			</div>
+			<b>Đang theo dõi ({{totalFollowing}})</b>
+			<br>
+			<br>
+			<div class="card" ng-repeat="user in followings"
+				style=" border: none; background-color: #f8f9fa!important;">
+				<div class="card-body d-flex align-items-center gap-3">
+					<a href="#!/profile/BZOL98493464"><img class="rounded-circle" width="40" height="40"
+							style="object-fit: cover;" src="/images/{{user.avatar}}"></a>
+					<div>
+						<h5 class="fw-semibold mb-0 ng-binding" style="font-size: 1rem;font-weight: 600 !important">
+							{{user.username}}</h5>
+						<div class=" d-flex  ng-binding" style="font-size: .75rem !important">
+							<b>Hoạt động:</b> &nbsp; {{getFormattedTimeAgo(user.acessTime)}}
+						</div>
+					</div>
+
+
+				</div>
+			</div>
 		</div>
+		<div class="col-md-6">
+
+			<div class="user-data full-width" style="margin-bottom: 5px; margin-left: 0">
+				<div class="user-profile" style="display: block;">
+					<a href="#!/profile/{{myAccount.user.userId}}">
+						<div class="username-dt dpbg-1"
+							style="background-image: url(images/{{myAccount.user.background}}); background-size: cover;">
+							<div class="usr-pic">
+								<img ng-src="/images/{{myAccount.user.avatar}}" alt="">
+							</div>
+						</div>
+					</a>
+					<div class="user-main-details">
+						<h6 style="font-weight: 600">{{myAccount.user.username}}</h6>
+					</div>
+					<ul class="followers-dts">
+						<li>
+							<div class="followers-dt-sm">
+								<h4>{{ 'NTD' | translate }}</h4>
+								<span>{{myAccount.followers}}</span>
+							</div>
+						</li>
+						<li>
+							<div class="followers-dt-sm">
+								<h4>{{ 'DTD' | translate }}</h4>
+								<span>{{myAccount.following}}</span>
+							</div>
+						</li>
+					</ul>
+
+					<div class="profile-link">
+
+						<a class="btn-blue" data-bs-toggle="modal" href="#exampleModalToggle"
+							style=" border-radius: 2px; border: 1px solid #3a57e8; box-sizing: border-box; display: inline-block; font-family: Arial, sans-serif; font-size: 14px; line-height: 16.8px; margin: 0px 3px 10px; padding: 10px 14px; text-decoration-line: none; transition: all 0.2s; width: 98%; background-color: transparent; color: #3a57e8;"
+							rel="noopener noreferrer"><i class="fa-light fa-address-card"></i> {{
+							'DBV' | translate }} </a>
+					</div>
+
+				</div>
+			</div>
+
+		</div>
+
 
 	</div>
 	<!-- Modal đăng bài -->
@@ -319,7 +328,7 @@
 									<!-- Single image HTML code -->
 									<img ng-src="/images/{{ postDetails.images[0].imageUrl }}" class="w-100"
 										alt="Single image"
-										style="margin-top: 10px; margin-bottom: 10px; object-fit: cover;">
+										style="margin-top: 10px; margin-bottom: 10px; object-fit: contain; max-height: 90vh; border-radius: 10px;">
 
 								</div>
 
@@ -370,7 +379,7 @@
 									</div>
 								</form>
 							</div>
-							<div style="overflow-y: scroll; max-height: 85vh; padding-right: 0.2rem">
+							<div style="overflow-y: scroll; max-height: 70vh; padding-right: 0.2rem">
 								<div
 									ng-repeat="comment in postComments | limitTo:numOfCommentsToShow track by comment.commentId">
 									<div class="msg ng-scope left-msg" ng-class="left-msg">
@@ -378,24 +387,21 @@
 											style="background-image: url(/images/{{comment.user.avatar}}); transform: translateY(-100%); border: 1px solid #ebf1f6;">
 										</div>
 										<div class="msg-bubble" style="border-radius: 15px;">
-
 											<div>
 												<div>
-													<label class="nhan"
-														style="margin: 0; color: #050505; font-weight: 700 !important;">{{comment.user.username}}</label>
+													<label
+														style="margin: 0; color: #393e41; font-weight: 700 !important;">{{comment.user.username}}</label>
 												</div>
-												<small> <svg class="svg-inline--fa fa-comment" aria-hidden="true"
-														focusable="false" data-prefix="far" data-icon="comment"
-														role="img" xmlns="http://www.w3.org/2000/svg"
-														viewBox="0 0 512 512" data-fa-i2svg="">
-														<path fill="currentColor"
-															d="M123.6 391.3c12.9-9.4 29.6-11.8 44.6-6.4c26.5 9.6 56.2 15.1 87.8 15.1c124.7 0 208-80.5 208-160s-83.3-160-208-160S48 160.5 48 240c0 32 12.4 62.8 35.7 89.2c8.6 9.7 12.8 22.5 11.8 35.5c-1.4 18.1-5.7 34.7-11.3 49.4c17-7.9 31.1-16.7 39.4-22.7zM21.2 431.9c1.8-2.7 3.5-5.4 5.1-8.1c10-16.6 19.5-38.4 21.4-62.9C17.7 326.8 0 285.1 0 240C0 125.1 114.6 32 256 32s256 93.1 256 208s-114.6 208-256 208c-37.1 0-72.3-6.4-104.1-17.9c-11.9 8.7-31.3 20.6-54.3 30.6c-15.1 6.6-32.3 12.6-50.1 16.1c-.8 .2-1.6 .3-2.4 .5c-4.4 .8-8.7 1.5-13.2 1.9c-.2 0-.5 .1-.7 .1c-5.1 .5-10.2 .8-15.3 .8c-6.5 0-12.3-3.9-14.8-9.9c-2.5-6-1.1-12.8 3.4-17.4c4.1-4.2 7.8-8.7 11.3-13.5c1.7-2.3 3.3-4.6 4.8-6.9c.1-.2 .2-.3 .3-.5z">
-														</path>
-													</svg> {{comment.content}}
-												</small><br>
+												<small style="font-weight: 500;">
+													<i class="fa-regular fa-comment"></i>
+													{{comment.content}}
+												</small>
+												<br>
 												<div>
-													<small style="font-size: 12px;"><i class="fa-regular fa-clock"></i>
-														{{getFormattedTimeAgo(comment.commentDate)}}</small> &nbsp;
+													<small style="font-size: 12px;">
+														<i class="fa-regular fa-clock"></i>
+														{{getFormattedTimeAgo(comment.commentDate)}}
+													</small> &nbsp;
 													<label>
 														<input type="checkbox" ng-model="o_checkbox" hidden="true">
 														<small ng-if="comment.reply.length > 0"
@@ -412,12 +418,11 @@
 										</div>
 									</div>
 
-									<div ng-show="o_reply"
-										class="user-profile animate__animated animate__headShake img-thumbnail ng-scope"
+									<div ng-show="o_reply" class="user-profile  img-thumbnail ng-scope"
 										style="box-sizing: border-box; padding: 4px; border-radius: 5px; background-color: white; margin-bottom: 5px; margin-left: 5rem; width: 85%; border: 1px solid #dee2e6;">
 										<img ng-src="/images/{{myAccount.user.avatar}}" class="img-thumbnail" alt="">
 										<div style="width: 70%">
-											<small style="font-size: 12px;" class="ng-binding"> <i
+											<small style="font-size: 12px; font-weight: 600;" class="ng-binding"> <i
 													class="fa-regular fa-tag"></i> <small class="ng-binding">
 													Bạn đang trả lời: {{comment.user.username}} </small>
 
@@ -445,7 +450,7 @@
 									<div ng-show="o_checkbox">
 										<div ng-repeat="obj in comment.reply | orderBy:'replyDate':true">
 
-											<div class="msg ng-scope left-msg" ng-class="left-msg"
+											<div class="msg ng-scope right-msg" ng-class="left-msg"
 												style="margin-left: 4rem;">
 												<div class="msg-img"
 													style="background-image: url(/images/{{obj.responder.avatar}}); transform: translateY(-100%); border: 1px solid #ebf1f6;">
@@ -454,14 +459,14 @@
 
 													<div>
 														<div>
-															<label class="nhan ng-binding"
-																style="margin: 0; color: #050505; font-weight: 700 !important;">{{obj.responder.username}}</label>
+															<label class=" ng-binding"
+																style="margin: 0; color: #393e41; font-weight: 700 !important;">{{obj.responder.username}}</label>
 														</div>
 														<small style="font-size: 12px;" class="ng-binding">
 															<small style="font-size: 0.875rem;" class="ng-binding">
 																<i class="fa-regular fa-comments"></i> <b
 																	class="nhan ng-binding"
-																	style="color: #313131;">{{obj.receiver.username}}</b>
+																	style="color: #393e41; font-weight: 600 !important;">{{obj.receiver.username}}</b>
 																{{obj.replyContent}}
 															</small>
 														</small><br>
@@ -488,8 +493,7 @@
 												</div>
 											</div>
 
-											<div ng-show="o_reply2"
-												class="user-profile animate__animated animate__headShake img-thumbnail ng-scope"
+											<div ng-show="o_reply2" class="user-profile  img-thumbnail ng-scope"
 												style="box-sizing: border-box; padding: 4px; border-radius: 5px; background-color: white; margin-bottom: 5px; margin-left: 5rem; width: 85%">
 												<img ng-src="/images/{{myAccount.user.avatar}}" class="img-thumbnail"
 													alt="">
@@ -565,4 +569,120 @@
 			</div>
 		</div>
 	</div>
+	<!-- load ảnh -->
+	<script>
+		var selectedMedia = []; // Mảng để lưu trữ các tệp đã chọn từ cả hai lần chọn hình ảnh
+
+		document.getElementById('dropArea').addEventListener('click',
+			function () {
+				document.getElementById('inputGroupFile01').click();
+			});
+
+		document.getElementById('inputGroupFile01').addEventListener('change',
+			function () {
+				handleFiles(this.files);
+			});
+
+		function dropHandler(event) {
+			event.preventDefault();
+			var files = event.dataTransfer.files;
+			handleFiles(files);
+		}
+
+		function handleFiles(files) {
+			var mediaType = /^image\//;
+			var videoType = /^video\//;
+			var mediaList = document.getElementById('mediaList');
+
+			for (var i = 0; i < files.length; i++) {
+				var file = files[i];
+				if (mediaType.test(file.type) || videoType.test(file.type)) {
+					var reader = new FileReader();
+					reader.onload = (function (file) {
+						return function () {
+							if (mediaType.test(file.type)) {
+								var media = new Image();
+								media.src = this.result;
+								media.classList.add('previewMedia');
+								var container = createMediaContainer(media,
+									file);
+								mediaList.appendChild(container);
+							} else if (videoType.test(file.type)) {
+								var media = document.createElement('video');
+								media.src = this.result;
+								media.setAttribute('controls', 'controls');
+								media.classList.add('previewMedia');
+								var container = createMediaContainer(media,
+									file);
+								mediaList.appendChild(container);
+							}
+						};
+					})(file);
+					reader.readAsDataURL(file);
+					selectedMedia.push(file);
+				}
+			}
+
+			// Cập nhật lại những ảnh hoặc video đã chọn trong phần tử <input>
+			var dataTransfer = new DataTransfer();
+			for (var i = 0; i < selectedMedia.length; i++) {
+				dataTransfer.items.add(selectedMedia[i]);
+			}
+			document.getElementById('inputGroupFile01').files = dataTransfer.files;
+		}
+
+		function createMediaContainer(media, file) {
+			var container = document.createElement('div');
+			container.classList.add('previewMediaContainer');
+			container.appendChild(media);
+
+			var deleteButton = document.createElement('button');
+			deleteButton.innerHTML = 'X';
+			deleteButton.classList.add('deleteButton');
+			deleteButton
+				.addEventListener(
+					'click',
+					function () {
+						// Xóa hình ảnh khỏi giao diện và khỏi mảng selectedMedia khi người dùng xóa
+						var index = selectedMedia.indexOf(file);
+						if (index !== -1) {
+							selectedMedia.splice(index, 1);
+						}
+						// Cập nhật lại những ảnh hoặc video đã chọn trong phần tử <input>
+						var dataTransfer = new DataTransfer();
+						for (var i = 0; i < selectedMedia.length; i++) {
+							dataTransfer.items.add(selectedMedia[i]);
+						}
+						document.getElementById('inputGroupFile01').files = dataTransfer.files;
+
+						container.remove();
+					});
+
+			container.appendChild(deleteButton);
+
+			return container;
+		}
+
+		function dragOverHandler(event) {
+			event.preventDefault();
+			event.target.classList.add('active');
+		}
+
+		function dragLeaveHandler(event) {
+			event.preventDefault();
+			event.target.classList.remove('active');
+		}
+		function toggleColor(link) {
+			var allLinks = document.getElementsByClassName("colorful-link");
+
+			for (var i = 0; i < allLinks.length; i++) {
+				var currentLink = allLinks[i];
+				currentLink.classList.remove("active"); // Loại bỏ lớp 'active' từ tất cả các thẻ
+
+				if (currentLink === link) {
+					link.classList.add("active"); // Thêm lớp 'active' vào thẻ được bấm
+				}
+			}
+		}
+	</script>
 </div>

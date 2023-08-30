@@ -1,13 +1,13 @@
 app.controller('ProfileController', function ($scope, $http, $translate, $location, $routeParams) {
 
-	if ($location.path().startsWith('/profile/')) {
-		setTimeout(function () {
-			var styleLink = document.querySelector('link[rel="stylesheet"][href="/css/style.css"]');
-			if (styleLink) {
-				styleLink.parentNode.removeChild(styleLink);
-			}
-		}, 100);
-	}
+	// if ($location.path().startsWith('/profile/')) {
+	// 	setTimeout(function () {
+	// 		var styleLink = document.querySelector('link[rel="stylesheet"][href="/css/style.css"]');
+	// 		if (styleLink) {
+	// 			styleLink.parentNode.removeChild(styleLink);
+	// 		}
+	// 	}, 100);
+	// }
 
 	$scope.Posts = [];
 	$scope.likedPosts = [];
@@ -112,14 +112,8 @@ app.controller('ProfileController', function ($scope, $http, $translate, $locati
 				var sumPost = response.data;
 				$scope.sumPost = sumPost;
 			})
-
-
 	}
-	$http.post('/shop/' + $routeParams.userId)
-		.then(function (response) {
-			var shop = response.data;
-			$scope.shop = shop;
-		})
+
 	//Đa ngôn ngữ	
 	$scope.changeLanguage = function (langKey) {
 		$translate.use(langKey);

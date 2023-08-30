@@ -24,7 +24,7 @@ import lombok.Setter;
 @NoArgsConstructor
 @AllArgsConstructor
 @Getter
-@Setter 
+@Setter
 public class Users {
 	@Id
 	private String userId;
@@ -41,61 +41,76 @@ public class Users {
 	private Date birthday;
 	@Temporal(TemporalType.TIMESTAMP)
 	private Date accessTime;
-	
-	
+
 	@OneToOne(mappedBy = "user")
 	private Accounts account;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Posts> posts;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "responder")
 	private List<Reply> replyResponder;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "receiver")
 	private List<Reply> replyReceiver;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Favorites> favorites;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Comments> comments;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "receiver")
 	private List<Notifications> notifications;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "follower")
 	private List<Follow> followers;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "following")
 	private List<Follow> followings;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Violations> violations;
-	
-	@JsonIgnore
-    @OneToMany(mappedBy = "sender")
-    private List<Message> sentMessages;
 
-    @JsonIgnore
-    @OneToMany(mappedBy = "receiver")
-    private List<Message> receivedMessages;
-    
-    @JsonIgnore
-    @OneToMany(mappedBy = "interactingPerson")
-    private List<Interaction> interactingPerson;
-    
-    @JsonIgnore
-    @OneToMany(mappedBy = "interactedPerson")
-    private List<Interaction> interactedPerson;
+	@JsonIgnore
+	@OneToMany(mappedBy = "sender")
+	private List<Message> sentMessages;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "receiver")
+	private List<Message> receivedMessages;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "interactingPerson")
+	private List<Interaction> interactingPerson;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "interactedPerson")
+	private List<Interaction> interactedPerson;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<ShoppingCart> shoppingCart;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<ViolationProducts> violationProducts;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "customer")
+	private List<Orders> orders;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<Ratings> ratings;
 
 }

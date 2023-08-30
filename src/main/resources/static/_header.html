@@ -1,77 +1,75 @@
 <div class="container" style="width: 100%; padding: 0;">
-	<div  id="collapsibleNavId">
+	<div id="collapsibleNavId">
 		<ul class="navbar-nav me-auto mt-2 mt-lg-0">
 		</ul>
 		<div class="body-wrapper" style="position: absolute; right: 0">
 			<header class="app-header">
 				<nav class="navbar navbar-expand-lg navbar-light">
-					<div class="navbar-collapse justify-content-end px-0"
-						id="navbarNav">
-						<ul
-							class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+					<div class="navbar-collapse justify-content-end px-0" id="navbarNav">
+						<ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
 							<li class="nav-item dropdown"><a data-bs-toggle="offcanvas" ng-click="hideNotification()"
-								data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
-								class="nav-link nav-icon-hover" href="#">
+									data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
+									class="nav-link nav-icon-hover" href="#">
 									<div class="notification-icon">
 										<i class="fa-regular fa-bell fa-lg"></i>
 										<div class="circle" ng-if="hasNewNotification == true">
 											<!-- Hiển thị tối đa 5 thông báo -->
 											<span ng-if="hasNewNotification == true && notificationNumber.length <=5">{{
-												 notificationNumber.length}}</span>
+												notificationNumber.length}}</span>
 											<!-- Hiển thị "5+" nếu số lượng thông báo lớn hơn 5 -->
-											<span ng-if="hasNewNotification == true && notificationNumber.length > 5">5+</span>
+											<span
+												ng-if="hasNewNotification == true && notificationNumber.length > 5">5+</span>
 										</div>
 									</div>
-							</a></li>
-							<li class="nav-item dropdown"><a
-								class="nav-link nav-icon-hover" href="#" id="drop2"
-								data-bs-toggle="dropdown" aria-expanded="false"> <img
-									src="/images/{{myAccount.user.avatar}}" alt="" width="35" height="35"
-									class="rounded-circle" style="object-fit: cover;">
-							</a>
+								</a></li>
+							<li class="nav-item dropdown"><a class="nav-link nav-icon-hover" href="#" id="drop2"
+									data-bs-toggle="dropdown" aria-expanded="false"> <img
+										src="/images/{{myAccount.user.avatar}}" alt="" width="35" height="35"
+										class="rounded-circle" style="object-fit: cover;">
+								</a>
 								<div style="background: whitesmoke;"
 									class="dropdown-menu dropdown-menu-end dropdown-menu-animate-up"
 									aria-labelledby="drop2">
 									<div class="message-body">
-										<a href="/changepassword"
-											class="d-flex align-items-center gap-2 dropdown-item"> <i
-											class="ti ti-user fs-6"></i>
+										<a href="/changepassword" class="d-flex align-items-center gap-2 dropdown-item">
+											<i class="ti ti-user fs-6"></i>
 											<p class="mb-0 fs-3">{{ 'DMK' | translate }}</p>
-										</a> <a href="#"
-											class="d-flex align-items-center gap-2 dropdown-item"> <i
-											class="ti ti-mail fs-6"></i>
+										</a> <a href="#" class="d-flex align-items-center gap-2 dropdown-item"> <i
+												class="ti ti-mail fs-6"></i>
 											<p class="mb-0 fs-3">{{ 'DK' | translate }}</p>
-										</a> <a href="#"
-											class="d-flex align-items-center gap-2 dropdown-item"> <i
-											class="ti ti-list-check fs-6"></i>
+										</a> <a href="#" class="d-flex align-items-center gap-2 dropdown-item"> <i
+												class="ti ti-list-check fs-6"></i>
 											<p class="mb-0 fs-3">{{ 'NC' | translate }}</p>
-										</a> 
-										<hr>	
+										</a>
+										<hr>
 										<p style="margin-left: 20px">{{ 'NN' | translate }}</p>
-										<div style="display: flex;">								
-										
-										<a href="#" style="margin-left: 65px" ng-click="changeLanguage('vie')" class="colorful-link" onclick="toggleColor(this)"
-											class="d-flex align-items-center gap-2 dropdown-item" > <i
-											class="ti ti-list-check fs-6"></i>
-											<p class="mb-0 fs-3">Tiếng Việt</p>
-										</a>
-										<p href="#" class="separator"></p>
-										<a href="#" ng-click="changeLanguage('en')" class="colorful-link" onclick="toggleColor(this)"
-											class="d-flex align-items-center gap-2 dropdown-item"> <i
-											class="ti ti-list-check fs-6"></i>
-											<p class="mb-0 fs-3">English</p>
-										</a>
-										</div>
-										<a href="/logout"
-											class="btn btn-outline-primary mx-3 mt-2 d-block">{{ 'DX' | translate }}
+										<div style="display: flex;">
+
+											<a href="#" style="margin-left: 65px" ng-click="changeLanguage('vie')"
+												class="colorful-link" onclick="toggleColor(this)"
+												class="d-flex align-items-center gap-2 dropdown-item"> <i
+													class="ti ti-list-check fs-6"></i>
+												<p class="mb-0 fs-3">Tiếng Việt</p>
 											</a>
+											<p href="#" class="separator"></p>
+											<a href="#" ng-click="changeLanguage('en')" class="colorful-link"
+												onclick="toggleColor(this)"
+												class="d-flex align-items-center gap-2 dropdown-item"> <i
+													class="ti ti-list-check fs-6"></i>
+												<p class="mb-0 fs-3">English</p>
+											</a>
+										</div>
+										<a href="/logout" class="btn btn-outline-primary mx-3 mt-2 d-block">{{ 'DX' |
+											translate }}
+										</a>
 									</div>
-								</div></li>
+								</div>
+							</li>
 						</ul>
 					</div>
 				</nav>
 			</header>
-			
+
 
 		</div>
 	</div>
