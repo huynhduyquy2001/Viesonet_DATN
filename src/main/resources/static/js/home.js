@@ -18,14 +18,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 	$scope.followings = [];
 	$scope.totalFollowing = 0;
 
-	$http.get('/findfollowing')
-		.then(function (response) {
-			$scope.followings = response.data;
-			$scope.totalFollowing = $scope.followings.length;
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
+
 
 	$scope.changeLanguage = function (langKey) {
 		$translate.use(langKey);
@@ -45,14 +38,6 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 		$scope.numOfCommentsToShow += $scope.commentsToShowMore;
 	};
 
-	$http.get('/findfollowing/')
-		.then(function (response) {
-			$scope.followings = response.data;
-			$scope.totalFollowing = $scope.followings.length;
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
 
 
 	//kiểm tra xem còn tin nhắn nào chưa đọc không
@@ -223,16 +208,6 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 				console.log(error);
 			});
 	}
-	//tìm danh sách bài viết
-	// $http.get('/findfollowing')
-	// 	.then(function(response) {
-	// 		var Posts = response.data;
-	// 		$scope.Posts = Posts;
-	// 	})
-	// 	.catch(function(error) {
-	// 		console.log(error);
-	// 	});
-
 	$http.get('/findlikedposts')
 		.then(function (response) {
 			var likedPosts = response.data;

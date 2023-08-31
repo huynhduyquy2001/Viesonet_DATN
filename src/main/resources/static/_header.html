@@ -1,4 +1,4 @@
-<div class="container" style="width: 100%; padding: 0;">
+<div class="container" style="width: 100%; padding: 0;box-shadow: rgba(112, 112, 112, 0.3) 0px 1px 2px 0px;">
 	<div id="collapsibleNavId">
 		<ul class="navbar-nav me-auto mt-2 mt-lg-0">
 		</ul>
@@ -11,7 +11,7 @@
 									data-bs-target="#offcanvasRight" aria-controls="offcanvasRight"
 									class="nav-link nav-icon-hover" href="#">
 									<div class="notification-icon">
-										<i class="fa-regular fa-bell fa-lg"></i>
+										<i class="fa-regular fa-bell"></i>
 										<div class="circle" ng-if="hasNewNotification == true">
 											<!-- Hiển thị tối đa 5 thông báo -->
 											<span ng-if="hasNewNotification == true && notificationNumber.length <=5">{{
@@ -22,6 +22,82 @@
 										</div>
 									</div>
 								</a></li>
+							<li class="nav-item dropdown"><a class="nav-link nav-icon-hover">
+									<div id="toggle-menu" ng-click="toggleMenu($event)">
+										<i class="fa-regular fa-message"></i>
+
+									</div>
+								</a></li>
+							<div class="menu" style="box-shadow: rgba(6, 19, 36, 0.2) 0px 1px 4px 0px;">
+								<div class="menu-content">
+									<h4><b>Tin Nhắn</b></h4>
+									<ul class="list-unstyled mb-0">
+										<li ng-repeat="UsersMess in ListUsersMess" class="p-2 " style="background-color: white; padding-top: 0.7rem!important;
+										padding-bottom: 0.7rem!important;padding-right: 1.5rem!important;">
+											<div ng-click="getMess(UsersMess[2])" style="cursor: pointer;"
+												class="user-profile" ng-if="UsersMess[0] === myAccount.user.userId"
+												ng-click="getmess2(UsersMess[0] , UsersMess[9], UsersMess[8])">
+												<!-- Nội dung khi UsersMess[0] = 'UI010' -->
+												<img ng-src="/images/{{ UsersMess[5] }}"
+													style="border-radius: 100%; border: 1px solid #ebf1f6;" alt="">
+												<div style="width: 100%; line-height: 0.7rem; margin-left: 0.3rem;">
+													<div style="display: flex;">
+														<label class="ng-binding"
+															style="font-weight: 500; color: #393e41; font-size: 14px;">{{
+															UsersMess[3] }}</label>
+														<div ng-show="UsersMess[8] == 'Đã gửi' && UsersMess[0] != myAccount.user.userId"
+															class="circle mb-2"
+															style="margin-left: 2rem; font-size: 14px"></div>
+													</div>
+													<!-- <i class="fa-solid fa-earth-americas fa-xs"></i> -->
+													<br>
+													<div style="display: flex; justify-content: space-between;">
+														<small ng-if="UsersMess[8] !== 'Đã ẩn'"
+															style="font-size: 13px; overflow: hidden; width: 60%; white-space: nowrap; text-overflow: ellipsis;">
+															{{ UsersMess[6] }} </small> <small
+															ng-if="UsersMess[8] === 'Đã ẩn'"
+															style="font-size: 13px; overflow: hidden; width: 60%; white-space: nowrap; text-overflow: ellipsis;">
+															Tin nhắn đã được thu hồi </small> <small
+															style="font-size: 12px; color: #65676b" class="ng-binding">
+															{{getFormattedTimeAgo(UsersMess[7]) }} </small>
+													</div>
+												</div>
+											</div>
+
+											<div ng-click="getMess(UsersMess[0])" style="cursor: pointer;"
+												class="user-profile" ng-if="UsersMess[0] !== myAccount.user.userId"
+												ng-click="getmess2(UsersMess[2], -1)">
+												<!-- Nội dung khi UsersMess[0] khác 'UI010' -->
+												<img ng-src="/images/{{ UsersMess[4] }}"
+													style="border-radius: 100%; width: 4rem; height: 4rem;" alt="">
+												<div style="width: 100%; line-height: 0.7rem">
+													<div style="display: flex;">
+														<label class="ng-binding"
+															style="font-weight: 500; color: #393e41; font-size: 14px;">{{
+															UsersMess[1] }}</label>
+														<div ng-show="UsersMess[8] == 'Đã gửi'" class="circle2 mb-2"
+															style="margin-left: 2rem; font-size: 14px"></div>
+													</div>
+													<!-- <i class="fa-solid fa-earth-americas fa-xs"></i> -->
+													<br>
+													<div style="display: flex; justify-content: space-between;">
+														<small ng-if="UsersMess[8] !== 'Đã ẩn'"
+															style="font-size: 13px;">{{UsersMess[6]}}</small>
+														<small ng-if="UsersMess[8] === 'Đã ẩn'"
+															style="font-size: 13px; overflow: hidden; width: 60%; white-space: nowrap; text-overflow: ellipsis;">
+															Tin nhắn đã được thu hồi </small> <small
+															style="font-size: 12px; color: #65676b" class="ng-binding">
+															{{getFormattedTimeAgo(UsersMess[7]) }} </small>
+													</div>
+
+												</div>
+											</div>
+
+										</li>
+
+									</ul>
+								</div>
+							</div>
 							<li class="nav-item dropdown"><a class="nav-link nav-icon-hover" href="#" id="drop2"
 									data-bs-toggle="dropdown" aria-expanded="false"> <img
 										src="/images/{{myAccount.user.avatar}}" alt="" width="35" height="35"
@@ -69,8 +145,107 @@
 					</div>
 				</nav>
 			</header>
-
-
 		</div>
 	</div>
 </div>
+
+<div class="msger " id="boxchatMini"
+	style="width: 100%; text-align: left; margin-left: 0; border-radius: 5px; position: fixed; bottom: 0; right: 0; width: 400px; height: 70vh;box-shadow: rgba(6, 19, 36, 0.2) 0px 1px 4px 0px; transition: bottom 0.3s ease;">
+	<header class="msger-header">
+		<div class="msger-header-title">
+			<a href="#" style="font-weight: 600; color: #212529" class="ng-binding"><img
+					style="border-radius: 100%; width: 35px; height: 35px; object-fit: cover;" alt=""
+					ng-src="/images/avatar2.jpg" src="/images/avatar2.jpg"> Hồng Thắm</a> &nbsp; <small
+				style="font-size: 0.7rem;" class="ng-binding">Hoạt động:
+				18-8-2023 01:16</small>
+		</div>
+		<div id="closeBoxchat" ng-click="closeBoxchat($event)" style="cursor: pointer;">
+			x
+		</div>
+	</header>
+	<main class="msger-chat" ng-drop="onDrop($event)"
+		style="padding-top: 1rem; border-top: 1px solid #dee2e6 !important;">
+		<div class="msg"
+			ng-class="{'left-msg animate__animated animate__backInLeft': mess.sender.userId !== myAccount.user.userId, 'right-msg animate__animated animate__backInRight': mess.sender.userId === myAccount.user.userId}"
+			ng-repeat="mess in ListMess">
+			<div class="msg-bubble" ng-style="{'background-color': mess.image ? 'transparent' : ''}">
+				<div class="msg-info">
+					<!-- Hiển thị nút "Thu hồi" -->
+					<button class="btn-revoke btn btn-outline-danger py-1 px-2 ms-auto ng-scope"
+						ng-if="mess.status != 'Đã ẩn' && mess.sender.userId === myAccount.user.userId"
+						ng-click="revokeMessage(mess.messId)"><b>Thu hồi</b></button>
+				</div>
+				<div class="msg-text mess" ng-if="mess.status != 'Đã ẩn' && mess.content!=''">{{mess.content}}
+				</div>
+				<div class="msg-text" ng-if="mess.status == 'Đã ẩn'" style="color: #adb5bd">Tin nhắn đã được thu
+					hồi</div>
+
+				<img alt="" ng-if="mess.image && mess.status != 'Đã ẩn' " src="/images/{{mess.image}}"
+					style="max-width: 9rem; border-radius: 5px">
+
+				<div class="msg-info-time">{{getFormattedTimeAgo(mess.sendDate)}}</div>
+			</div>
+
+		</div>
+	</main>
+
+	<form class="msger-inputarea ng-pristine ng-valid" style="background: transparent; border-top: 1px solid #ebf1f6;">
+
+		<input ng-model="newMess" style="padding: 0;" type="text"
+			class="form-control ng-pristine ng-untouched ng-valid ng-empty" placeholder="Nhập tin nhắn của bạn...">
+
+		<span style="margin: 0; padding: 0; height: 0; cursor: pointer;" data-bs-toggle="modal"
+			href="#exampleModalToggle"><svg style="margin: 0; padding: 0;" class="svg-inline--fa fa-camera-retro"
+				aria-hidden="true" focusable="false" data-prefix="far" data-icon="camera-retro" role="img"
+				xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+				<path fill="currentColor"
+					d="M192 112H64c-8.8 0-16 7.2-16 16v64H156.1c23.5-29.3 59.5-48 99.9-48s76.5 18.7 99.9 48H464V96c0-8.8-7.2-16-16-16H271.1c-2.5 0-4.9 .6-7.2 1.7l-50.5 25.2c-6.7 3.3-14 5.1-21.5 5.1zM48 240V416c0 8.8 7.2 16 16 16H448c8.8 0 16-7.2 16-16V240H380c2.6 10.2 4 21 4 32c0 70.7-57.3 128-128 128s-128-57.3-128-128c0-11 1.4-21.8 4-32H48zM0 416V128C0 92.7 28.7 64 64 64l0-16c0-8.8 7.2-16 16-16h64c8.8 0 16 7.2 16 16V64h32l50.5-25.2c8.9-4.4 18.7-6.8 28.6-6.8H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64zM336 272a80 80 0 1 0 -160 0 80 80 0 1 0 160 0z">
+				</path>
+			</svg><!-- <i style="margin: 0; padding: 0;" class="fa-regular fa-camera-retro"></i> --></span>
+		<button type="submit" class="msger-send-btn"
+			style="background: transparent; padding: 0; border-radius: 10px; border: none; color: #3a57e8; height: 0;"
+			ng-click="sendMessage(myAccount.user.userId, newMess, userMess.userId)">
+			<svg class="svg-inline--fa fa-paper-plane" style="padding-top: 0; padding-bottom: 0;" aria-hidden="true"
+				focusable="false" data-prefix="far" data-icon="paper-plane" role="img"
+				xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
+				<path fill="currentColor"
+					d="M16.1 260.2c-22.6 12.9-20.5 47.3 3.6 57.3L160 376V479.3c0 18.1 14.6 32.7 32.7 32.7c9.7 0 18.9-4.3 25.1-11.8l62-74.3 123.9 51.6c18.9 7.9 40.8-4.5 43.9-24.7l64-416c1.9-12.1-3.4-24.3-13.5-31.2s-23.3-7.5-34-1.4l-448 256zm52.1 25.5L409.7 90.6 190.1 336l1.2 1L68.2 285.7zM403.3 425.4L236.7 355.9 450.8 116.6 403.3 425.4z">
+				</path>
+			</svg><!-- <i class="fa-regular fa-paper-plane" style="padding-top: 0; padding-bottom: 0;"></i> -->
+		</button>
+
+	</form>
+</div>
+<!-- <script>
+	const toggleButton = document.getElementById('toggle-menu');
+	const boxchatMini = document.getElementById('boxchatMini');
+	const closeBoxchat = document.getElementById('closeBoxchat');
+	const menu = document.querySelector('.menu');
+	toggleButton.addEventListener('click', (event) => {
+		event.stopPropagation();
+		menu.classList.toggle('menu-active');
+		if (menu.classList.contains('menu-active')) {
+			menu.style.right = '0';
+		} else {
+			menu.style.right = '-330px';
+		}
+	});
+	closeBoxchat.addEventListener('click', (event) => {
+		event.stopPropagation();
+		boxchatMini.classList.toggle('menu-active');
+
+		boxchatMini.style.bottom = '-500px';
+	});
+
+	document.addEventListener('click', (event) => {
+		const target = event.target;
+		if (!menu.contains(target) && target !== toggleButton) {
+			menu.style.right = '-330px';
+			menu.classList.remove('menu-active');
+		}
+	});
+
+	// Ban đầu ẩn menu
+	menu.style.right = '-330px';
+	boxchatMini.style.bottom = '-500px';
+</script> -->

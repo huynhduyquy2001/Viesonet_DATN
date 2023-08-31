@@ -71,7 +71,7 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 
 
 
-	//tìm sách nhắn tin nhắn với người nào đó
+	//tìm danh sách nhắn tin nhắn với người nào đó
 	if ($routeParams.otherId) {
 		$http.get('/getUser/' + $routeParams.otherId)
 			.then(function (response) {
@@ -201,8 +201,6 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 	}, function (error) {
 		console.error('Lỗi kết nối WebSocket:', error);
 	});
-
-
 
 
 	// Hàm gửi tin nhắn

@@ -1,10 +1,12 @@
-<div class="row " ng-controller="HomeController">
-	<div class="col-md-6 animate__animated animate__zoomIn"
-		style="z-index: 10;overflow-y: scroll; max-height: 90vh; padding-right: 0.2rem">
+<div class="row" ng-controller="HomeController">
 
-		<div ng-repeat="post in Posts" style="width: 100%;">
+
+	<div class="col-md-6 animate__animated animate__zoomIn offset-md-1" style="z-index: 10;">
+
+		<div ng-repeat="post in Posts" style="width: 95%;">
 			<div class="write-post-container   "
-				style="margin-bottom: 20px; border-radius: 2px; padding: 0; padding-top: 10px; padding-bottom: 10px; width: 100%; text-align: left; background: white;">
+				style="margin-bottom: 20px; border-radius: 8px;
+				box-shadow: rgba(6, 19, 36, 0.2) 0px 1px 4px 0px; padding: 0; padding-top: 10px; padding-bottom: 10px; width: 100%; text-align: left; background: white;">
 				<div style="margin: 0;">
 					<div style="display: flex; align-items: center; justify-content: space-between; padding-left: 10px">
 						<div class="dropdown">
@@ -110,7 +112,7 @@
 									<!-- Single image HTML code -->
 									<img ng-if="post.images[0].type === true" ng-click="getPostDetails(post.postId)"
 										ng-src="/images/{{ post.images[0].imageUrl }}" class="w-100" alt="Single image"
-										style="max-height: 90vh; object-fit: contain; width: 100%; background-color: black;">
+										style="max-height: 90vh; object-fit: cover; width: 100%; background-color: black;">
 								</div>
 
 
@@ -126,11 +128,10 @@
 										style="color: #f50000;">❤️&nbsp;{{ post.likeCount }}</span> <span
 										ng-click="likePost(post.postId)"
 										ng-if="likedPosts.indexOf(post.postId.toString()) === -1">🤍&nbsp;{{
-										post.likeCount }}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
+										post.likeCount }}</span> &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span
 										ng-click="getPostDetails(post.postId)"><i
 											class="fa-light fa-comments"></i>&nbsp;{{ post.commentCount}}</span>
-									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; <span><i
-											class="fa-light fa-share-nodes"></i></span>
+									&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;
 								</div>
 							</div>
 						</div>
@@ -141,8 +142,9 @@
 		</div>
 		<button class="form-control" style="margin-bottom: 1rem;" ng-click="loadMore()">Hiển thị thêm bài viết</button>
 	</div>
-	<div class="col-md-6 row menuLeft animate__animated animate__zoomIn">
 
+
+	<!-- <div class="col-md-6 row menuLeft animate__animated animate__zoomIn">
 		<div class="col-md-7 offset-md-3">
 			<div class="row">
 				<div>
@@ -228,7 +230,7 @@
 		</div>
 
 
-	</div>
+	</div> -->
 	<!-- Modal đăng bài -->
 	<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
 		tabindex="-1">

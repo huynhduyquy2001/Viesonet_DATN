@@ -9,6 +9,10 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 	$scope.allNotification = [];
 	$rootScope.postComments = [];
 	$rootScope.postDetails = {};
+	$scope.ListUsersMess = [];
+	$scope.receiver = {};
+	$scope.ListMess = [];
+
 	var sound = new Howl({
 		src: ['/images/nhacchuong2.mp3']
 	});
@@ -17,6 +21,13 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 		sound.play();
 	};
 
+	$http.get('/getusersmess')
+		.then(function (response) {
+			$scope.ListUsersMess = response.data;
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
 
 	$scope.handleLinkClick = function (linkURL) {
 		var ck = 0;
@@ -120,6 +131,34 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 		.catch(function (error) {
 			console.log(error);
 		});
+
+	//tìm người mình nhắn tin và danh sách tin nhắn với người đó
+	$scope.getMess = function (receiverId) {
+		$http.get('/getUser/' + receiverId)
+			.then(function (response) {
+				$scope.receiver = response.data;
+			})
+		$http.get('/getmess2/' + receiverId)
+			.then(function (response) {
+				$scope.ListMess = response.data;
+				$timeout(function () {
+					$scope.scrollToBottom();
+				}, 100);
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+		var boxchatMini = document.getElementById("boxchatMini");
+		boxchatMini.style.bottom = '0';
+		angular.element(document.querySelector('.menu')).toggleClass('menu-active');
+		var menu = angular.element(document.querySelector('.menu'));
+		if (menu.hasClass('menu-active')) {
+			menu.css("right", "0");
+		} else {
+			menu.css("right", "-330px");
+		}
+	}
+
 
 	//Load thông báo
 	$scope.hasNewNotification = false;
@@ -251,6 +290,45 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 			return notification.notificationId !== notificationIdToRemove;
 		});
 	};
+
+
+
+
+	// Trong AngularJS controller
+	$scope.toggleMenu = function (event) {
+		event.stopPropagation();
+		angular.element(document.querySelector('.menu')).toggleClass('menu-active');
+		var menu = angular.element(document.querySelector('.menu'));
+		if (menu.hasClass('menu-active')) {
+			menu.css("right", "0");
+		} else {
+			menu.css("right", "-330px");
+		}
+	};
+
+	$scope.closeBoxchat = function (event) {
+		event.stopPropagation();
+		angular.element(document.getElementById('boxchatMini')).toggleClass('menu-active');
+		var boxchatMini = angular.element(document.getElementById('boxchatMini'));
+		boxchatMini.css("bottom", "-500px");
+	};
+
+	angular.element(document).on('click', function (event) {
+		var menu = angular.element(document.querySelector('.menu'));
+		var toggleButton = angular.element(document.getElementById('toggle-menu'));
+
+		if (!menu[0].contains(event.target) && event.target !== toggleButton[0]) {
+			menu.css("right", "-330px");
+			menu.removeClass('menu-active');
+		}
+	});
+
+	// Ban đầu ẩn menu
+	var menu = angular.element(document.querySelector('.menu'));
+	menu.css("right", "-330px");
+	var boxchatMini = angular.element(document.getElementById('boxchatMini'));
+	boxchatMini.css("bottom", "-500px");
+
 })
 
 
