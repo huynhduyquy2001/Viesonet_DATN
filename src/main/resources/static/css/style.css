@@ -1,8 +1,10 @@
 body {
 	color: #393e41;
 	font: 400 16px/24px Macan, Helvetica Neue, Helvetica, Arial, sans-serif;
-	font-family: -apple-system,BlinkMacSystemFont,"Segoe UI",Roboto,"Helvetica Neue",Arial,"Noto Sans",sans-serif,"Apple Color Emoji","Segoe UI Emoji","Segoe UI Symbol","Noto Color Emoji";
-	background: #fff;
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+	background-color: #f8f9fa !important;
+	padding-left: 1rem;
+	padding-right: 1rem;
 }
 
 .logo {
@@ -13,75 +15,88 @@ body {
 }
 
 .user-container {
-  display: flex;
-  flex-wrap: wrap;
+	display: flex;
+	flex-wrap: wrap;
 }
 
 .user-card {
-  flex: 0 0 calc(50% - 20px); /* Hiển thị 2 thẻ người dùng trên một hàng */
-  max-width: 250px;
-  margin: 10px;
-  padding: 10px;
-  background-color: #f0f0f0;
-  display: flex;
-  align-items: center;
-  margin-left: 50px;
+	flex: 0 0 calc(50% - 20px);
+	/* Hiển thị 2 thẻ người dùng trên một hàng */
+	max-width: 250px;
+	margin: 10px;
+	padding: 10px;
+	background-color: #f0f0f0;
+	display: flex;
+	align-items: center;
+	margin-left: 50px;
 }
 
 .user-avatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 50%;
-  object-fit: cover;
+	width: 60px;
+	height: 60px;
+	border-radius: 50%;
+	object-fit: cover;
 }
 
 .user-details {
-  margin-left: 10px;
-  display: flex;
-  align-items: center;
-  flex-wrap: wrap;
+	margin-left: 10px;
+	display: flex;
+	align-items: center;
+	flex-wrap: wrap;
 }
 
 .user-name {
-  font-weight: bold;
-  font-size: 16px;
-  flex: 1 100%; /* Đảm bảo tên người dùng luôn hiển thị trên cùng một dòng */
+	font-weight: bold;
+	font-size: 16px;
+	flex: 1 100%;
+	/* Đảm bảo tên người dùng luôn hiển thị trên cùng một dòng */
 }
 
 #follow-btn {
-   border-radius: 5px;
-  width: 100%; /* Đảm bảo cả nút "Follow" và "UnFollow" chiếm hết chiều rộng của `.follow-btn-container` */
-  max-width: 150px; /* Giới hạn chiều rộng tối đa của nút, có thể điều chỉnh theo ý muốn */
-  margin-top: 10px; /* Khoảng cách giữa các nút */
-  margin-left: 70px;
+	border-radius: 5px;
+	width: 100%;
+	/* Đảm bảo cả nút "Follow" và "UnFollow" chiếm hết chiều rộng của `.follow-btn-container` */
+	max-width: 150px;
+	/* Giới hạn chiều rộng tối đa của nút, có thể điều chỉnh theo ý muốn */
+	margin-top: 10px;
+	/* Khoảng cách giữa các nút */
+	margin-left: 70px;
 }
 
 .follow-btn-container {
- display: flex;
-  align-items: center;
-  justify-content: center;
-  flex-direction: column; /* Hiển thị nút theo chiều dọc */
-  height: 100%; /* Đảm bảo `.follow-btn-container` chiếm hết chiều cao của `.user-card` */
+	display: flex;
+	align-items: center;
+	justify-content: center;
+	flex-direction: column;
+	/* Hiển thị nút theo chiều dọc */
+	height: 100%;
+	/* Đảm bảo `.follow-btn-container` chiếm hết chiều cao của `.user-card` */
 }
 
 .colorful-link.active {
-  color: #0d6efd; /* Đặt màu sắc khi thẻ được bấm */
+	color: #0d6efd;
+	/* Đặt màu sắc khi thẻ được bấm */
 }
 
 .colorful-link {
-  	margin-right: 30px; /* Tạo khoảng cách giữa các thẻ */
-  	 white-space: nowrap;
+	margin-right: 30px;
+	/* Tạo khoảng cách giữa các thẻ */
+	white-space: nowrap;
 }
 
 .separator {
-  width: 10px; /* Độ rộng của khoảng cách giữa các thẻ */
-  margin-right: 30px;
+	width: 10px;
+	/* Độ rộng của khoảng cách giữa các thẻ */
+	margin-right: 30px;
 }
 
 .separator::before {
-  content: "|"; /* Chèn biểu tượng "|" vào trước thẻ */
-  display: inline-block; /* Đảm bảo biểu tượng "|" hiển thị như một phần của thẻ */
-  color: gray; /* Màu của biểu tượng "|" */
+	content: "|";
+	/* Chèn biểu tượng "|" vào trước thẻ */
+	display: inline-block;
+	/* Đảm bảo biểu tượng "|" hiển thị như một phần của thẻ */
+	color: gray;
+	/* Màu của biểu tượng "|" */
 }
 
 .btn-blue {
@@ -270,6 +285,7 @@ label {
 	.main-banner .caption h6 {
 		font-weight: 300;
 	}
+
 	.main-banner .caption h2 {
 		font-size: 48px;
 	}
@@ -279,10 +295,11 @@ label {
 	.menuLeft {
 		display: none;
 	}
+
 	.menuRight {
 		display: block;
 	}
-	
+
 }
 
 @media screen and (min-width: 769px) {
@@ -301,6 +318,7 @@ label {
 	.main-banner .caption h6 {
 		display: none;
 	}
+
 	.main-banner .caption h2 {
 		display: none;
 	}
@@ -375,7 +393,6 @@ img {
 
 .accordion-item {
 	background: transparent;
-	color: white;
 	border: none;
 }
 
@@ -422,10 +439,10 @@ ul {
 	padding-left: 0;
 }
 
-.accordion-body ul li a {
+/* .accordion-body ul li a {
 	text-decoration: none;
 	color: #9C9192;
-}
+} */
 
 .accordion-button:not(.collapsed) {
 	color: #A89386;
@@ -433,7 +450,8 @@ ul {
 	box-shadow: inset 0 -1px 0 rgba(0, 0, 0, .125);
 }
 
-.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+.nav-pills .nav-link.active,
+.nav-pills .show>.nav-link {
 	color: black;
 	border-radius: 20px;
 	background-color: rgba(93, 135, 255, 0.4);
@@ -614,7 +632,8 @@ a {
 	width: 100%;
 	padding: 10px;
 	box-shadow: rgba(145, 158, 171, 0.2) 0px 0px 2px 0px,
-		rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;;
+		rgba(145, 158, 171, 0.12) 0px 12px 24px -4px;
+	;
 }
 
 .post-reaction {
@@ -692,8 +711,7 @@ a {
 	top: calc(100% - 27px/ 2);
 	border-radius: 50%;
 	background: #FFFFFF;
-	box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15), 0px 3px 1px
-		rgba(0, 0, 0, 0.06);
+	box-shadow: 0px 3px 8px rgba(0, 0, 0, 0.15), 0px 3px 1px rgba(0, 0, 0, 0.06);
 	transition: all 0.2s ease-out;
 	cursor: pointer;
 }
@@ -715,14 +733,15 @@ a {
 	box-shadow: none;
 }
 
-input[type=text]:focus, input[type=password]:focus, input[type=email]:focus
-	{
+input[type=text]:focus,
+input[type=password]:focus,
+input[type=email]:focus {
 	border: none;
 }
 
-.dropdown-item:focus, .dropdown-item:hover {
+.dropdown-item:focus,
+.dropdown-item:hover {
 	background-color: transparent;
-	transform: translateY(-3px);
 	cursor: pointer;
 }
 
@@ -856,7 +875,9 @@ label:hover {
 	/* Hiển thị hình ảnh khi đã tải xong */
 }
 
-.ip[type=text], .ip[type=password], .ip[type=email] {
+.ip[type=text],
+.ip[type=password],
+.ip[type=email] {
 	width: 100%;
 	padding: 8px 20px;
 	margin: 8px 0;
@@ -908,6 +929,7 @@ span.psw {
 		display: block;
 		float: none;
 	}
+
 	.cancelbtn {
 		width: 100%;
 	}
@@ -954,7 +976,6 @@ span.psw {
 	border-radius: 5px;
 	display: block;
 	width: 100%;
-	background-color: #fff;
 	margin-bottom: 1.5rem;
 	box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);
 }
@@ -1104,8 +1125,7 @@ img {
 	padding: 15px 20px;
 }
 
-#main-wrapper[data-layout=vertical][data-sidebar-position=fixed] .left-sidebar
-	{
+#main-wrapper[data-layout=vertical][data-sidebar-position=fixed] .left-sidebar {
 	position: fixed;
 	top: 0;
 }
@@ -1122,30 +1142,29 @@ img {
 	border-right: 1px solid rgb(229, 234, 239);
 }
 
-@media ( min-width : 1200px) {
-	#main-wrapper[data-layout=vertical][data-header-position=fixed][data-sidebartype=mini-sidebar] .app-header
-		{
+@media (min-width : 1200px) {
+	#main-wrapper[data-layout=vertical][data-header-position=fixed][data-sidebartype=mini-sidebar] .app-header {
 		width: 100%
 	}
-	#main-wrapper[data-layout=vertical][data-header-position=fixed] .app-header
-		{
+
+	#main-wrapper[data-layout=vertical][data-header-position=fixed] .app-header {
 		width: calc(100% - 270px)
 	}
-	#main-wrapper[data-layout=vertical][data-sidebartype=full] .body-wrapper
-		{
+
+	#main-wrapper[data-layout=vertical][data-sidebartype=full] .body-wrapper {
 		margin-left: 270px
 	}
 }
 
-@media ( max-width : 1199px) {
+@media (max-width : 1199px) {
+
 	#main-wrapper[data-layout=vertical][data-sidebartype=full] .left-sidebar,
-		#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .left-sidebar
-		{
+	#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .left-sidebar {
 		left: -270px
 	}
+
 	#main-wrapper[data-layout=vertical][data-sidebartype=full].show-sidebar .left-sidebar,
-		#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar].show-sidebar .left-sidebar
-		{
+	#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar].show-sidebar .left-sidebar {
 		left: 0
 	}
 }
@@ -1244,8 +1263,9 @@ img {
 	font-weight: 400;
 }
 
-.sidebar-nav ul .sidebar-item.selected>.sidebar-link, .sidebar-nav ul .sidebar-item.selected>.sidebar-link.active,
-	.sidebar-nav ul .sidebar-item>.sidebar-link.active {
+.sidebar-nav ul .sidebar-item.selected>.sidebar-link,
+.sidebar-nav ul .sidebar-item.selected>.sidebar-link.active,
+.sidebar-nav ul .sidebar-item>.sidebar-link.active {
 	background-color: #5D87FF;
 	color: #fff;
 }
@@ -1279,24 +1299,35 @@ img {
 }
 
 .notification-icon {
-	position: relative; /* Đảm bảo thẻ cha có vị trí tương đối */
-	display: inline-block; /* Hiển thị theo chiều ngang */
+	position: relative;
+	/* Đảm bảo thẻ cha có vị trí tương đối */
+	display: inline-block;
+	/* Hiển thị theo chiều ngang */
 }
 
 .circle {
-	position: absolute; /* Đảm bảo thẻ con có vị trí tuyệt đối */
+	position: absolute;
+	/* Đảm bảo thẻ con có vị trí tuyệt đối */
 	top: 14px;
 	/* Điều chỉnh vị trí theo chiều dọc để đặt số chính giữa chuông */
 	right: -16px;
 	/* Điều chỉnh vị trí theo chiều ngang để đặt số chính giữa chuông */
-	background-color: red; /* Màu nền của hình tròn */
-	color: white; /* Màu chữ số */
-	width: 20px; /* Kích thước chiều rộng của hình tròn */
-	height: 20px; /* Kích thước chiều cao của hình tròn */
-	border-radius: 50%; /* Đảm bảo hình dạng là hình tròn */
-	text-align: center; /* Căn giữa chữ số trong hình tròn */
-	font-size: 13px; /* Kích thước chữ số */
-	line-height: 19px; /* Đảm bảo chữ số được căn giữa theo chiều dọc */
+	background-color: red;
+	/* Màu nền của hình tròn */
+	color: white;
+	/* Màu chữ số */
+	width: 20px;
+	/* Kích thước chiều rộng của hình tròn */
+	height: 20px;
+	/* Kích thước chiều cao của hình tròn */
+	border-radius: 50%;
+	/* Đảm bảo hình dạng là hình tròn */
+	text-align: center;
+	/* Căn giữa chữ số trong hình tròn */
+	font-size: 13px;
+	/* Kích thước chữ số */
+	line-height: 19px;
+	/* Đảm bảo chữ số được căn giữa theo chiều dọc */
 }
 
 .circle2 {
@@ -1305,44 +1336,51 @@ img {
 	/* Điều chỉnh vị trí theo chiều dọc để đặt số chính giữa chuông */
 	right: -16px;
 	/* Điều chỉnh vị trí theo chiều ngang để đặt số chính giữa chuông */
-	background-color: red; /* Màu nền của hình tròn */
-	color: white; /* Màu chữ số */
-	width: 10px; /* Kích thước chiều rộng của hình tròn */
-	height: 10px; /* Kích thước chiều cao của hình tròn */
-	border-radius: 50%; /* Đảm bảo hình dạng là hình tròn */
-	text-align: center; /* Căn giữa chữ số trong hình tròn */
-	font-size: 13px; /* Kích thước chữ số */
-	line-height: 19px; /* Đảm bảo chữ số được căn giữa theo chiều dọc */
+	background-color: red;
+	/* Màu nền của hình tròn */
+	color: white;
+	/* Màu chữ số */
+	width: 10px;
+	/* Kích thước chiều rộng của hình tròn */
+	height: 10px;
+	/* Kích thước chiều cao của hình tròn */
+	border-radius: 50%;
+	/* Đảm bảo hình dạng là hình tròn */
+	text-align: center;
+	/* Căn giữa chữ số trong hình tròn */
+	font-size: 13px;
+	/* Kích thước chữ số */
+	line-height: 19px;
+	/* Đảm bảo chữ số được căn giữa theo chiều dọc */
 }
 
 .mb-2 {
 	margin-bottom: 0.5rem !important;
 }
 
-@media ( min-width :1200px) {
-	#main-wrapper[data-layout=vertical][data-header-position=fixed][data-sidebartype=mini-sidebar] .app-header
-		{
+@media (min-width :1200px) {
+	#main-wrapper[data-layout=vertical][data-header-position=fixed][data-sidebartype=mini-sidebar] .app-header {
 		width: 100%
 	}
-	#main-wrapper[data-layout=vertical][data-header-position=fixed] .app-header
-		{
+
+	#main-wrapper[data-layout=vertical][data-header-position=fixed] .app-header {
 		width: calc(100% - 270px)
 	}
-	#main-wrapper[data-layout=vertical][data-sidebartype=full] .body-wrapper
-		{
+
+	#main-wrapper[data-layout=vertical][data-sidebartype=full] .body-wrapper {
 		margin-left: 270px
 	}
 }
 
-@media ( max-width :1199px) {
+@media (max-width :1199px) {
+
 	#main-wrapper[data-layout=vertical][data-sidebartype=full] .left-sidebar,
-		#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .left-sidebar
-		{
+	#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar] .left-sidebar {
 		left: -270px
 	}
+
 	#main-wrapper[data-layout=vertical][data-sidebartype=full].show-sidebar .left-sidebar,
-		#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar].show-sidebar .left-sidebar
-		{
+	#main-wrapper[data-layout=vertical][data-sidebartype=mini-sidebar].show-sidebar .left-sidebar {
 		left: 0
 	}
 }
@@ -1371,11 +1409,9 @@ img {
 	justify-content: space-between;
 	width: 100%;
 	max-width: 867px;
-	height: 85vh;
+	height: 89vh;
 	margin-left: 20px;
-	border: 1px solid #ebf1f6;
 	background: var(--msger-bg);
-	box-shadow: 0 15px 15px -5px rgba(0, 0, 0, 0.2);
 }
 
 .msger-header {
@@ -1384,8 +1420,6 @@ img {
 	padding: 5px;
 	color: #666;
 	padding: 10px;
-	
-    
 }
 
 .msger-chat {
@@ -1429,9 +1463,11 @@ img {
 
 .msg-bubble {
 	max-width: 450px;
-	padding: 15px;
-	border-radius: 15px;
-	background: #F6F9FC;
+	padding: 5px;
+	border-radius: 7px;
+	background-color: transparent;
+	padding-left: 8px;
+	padding-right: 8px;
 }
 
 .msg-info {
@@ -1450,17 +1486,21 @@ img {
 	color: #aaaaaa;
 }
 
-.left-msg .msg-bubble {
-	border-bottom-left-radius: 0;
-	background-color: #EFF2F6;
-}
-
 .right-msg {
 	flex-direction: row-reverse;
 }
 
-.right-msg .msg-bubble {
+.right-msg .msg-bubble .mess {
 	background: #e8f1f3;
+	padding: 0.7rem;
+	border-radius: 7px;
+	border-bottom-right-radius: 0;
+}
+
+.left-msg .msg-bubble .mess {
+	background: #EFF2F6;
+	padding: 0.7rem;
+	border-radius: 7px;
 	border-bottom-right-radius: 0;
 }
 
@@ -1540,10 +1580,12 @@ img {
 	padding: 0.1rem;
 	border-radius: 6px;
 }
-#mediaList{
+
+#mediaList {
 	flex-wrap: wrap;
 	display: flex;
 }
+
 .previewMediaContainer {
 	width: 30%;
 	height: auto;
@@ -1553,41 +1595,46 @@ img {
 }
 
 .previewMediaContainer button {
-	position:absolute;
-	top:0;
-	right:0;
+	position: absolute;
+	top: 0;
+	right: 0;
 	border-radius: 3px;
 	background-color: red;
 	color: white;
 	border: none;
 }
+
 /* Định dạng cho vùng chứa tin nhắn */
 .msg-bubble {
-    position: relative; /* Để có thể dùng position absolute cho nút */
+	position: relative;
+	/* Để có thể dùng position absolute cho nút */
 }
 
 /* Định dạng cho nút "Thu hồi" */
 .btn-revoke {
-    position: absolute;
-    right: -55px; /* Điều chỉnh khoảng cách nút so với tin nhắn */
-    top: 50%;
-    transform: translateY(-50%); /* Canh giữa theo chiều dọc */
-    background-color: #007ACC;
-    color: white;
-    border: none;
-    padding: 5px 10px;
-    border-radius: 5px;
-    font-size: 12px;
-    cursor: pointer;
-    display: none;
+	position: absolute;
+	left: 0;
+	/* Điều chỉnh khoảng cách nút so với tin nhắn */
+	transform: translateY(50%);
+	transform: translateX(-100%);
+	/* Canh giữa theo chiều dọc */
+	display: none;
 }
 
 /* Hiển thị nút "Thu hồi" khi hover vào tin nhắn */
 .msg-bubble:hover .btn-revoke {
-    display: inline-block;
+	display: inline-block;
 }
 
+.msg-bubble:hover .dot {
+	display: inline-block;
+}
 
+.dot {
+	display: none;
+	position: absolute;
+	left: 0;
+}
 
 
 /* ----- Global ----- */
@@ -1600,11 +1647,7 @@ body {
 	height: 100%;
 }
 
-body {
-	display: grid;
-	grid-template-rows: 1fr;
-	font-family: "Raleway", sans-serif;
-}
+
 
 h3 {
 	font-size: 0.7em;
@@ -1612,10 +1655,10 @@ h3 {
 	color: #a6a6a6;
 }
 
-img {
-			max-width: 100%;
-			filter: drop-shadow(1px 1px 3px #a6a6a6);
-		}
+/* img {
+	max-width: 100%;
+
+} */
 
 /* ----- Product Section ----- */
 .product {
@@ -1646,6 +1689,7 @@ img {
 
 .photo-main {
 	border-radius: 6px 6px 0 0;
+
 	.controls {
 		display: flex;
 		justify-content: space-between;
@@ -1662,8 +1706,7 @@ img {
 		left: -3.5em;
 		top: 2em;
 		max-width: 110%;
-		filter: saturate(150%) contrast(120%) hue-rotate(10deg)
-			drop-shadow(1px 20px 10px rgba(0, 0, 0, 0.3));
+		filter: saturate(150%) contrast(120%) hue-rotate(10deg) drop-shadow(1px 20px 10px rgba(0, 0, 0, 0.3));
 	}
 }
 
@@ -1707,7 +1750,7 @@ img {
 }
 
 .price {
-	margin: 1.5em 0;
+	margin-top: 1.5em;
 	color: #ff3f40;
 	font-size: 1.2em;
 
@@ -1746,7 +1789,7 @@ img {
 
 .description {
 	clear: left;
-	margin: 2em 0;
+
 
 	h3 {
 		margin-bottom: 1em;
@@ -1765,23 +1808,30 @@ img {
 }
 
 .buy--btn {
-	padding: 1.5em 3.1em;
-	border: none;
+	padding: 0.8em 1em;
+	border: 1px solid #007ACC;
 	border-radius: 7px;
 	font-size: 0.8em;
 	font-weight: 700;
 	letter-spacing: 1.3px;
-	color: #fff;
-	background-color: #ff3f40;
-	box-shadow: 2px 2px 25px -7px #4c4c4c;
+	color: #007ACC;
+	transition: 0.3s ease-in-out;
 	cursor: pointer;
+	background-color: #fff;
 
 	&:active {
 		transform: scale(0.97);
 	}
 }
-<<<<<<< Updated upstream
-=======
+
+.buy--btn:hover {
+	box-shadow: 2px 2px 15px -7px #007ACC;
+}
+
+.buy--btn:focus {
+	background-color: #007ACC;
+	color: white;
+}
 
 .add--btn {
 	padding: 0.8em 1em;
@@ -1791,13 +1841,22 @@ img {
 	font-weight: 700;
 	letter-spacing: 1.3px;
 	color: #007ACC;
-	box-shadow: 2px 2px 15px -7px #007ACC;
+	transition: 0.3s ease-in-out;
 	cursor: pointer;
 	background-color: #fff;
 
 	&:active {
 		transform: scale(0.97);
 	}
+}
+
+.add--btn:hover {
+	box-shadow: 2px 2px 15px -7px #007ACC;
+}
+
+.add--btn:focus {
+	background-color: #007ACC;
+	color: white;
 }
 
 .dislike--btn {
@@ -1808,7 +1867,7 @@ img {
 	font-weight: 700;
 	letter-spacing: 1.3px;
 	color: #ff3f40;
-	box-shadow: 2px 2px 15px -7px #ff3f40;
+	transition: 0.3s ease-in-out;
 	cursor: pointer;
 	background-color: #fff;
 
@@ -1817,11 +1876,18 @@ img {
 	}
 }
 
+.dislike--btn:hover {
+	box-shadow: 2px 2px 15px -7px #ff3f40;
+}
 
->>>>>>> Stashed changes
+.dislike--btn:focus {
+	background-color: #ff3f40;
+	color: white;
+}
+
 .photo-album ul {
-    display: flex;
-    justify-content: space-around;
+	display: flex;
+	justify-content: space-around;
 }
 
 /* ----- Footer Section ----- */
@@ -1840,16 +1906,14 @@ footer {
 }
 
 .photo-album li {
-    float: left;
-    width: 55px;
-    height: 55px;
-    padding: 7px;
-    border: 1px solid #a6a6a6;
-    border-radius: 3px;
+	float: left;
+	width: 55px;
+	height: 55px;
+	padding: 7px;
+	border: 1px solid #a6a6a6;
+	border-radius: 3px;
 }
 
-<<<<<<< Updated upstream
-=======
 
 /* CSS used here will be applied after bootstrap.css */
 .carousel {
@@ -2109,7 +2173,6 @@ footer {
 		margin-right: 10px;
 		/* Khi hover vào .col-md-6, hiển thị nút */
 	}
-
 	/* CSS ẩn class .price khi hover vào .frame */
 	.frame:hover .price {
 		display: none;
@@ -2119,4 +2182,137 @@ footer {
 		height: 47.5vh;
 	}
 }
->>>>>>> Stashed changes
+
+/*---------- footer area start ----------*/
+.reveal-footer {
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	z-index: 5;
+	position: fixed;
+	background-color: #f1f1f1;
+}
+
+.footer-wrapper {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991.98px) {
+	.footer-wrapper {
+		display: block;
+	}
+}
+
+.footer-card {
+	height: 75px;
+	padding: 0 20px;
+	border-top: none;
+	background-color: #fff;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+	width: 325px;
+	-webkit-box-shadow: 0px -5px 36px -5px rgba(51, 51, 51, 0.2);
+	box-shadow: 0px -5px 36px -5px rgba(51, 51, 51, 0.2);
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1499.98px) {
+	.footer-card {
+		width: 270px;
+	}
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199.98px) {
+	.footer-card {
+		width: 212px;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991.98px) {
+	.footer-card {
+		width: 100%;
+		height: 60px;
+		margin-top: 20px;
+	}
+}
+
+
+.menu {
+	position: fixed;
+	top: 70px;
+	right: -330px;
+	width: 330px;
+	height: 100%;
+	background-color: #fff;
+	transition: right 0.3s ease;
+	border-radius: 8px 0 0 8px;
+}
+
+.menu-content {
+	padding: 20px;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+}
+
+ul li {
+	margin-bottom: 10px;
+}
+
+a {
+
+	text-decoration: none;
+}
+
+#boxchatMini {
+	bottom: -500px;
+}
+
+.hver:hover {
+	background-color: rgba(93, 135, 255, 0.1);
+	color: #5D87FF;
+}
+
+.listMess {
+	background-color: white;
+	padding-top: 0.7rem !important;
+	padding-bottom: 0.7rem !important;
+	padding-right: 1.5rem !important;
+	transition: 0.3s ease-in-out;
+	border-radius: 3px;
+}
+
+.rotate-icon {
+	transition: transform 0.5s ease-in-out;
+}
+
+.nav-small-cap[aria-expanded="true"] .rotate-icon {
+	transform: rotate(90deg);
+}
+
+.selected-item {
+	background-color: rgba(93, 135, 255, 0.1) !important;
+}
+
+.nav-link[aria-expanded="true"] .rotate-icon {
+	transform: rotate(90deg);
+}
+
+img {
+	max-width: 100%;
+}
