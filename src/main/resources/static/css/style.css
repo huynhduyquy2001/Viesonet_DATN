@@ -393,7 +393,6 @@ img {
 
 .accordion-item {
 	background: transparent;
-	color: white;
 	border: none;
 }
 
@@ -440,10 +439,10 @@ ul {
 	padding-left: 0;
 }
 
-.accordion-body ul li a {
+/* .accordion-body ul li a {
 	text-decoration: none;
 	color: #9C9192;
-}
+} */
 
 .accordion-button:not(.collapsed) {
 	color: #A89386;
@@ -743,7 +742,6 @@ input[type=email]:focus {
 .dropdown-item:focus,
 .dropdown-item:hover {
 	background-color: transparent;
-	transform: translateY(-3px);
 	cursor: pointer;
 }
 
@@ -1657,10 +1655,10 @@ h3 {
 	color: #a6a6a6;
 }
 
-img {
+/* img {
 	max-width: 100%;
 
-}
+} */
 
 /* ----- Product Section ----- */
 .product {
@@ -1811,19 +1809,28 @@ img {
 
 .buy--btn {
 	padding: 0.8em 1em;
-	border: 1px solid #ff3f40;
+	border: 1px solid #007ACC;
 	border-radius: 7px;
 	font-size: 0.8em;
 	font-weight: 700;
 	letter-spacing: 1.3px;
-	color: #ff3f40;
-	box-shadow: 2px 2px 15px -7px #ff3f40;
+	color: #007ACC;
+	transition: 0.3s ease-in-out;
 	cursor: pointer;
 	background-color: #fff;
 
 	&:active {
 		transform: scale(0.97);
 	}
+}
+
+.buy--btn:hover {
+	box-shadow: 2px 2px 15px -7px #007ACC;
+}
+
+.buy--btn:focus {
+	background-color: #007ACC;
+	color: white;
 }
 
 
@@ -2171,8 +2178,6 @@ footer {
 }
 
 
-
-
 .menu {
 	position: fixed;
 	top: 70px;
@@ -2200,4 +2205,42 @@ ul li {
 a {
 
 	text-decoration: none;
+}
+
+#boxchatMini {
+	bottom: -500px;
+}
+
+.hver:hover {
+	background-color: rgba(93, 135, 255, 0.1);
+	color: #5D87FF;
+}
+
+.listMess {
+	background-color: white;
+	padding-top: 0.7rem !important;
+	padding-bottom: 0.7rem !important;
+	padding-right: 1.5rem !important;
+	transition: 0.3s ease-in-out;
+	border-radius: 3px;
+}
+
+.rotate-icon {
+	transition: transform 0.5s ease-in-out;
+}
+
+.nav-small-cap[aria-expanded="true"] .rotate-icon {
+	transform: rotate(90deg);
+}
+
+.selected-item {
+	background-color: rgba(93, 135, 255, 0.1) !important;
+}
+
+.nav-link[aria-expanded="true"] .rotate-icon {
+	transform: rotate(90deg);
+}
+
+img {
+	max-width: 100%;
 }

@@ -17,9 +17,6 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 	$scope.page = 1;
 	$scope.followings = [];
 	$scope.totalFollowing = 0;
-
-
-
 	$scope.changeLanguage = function (langKey) {
 		$translate.use(langKey);
 		localStorage.setItem('myAppLangKey', langKey); // Lưu ngôn ngữ đã chọn vào localStorage
@@ -38,7 +35,15 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 		$scope.numOfCommentsToShow += $scope.commentsToShowMore;
 	};
 
-
+	// Kiểm tra xem còn tin nhắn nào chưa đọc không
+	$http.get('/findfollowing')
+		.then(function (response) {
+			$scope.followings = response.data;
+			$scope.totalFollowing = response.data.length;
+		})
+		.catch(function (error) {
+			console.log(error);
+		});
 
 	//kiểm tra xem còn tin nhắn nào chưa đọc không
 	$http.get('/getunseenmessage')

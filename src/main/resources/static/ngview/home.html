@@ -2,7 +2,50 @@
 
 
 	<div class="col-md-6 animate__animated animate__zoomIn offset-md-1" style="z-index: 10;">
+		<!-- <div class="profile-link">
 
+			<a class="btn-blue" data-bs-toggle="modal" href="#exampleModalToggle"
+				style=" border-radius: 2px; border: 1px solid #3a57e8; box-sizing: border-box; display: inline-block; font-family: Arial, sans-serif; font-size: 14px; line-height: 16.8px; margin: 0px 3px 10px; padding: 10px 14px; text-decoration-line: none; transition: all 0.2s; width: 98%; background-color: transparent; color: #3a57e8;"
+				rel="noopener noreferrer"><i class="fa-light fa-address-card"></i> {{
+				'DBV' | translate }} </a>
+		</div> -->
+		<div class="card shadow-none border ng-scope" data-bs-toggle="modal" href="#exampleModalToggle"
+			style="width: 95%; margin-bottom: 1rem; border-radius: 10px; box-shadow: rgba(6, 19, 36, 0.2) 0px 1px 4px 0px !important;">
+			<div class="card-body">
+				<div class="mb-3">
+					<textarea class="form-control" placeholder=" Bạn muốn đăng gì?" style="height: 5rem"
+						data-bs-toggle="modal" href="#exampleModalToggle"></textarea>
+
+				</div>
+				<div class="d-flex align-items-center gap-2">
+					<div class="text-white d-flex align-items-center justify-content-center bg-primary p-2 fs-4 rounded-circle"
+						href="javascript:void(0)">
+						<svg class="svg-inline--fa fa-image fa-xs" aria-hidden="true" focusable="false"
+							data-prefix="fas" data-icon="image" role="img" xmlns="http://www.w3.org/2000/svg"
+							viewBox="0 0 512 512" data-fa-i2svg="">
+							<path fill="currentColor"
+								d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM323.8 202.5c-4.5-6.6-11.9-10.5-19.8-10.5s-15.4 3.9-19.8 10.5l-87 127.6L170.7 297c-4.6-5.7-11.5-9-18.7-9s-14.2 3.3-18.7 9l-64 80c-5.8 7.2-6.9 17.1-2.9 25.4s12.4 13.6 21.6 13.6h96 32H424c8.9 0 17.1-4.9 21.2-12.8s3.6-17.4-1.4-24.7l-120-176zM112 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z">
+							</path>
+						</svg><!-- <i class="fa-solid fa-image fa-xs"></i> -->
+					</div>
+					<a href="javascript:void(0)" class="text-dark py-2 nav-link" style="padding: 0;">Chọn
+						ảnh</a> <a href="javascript:void(0)" class="d-flex align-items-center gap-2">
+						<div
+							class="text-white d-flex align-items-center justify-content-center bg-secondary p-2 fs-4 rounded-circle">
+							<svg class="svg-inline--fa fa-shop fa-xs" aria-hidden="true" focusable="false"
+								data-prefix="fas" data-icon="shop" role="img" xmlns="http://www.w3.org/2000/svg"
+								viewBox="0 0 640 512" data-fa-i2svg="">
+								<path fill="currentColor"
+									d="M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z">
+								</path>
+							</svg><!-- <i class="fa-solid fa-shop fa-xs"></i> -->
+						</div>
+					</a><a href="javascript:void(0)" class="text-dark py-2 nav-link" style="padding: 0;">Cửa hàng</a>
+
+
+				</div>
+			</div>
+		</div>
 		<div ng-repeat="post in Posts" style="width: 95%;">
 			<div class="write-post-container   "
 				style="margin-bottom: 20px; border-radius: 8px;
@@ -10,25 +53,25 @@
 				<div style="margin: 0;">
 					<div style="display: flex; align-items: center; justify-content: space-between; padding-left: 10px">
 						<div class="dropdown">
-							<span class="dropbtn">
+							<div class="user-profile ">
+								<a href="#!/profile/{{post.user.userId}}"><img ng-src="/images/{{post.user.avatar }}"
+										style="border-radius: 100%;" alt=""></a>
+								<div>
+
+									<span
+										style="font-weight: 600 !important; font-size: 1rem !important; margin: 0; color: #2A3547">{{
+										post.user.username }}</span> &nbsp;&nbsp; <span><small
+											style="font-size: 12px; color: #65676b"> {{
+											getFormattedTimeAgo(post.postDate) }} </small></span>
+								</div>
+							</div>
+
+							<div class="dropdown-content"
+								style="padding-bottom: 0.5rem; padding-top: 0.5rem; transition: 0.3s;">
 								<div class="user-profile ">
 									<a href="#!/profile/{{post.user.userId}}"><img
-											ng-src="/images/{{post.user.avatar }}" style="border-radius: 100%;"
+											ng-src="/images/{{ post.user.avatar }}" style="border-radius: 100%;"
 											alt=""></a>
-									<div>
-
-										<span
-											style="font-weight: 600 !important; font-size: 1rem !important; margin: 0; color: #2A3547">{{
-											post.user.username }}</span> &nbsp;&nbsp; <span><small
-												style="font-size: 12px; color: #65676b"> {{
-												getFormattedTimeAgo(post.postDate) }} </small></span>
-									</div>
-								</div>
-							</span>
-							<div class="dropdown-content" style="padding-bottom: 0.5rem; padding-top: 0.5rem;">
-								<div class="user-profile ">
-									<a href="/profile/{{post.user.userId}}"><img ng-src="/images/{{ post.user.avatar }}"
-											style="border-radius: 100%;" alt=""></a>
 									<div>
 										<b>{{ post.user.username }}</b>
 										<!-- <i class="fa-solid fa-earth-americas fa-xs"></i> -->
@@ -140,19 +183,21 @@
 				</div>
 			</div>
 		</div>
-		<button class="form-control" style="margin-bottom: 1rem;" ng-click="loadMore()">Hiển thị thêm bài viết</button>
+		<button class="form-control" style="margin-bottom: 1rem; width: 95%;" ng-click="loadMore()">Hiển thị thêm bài
+			viết</button>
 	</div>
 
 
-	<!-- <div class="col-md-6 row menuLeft animate__animated animate__zoomIn">
-		<div class="col-md-7 offset-md-3">
+	<div class="col-md-5 row menuLeft animate__animated animate__zoomIn">
+		<div class="col-md-8 offset-md-2">
 			<div class="row">
 				<div>
 					<div
-						style="background-color: #f2f2f2;  background: url(images/thoiTiet.png); background-size: cover; color: #234662; padding: 0; width: 100%; max-height: 188px; border-radius: 3px">
+						style=" background-size: cover; color: #234662; padding: 0; width: 100%; max-height: 188px; border-radius: 3px; position: relative;">
 						<div id="weather-info"
-							style="background-color: rgba(217, 197, 197, 0.4); margin: 0; padding: 10px;">
-
+							style=" margin: 0; padding: 10px; border: 1px solid #ebf1f6; margin-bottom: 1rem; padding-bottom: 0px;">
+							<img src="/images/thoiTiet.png" alt=""
+								style="position: absolute; width: 7rem; top: 0; right: 0;">
 							<ul style="font-size: 13px">
 								<li><b>{{ 'TP' | translate }}:</b> <span id="city"></span></li>
 								<li><b>{{ 'NDD' | translate }}:</b> <span id="temperature"></span>
@@ -166,6 +211,7 @@
 					</div>
 				</div>
 			</div>
+			<br>
 			<b>Đang theo dõi ({{totalFollowing}})</b>
 			<br>
 			<br>
@@ -186,7 +232,7 @@
 				</div>
 			</div>
 		</div>
-		<div class="col-md-6">
+		<!-- <div class="col-md-6">
 
 			<div class="user-data full-width" style="margin-bottom: 5px; margin-left: 0">
 				<div class="user-profile" style="display: block;">
@@ -227,10 +273,10 @@
 				</div>
 			</div>
 
-		</div>
+		</div> -->
 
 
-	</div> -->
+	</div>
 	<!-- Modal đăng bài -->
 	<div class="modal fade" id="exampleModalToggle" aria-hidden="true" aria-labelledby="exampleModalToggleLabel"
 		tabindex="-1">
@@ -285,8 +331,8 @@
 	</div>
 
 	<!-- Modal hiện  chi tiêt bài viết và danh sách bình luận -->
-	<div class="modal fade" id="chiTietBaiViet" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
-		aria-hidden="true">
+	<div class="modal fade" style="padding: 0;" id="chiTietBaiViet" tabindex="-1" role="dialog"
+		aria-labelledby="modalTitleId" aria-hidden="true">
 		<div class="modal-dialog modal-xl modal-fullscreen" role="document">
 			<div class="modal-content">
 				<div class="modal-body">
@@ -544,8 +590,8 @@
 		</div>
 	</div>
 	<!-- Modal báo cáo bài viết -->
-	<div class="modal fade" id="modalBaoCao" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
-		aria-hidden="true">
+	<div class="modal fade" style="padding: 0;" id="modalBaoCao" tabindex="-1" role="dialog"
+		aria-labelledby="modalTitleId" aria-hidden="true">
 		<div class="modal-dialog" role="document">
 			<div class="modal-content">
 				<div class="modal-header">

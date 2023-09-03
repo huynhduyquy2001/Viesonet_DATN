@@ -1,4 +1,4 @@
-app.config(function($translateProvider, $routeProvider) {
+app.config(function ($translateProvider, $routeProvider) {
 	$translateProvider.useStaticFilesLoader({
 		prefix: '/json/', // Thay đổi đường dẫn này cho phù hợp
 		suffix: '.json'
@@ -24,13 +24,13 @@ app.config(function($translateProvider, $routeProvider) {
 	}).when('/profile/:userId', {
 		templateUrl: "/ngview/profile.html",
 		controller: 'ProfileController'
-	})
-	.when('/product', {
+	}).when('/product', {
 		templateUrl: "/ngview/productDetails.html",
 		controller: 'ProductController'
-	})
-	
-	;
+	}).when('/mystore', {
+		templateUrl: "/ngview/myStore.html",
+		controller: 'MyStoreController'
+	});
 	// Set the default language
 	var storedLanguage = localStorage.getItem('myAppLangKey') || 'vie';
 	$translateProvider.preferredLanguage(storedLanguage);

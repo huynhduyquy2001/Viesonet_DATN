@@ -1,7 +1,7 @@
 
 var app = angular.module('myApp', ['pascalprecht.translate', 'ngRoute'])
 
-app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScope, $location) {
+app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScope, $location, $timeout, $interval) {
 	$scope.myAccount = {};
 	$rootScope.unseenmess = 0;
 	$rootScope.check = false;
@@ -11,8 +11,8 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 	$rootScope.postDetails = {};
 	$scope.ListUsersMess = [];
 	$scope.receiver = {};
-	$scope.ListMess = [];
-
+	$scope.newMessMini = '';
+	$rootScope.ListMess = [];
 	var sound = new Howl({
 		src: ['/images/nhacchuong2.mp3']
 	});
@@ -140,16 +140,16 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 			})
 		$http.get('/getmess2/' + receiverId)
 			.then(function (response) {
-				$scope.ListMess = response.data;
-				$timeout(function () {
-					$scope.scrollToBottom();
-				}, 100);
+				$rootScope.ListMess = response.data;
+
 			})
 			.catch(function (error) {
 				console.log(error);
 			});
 		var boxchatMini = document.getElementById("boxchatMini");
 		boxchatMini.style.bottom = '0';
+
+
 		angular.element(document.querySelector('.menu')).toggleClass('menu-active');
 		var menu = angular.element(document.querySelector('.menu'));
 		if (menu.hasClass('menu-active')) {
@@ -157,8 +157,48 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 		} else {
 			menu.css("right", "-330px");
 		}
+		$timeout(function () {
+			var boxchatMini = document.getElementById("messMini");
+			boxchatMini.scrollTop = boxchatMini.scrollHeight;
+		}, 100);
 	}
 
+	//Hàm thu hồi tin nhắn
+	$scope.revokeMessage = function (messId) {
+		$http.post('/removemess/' + messId)
+			.then(function (reponse) {
+				var messToUpdate = $scope.ListMess.find(function (mess) {
+					return mess.messId === messId;
+				})
+				messToUpdate.status = "Đã ẩn";
+
+				var mess = reponse.data;
+
+				var objUpdate = $scope.ListUsersMess.find(function (obj) {
+					return (mess.receiver.userId === obj[0] || mess.receiver.userId === obj[2]) && mess.messId === obj[9];
+				});
+				if (objUpdate) {
+					Object.assign(objUpdate, {
+						0: mess.sender.userId,
+						1: mess.sender.username,
+						2: mess.receiver.userId,
+						3: mess.receiver.username,
+						4: mess.sender.avatar,
+						5: mess.receiver.avatar,
+						6: mess.content,
+						7: new Date(),
+						8: "Đã ẩn",
+						9: mess.messId
+					});
+				}
+				stompClient.send('/app/sendnewmess', {}, JSON.stringify(mess));
+
+
+
+			}, function (error) {
+				console.log(error);
+			});
+	};
 
 	//Load thông báo
 	$scope.hasNewNotification = false;
@@ -228,28 +268,98 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 
 	// Khi kết nối WebSocket thành công
 	stompClient.connect({}, function (frame) {
-		console.log('Connected: ' + frame);
-
 		// Đăng ký hàm xử lý khi nhận thông điệp từ server
 		// Lắng nghe các tin nhắn được gửi về cho người dùng
 		stompClient.subscribe('/user/' + $scope.myAccount.user.userId + '/queue/receiveMessage', function (message) {
-			// Kiểm tra xem còn tin nhắn nào chưa đọc không
-			$http.get('/getunseenmessage')
-				.then(function (response) {
-					$rootScope.check = response.data > 0;
-					$rootScope.unseenmess = response.data;
-					// Hàm để phát âm thanh
-					$scope.playNotificationSound = function () {
-						sound.play();
-					};
-				})
-				.catch(function (error) {
-					console.log(error);
+			try {
+				var newMess = JSON.parse(message.body);
+
+				var checkMess = $rootScope.ListMess.find(function (obj) {
+					return obj.messId === newMess.messId;
 				});
+				if (checkMess) {
+					checkMess.status = 'Đã ẩn';
+				}
+				// Xử lý tin nhắn mới nhận được ở đây khi nhắn đúng người
+				else if (($scope.receiver.userId === newMess.sender.userId || $scope.myAccount.user.userId === newMess.sender.userId) && !checkMess) {
+					$rootScope.ListMess.push(newMess);
+				}
+				if ($scope.myAccount.user.userId !== newMess.sender.userId) {
+					$scope.playNotificationSound();
+				}
+				//cập nhật lại danh sách người đang nhắn tin với mình
+				$http.get('/getusersmess')
+					.then(function (response) {
+						$scope.ListUsersMess = response.data;
+						//$scope.playNotificationSound();
+					})
+					.catch(function (error) {
+						console.log(error);
+					});
+
+				$timeout(function () {
+					$scope.scrollToBottom();
+				}, 10);
+
+				$scope.$apply();
+			} catch (error) {
+				alert('Error handling received message:', error);
+			}
 		});
 	}, function (error) {
 		console.error('Lỗi kết nối WebSocket:', error);
 	});
+
+	// Hàm gửi tin nhắn và lưu vào csdl
+	$scope.sendMessage = function (content) {
+		if (content == '' || content.trim() === undefined) {
+			return;
+		}
+		var sender = $scope.myAccount.user.userId;
+		var receiver = $scope.receiver.userId;
+		var message = {
+			senderId: sender,
+			receiverId: receiver,
+			content: content
+		};
+		// Lưu tin nhắn vào cơ sở dữ liệu
+		$http.post('/savemess', message)
+			.then(function (response) {
+				// Hàm gửi tin nhắn qua websocket
+				stompClient.send('/app/sendnewmess', {}, JSON.stringify(response.data));
+				$http.post('/seen/' + receiver)
+					.then(function (response) {
+						$http.get('/getunseenmessage')
+							.then(function (response) {
+								$rootScope.check = response.data > 0;
+								$rootScope.unseenmess = response.data;
+								// Làm rỗng trường nhập liệu có id "newMessMini"
+								var newMessMini = document.getElementById("newMessMini");
+								if (newMessMini) {
+									newMessMini.value = ''; // Đặt giá trị của trường nhập liệu thành chuỗi rỗng
+								}
+								$timeout(function () {
+									$scope.scrollToBottom();
+								}, 100);
+							})
+							.catch(function (error) {
+								console.log(error);
+							});
+					})
+					.catch(function (error) {
+						console.log(error);
+					});
+			})
+			.catch(function (error) {
+				console.log(error);
+			});
+	};
+
+
+	$scope.scrollToBottom = function () {
+		var chatContainer = document.getElementById("messMini");
+		chatContainer.scrollTop = chatContainer.scrollHeight;
+	};
 
 
 	//Ẩn tất cả thông báo khi click vào xem
