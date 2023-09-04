@@ -87,7 +87,6 @@
 		}
 
 		.dropdown-content {
-
 			opacity: 0;
 			position: absolute;
 			background-color: #f9f9f9;
@@ -198,12 +197,30 @@
 		.nav-link[aria-expanded="true"] .rotate-icon {
 			transform: rotate(90deg);
 		}
+
+		/* Ẩn sidebar khi màn hình có chiều rộng dưới 1180px */
+		@media (max-width: 1180px) {
+
+			/* Hiện nút menu khi màn hình có chiều rộng dưới 1180px */
+			#menuLeft-toggle {
+				display: block !important;
+			}
+		}
+
+		#menuLeft-toggle {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			box-shadow: none;
+		}
 	</style>
 
 	<script src="/js/thoiTiet.js"></script>
 </head>
 
 <body style="padding-top: 70px;" ng-controller="myCtrl">
+
 	<div style="transition: 0.5s;">
 		<div class="row ">
 			<div id="menuLeft" ng-include="'_menuLeft.html'"></div>

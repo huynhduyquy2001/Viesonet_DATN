@@ -1242,8 +1242,8 @@ img {
 	color: #5D87FF;
 }
 
-.sidebar-nav ul .sidebar-item .sidebar-link {
-	color: #2A3547;
+.sidebar-item .sidebar-link {
+	color: #393e41;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -1775,7 +1775,6 @@ h3 {
 .price {
 	margin-top: 1.5em;
 	color: #ff3f40;
-	font-size: 1.2em;
 
 	span {
 		padding-left: 0.15em;

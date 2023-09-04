@@ -1,5 +1,7 @@
 <div class="row col-md-11 animate__animated animate__fadeInUp" ng-controller="ShoppingController">
-    <div class="col-lg-6" style="z-index: 10; margin-bottom: 2rem;">
+
+    <div class="col-lg-6"
+        style="z-index: 10; margin-bottom: 2rem;border: 1px solid #ebf1f6; background: white; border-radius: 5px;">
         <div class="row frameProduct">
             <div class="col-md-6" style="display: flex;
             justify-content: center;
@@ -23,7 +25,8 @@
                     </div>
                     <hr>
                     <div class="title">
-                        <h2 style="font-size: 1.5rem;">Rồng Bông Xanh</h2>
+                        <h2 style="font-size: 1.5rem; white-space: nowrap;
+                        text-overflow: ellipsis;">Rồng Bông Xanh</h2>
                     </div>
                     <div class="description">
                         <h3>Đánh giá</h3>
@@ -50,8 +53,8 @@
                     </div>
 
                     <div class="price animate__animated animate__fadeInUp">
-                        <span style="font-weight: 600;">Giá
-                            bán:</span> <span>75.000 VND</span>
+                        <span style="text-decoration: line-through; color: gray;">85.000 vnd</span>
+                        <span>75.000 VND</span>
                     </div>
                     <button class="buy--btn animate__animated animate__fadeInDown" style="margin-top: 1.5rem;">Thêm vào
                         giỏ hàng</button>
@@ -72,7 +75,9 @@
 
             </div>
         </div>
+
     </div>
+
 
 
 </div>

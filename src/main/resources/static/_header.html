@@ -1,4 +1,32 @@
-<div class="container" style="width: 100%; padding: 0;box-shadow: rgba(112, 112, 112, 0.3) 0px 1px 2px 0px;">
+<div class="container" style="width: 100%; padding: 0;">
+	<!-- Navbar của Bootstrap -->
+	<nav class="navbar navbar-expand-lg navbar-light bg-light " id="menuLeft-toggle">
+		<div class="container" style="box-shadow: none;">
+			<!-- Nút toggle menu cho thiết bị di động -->
+			<button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarNavLeft"
+				aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
+				<span class="navbar-toggler-icon"></span>
+			</button>
+
+			<!-- Các mục điều hướng -->
+			<div class="collapse navbar-collapse" id="navbarNavLeft">
+				<ul class="navbar-nav ml-auto">
+					<li class="nav-item active">
+						<a class="nav-link" href="#">Trang chủ</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Về chúng tôi</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Dịch vụ</a>
+					</li>
+					<li class="nav-item">
+						<a class="nav-link" href="#">Liên hệ</a>
+					</li>
+				</ul>
+			</div>
+		</div>
+	</nav>
 	<div id="collapsibleNavId">
 		<ul class="navbar-nav me-auto mt-2 mt-lg-0">
 		</ul>
@@ -10,7 +38,7 @@
 							<li class="nav-item">
 								<a class="nav-link nav-icon-hover" ng-click="handleLinkClick('/shoppingcart')"
 									href="#!/shoppingcart">
-									<i class="fa-regular fa-cart-shopping fa-lg"></i>
+									<i class="fa-regular fa-cart-shopping"></i>
 									<div class="circle-shop">
 
 										<span>5</span>
@@ -34,8 +62,11 @@
 								</a></li>
 							<li class="nav-item dropdown"><a class="nav-link nav-icon-hover">
 									<div id="toggle-menu" ng-click="toggleMenu($event)">
-										<i class="fa-regular fa-message"></i>
+										<i class="fa-regular fa-messages"></i>
+										<div class="circle-shop" style="background-color: #ff3f40 ;">
 
+											<span>5</span>
+										</div>
 									</div>
 								</a></li>
 							<div class="menu" style="box-shadow: rgba(6, 19, 36, 0.2) 0px 1px 4px 0px;">

@@ -13,16 +13,18 @@
 			style="width: 95%; margin-bottom: 1rem; border-radius: 10px; box-shadow: rgba(6, 19, 36, 0.2) 0px 1px 4px 0px !important;">
 			<div class="card-body">
 				<div class="mb-3">
-					<textarea class="form-control" placeholder=" Bạn muốn đăng gì?" style="height: 5rem"
-						data-bs-toggle="modal" href="#exampleModalToggle"></textarea>
+					<textarea class="form-control" placeholder=" Bạn muốn đăng gì?"
+						style="height: 5rem; border: 1px solid #ebf1f6;" data-bs-toggle="modal"
+						href="#exampleModalToggle"></textarea>
 
 				</div>
+
 				<div class="d-flex align-items-center gap-2">
-					<div class="text-white d-flex align-items-center justify-content-center bg-primary p-2 fs-4 rounded-circle"
-						href="javascript:void(0)">
-						<svg class="svg-inline--fa fa-image fa-xs" aria-hidden="true" focusable="false"
-							data-prefix="fas" data-icon="image" role="img" xmlns="http://www.w3.org/2000/svg"
-							viewBox="0 0 512 512" data-fa-i2svg="">
+					<div class="text-white d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle"
+						href="javascript:void(0)" style="border: 1px solid #007ACC ;">
+						<svg style="color: #007ACC ;" class="svg-inline--fa fa-image fa-xs" aria-hidden="true"
+							focusable="false" data-prefix="fas" data-icon="image" role="img"
+							xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" data-fa-i2svg="">
 							<path fill="currentColor"
 								d="M0 96C0 60.7 28.7 32 64 32H448c35.3 0 64 28.7 64 64V416c0 35.3-28.7 64-64 64H64c-35.3 0-64-28.7-64-64V96zM323.8 202.5c-4.5-6.6-11.9-10.5-19.8-10.5s-15.4 3.9-19.8 10.5l-87 127.6L170.7 297c-4.6-5.7-11.5-9-18.7-9s-14.2 3.3-18.7 9l-64 80c-5.8 7.2-6.9 17.1-2.9 25.4s12.4 13.6 21.6 13.6h96 32H424c8.9 0 17.1-4.9 21.2-12.8s3.6-17.4-1.4-24.7l-120-176zM112 192a48 48 0 1 0 0-96 48 48 0 1 0 0 96z">
 							</path>
@@ -30,11 +32,11 @@
 					</div>
 					<a href="javascript:void(0)" class="text-dark py-2 nav-link" style="padding: 0;">Chọn
 						ảnh</a> <a href="javascript:void(0)" class="d-flex align-items-center gap-2">
-						<div
-							class="text-white d-flex align-items-center justify-content-center bg-secondary p-2 fs-4 rounded-circle">
-							<svg class="svg-inline--fa fa-shop fa-xs" aria-hidden="true" focusable="false"
-								data-prefix="fas" data-icon="shop" role="img" xmlns="http://www.w3.org/2000/svg"
-								viewBox="0 0 640 512" data-fa-i2svg="">
+						<div class="text-white d-flex align-items-center justify-content-center p-2 fs-4 rounded-circle"
+							style="border: 1px solid #6c757d;">
+							<svg style="color: #6c757d;" class="svg-inline--fa fa-shop fa-xs" aria-hidden="true"
+								focusable="false" data-prefix="fas" data-icon="shop" role="img"
+								xmlns="http://www.w3.org/2000/svg" viewBox="0 0 640 512" data-fa-i2svg="">
 								<path fill="currentColor"
 									d="M36.8 192H603.2c20.3 0 36.8-16.5 36.8-36.8c0-7.3-2.2-14.4-6.2-20.4L558.2 21.4C549.3 8 534.4 0 518.3 0H121.7c-16 0-31 8-39.9 21.4L6.2 134.7c-4 6.1-6.2 13.2-6.2 20.4C0 175.5 16.5 192 36.8 192zM64 224V384v80c0 26.5 21.5 48 48 48H336c26.5 0 48-21.5 48-48V384 224H320V384H128V224H64zm448 0V480c0 17.7 14.3 32 32 32s32-14.3 32-32V224H512z">
 								</path>
@@ -46,6 +48,26 @@
 				</div>
 			</div>
 		</div>
+		<!DOCTYPE html>
+		<html lang="en">
+
+		<head>
+			<meta charset="UTF-8">
+			<meta name="viewport" content="width=device-width, initial-scale=1.0">
+			<title>Toggle Menu Example</title>
+			<!-- Thêm các liên kết CSS và JavaScript của Bootstrap -->
+			<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/css/bootstrap.min.css" rel="stylesheet">
+		</head>
+
+		<body>
+
+
+			<!-- Thêm các liên kết JavaScript của Bootstrap (jQuery và Popper.js) -->
+			<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.5.0/dist/js/bootstrap.bundle.min.js"></script>
+		</body>
+
+		</html>
+
 		<div ng-repeat="post in Posts" style="width: 95%;">
 			<div class="write-post-container   "
 				style="margin-bottom: 20px; border-radius: 8px;
