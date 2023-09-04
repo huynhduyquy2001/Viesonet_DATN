@@ -191,6 +191,14 @@
 				max-width: 100%;
 			}
 		}
+
+		.rotate-icon {
+			transition: transform 0.5s ease-in-out;
+		}
+
+		.nav-link[aria-expanded="true"] .rotate-icon {
+			transform: rotate(90deg);
+		}
 	</style>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
@@ -538,15 +546,9 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
-	<!-- Thư viện sweetalert2 -->
-
-
-
 	<script src="/js/Index.js">
-
 	</script>
 	<script src="/js/main.js"></script>
-	<script src="/js/addActive.js"></script>
 	<script src="/js/home.js"></script>
 	<script src="/js/search.js"></script>
 	<script src="/js/recommend.js"></script>

@@ -1127,22 +1127,20 @@ img {
 	padding: 15px 20px;
 }
 
-#main-wrapper[data-layout=vertical][data-sidebar-position=fixed] .left-sidebar {
-	position: fixed;
+.left-sidebar {
+    width: 270px;
+    background-color: #fff;
+    position: absolute;
+    transition: .2s ease-in;
+    height: 100%;
+    border-right: 1px solid #e5eaef;
+	z-index: 100;
+	position: fixed; 
 	top: 0;
+	left: 0;
+
 }
 
-.left-sidebar {
-	min-width: 270px;
-	max-width: 27%;
-	background-color: #fff;
-	position: absolute;
-	-webkit-transition: 0.2s ease-in;
-	transition: 0.2s ease-in;
-	height: 100%;
-	z-index: 11;
-	border-right: 1px solid rgb(229, 234, 239);
-}
 
 @media (min-width : 1200px) {
 	#main-wrapper[data-layout=vertical][data-header-position=fixed][data-sidebartype=mini-sidebar] .app-header {
@@ -1317,6 +1315,30 @@ img {
 	background-color: red;
 	/* Màu nền của hình tròn */
 	color: white;
+	/* Màu chữ số */
+	width: 20px;
+	/* Kích thước chiều rộng của hình tròn */
+	height: 20px;
+	/* Kích thước chiều cao của hình tròn */
+	border-radius: 50%;
+	/* Đảm bảo hình dạng là hình tròn */
+	text-align: center;
+	/* Căn giữa chữ số trong hình tròn */
+	font-size: 13px;
+	/* Kích thước chữ số */
+	line-height: 19px;
+	/* Đảm bảo chữ số được căn giữa theo chiều dọc */
+}
+.circle-shop {
+	position: absolute;
+	/* Đảm bảo thẻ con có vị trí tuyệt đối */
+	top: 14px;
+	/* Điều chỉnh vị trí theo chiều dọc để đặt số chính giữa chuông */
+	right: 1px;
+	/* Điều chỉnh vị trí theo chiều ngang để đặt số chính giữa chuông */
+	background-color: #aaa6a2;
+	/* Màu nền của hình tròn */
+	color: #ffffff;
 	/* Màu chữ số */
 	width: 20px;
 	/* Kích thước chiều rộng của hình tròn */
@@ -2102,4 +2124,48 @@ footer {
 	.frameProduct {
 		height: 47.5vh;
 	}
+}
+
+
+.iq-product-bg {
+    background-color: rgba(108,117,125,.1);
+}
+
+.object-contain {
+    -o-object-fit: contain;
+    object-fit: contain;
+}
+
+.avatar-100 {
+    height: 6.25rem;
+    width: 6.25rem;
+    min-width: 6.25rem;
+    text-align: center;
+    line-height: 6.25rem;
+    -webkit-border-radius: 0.25rem;
+    border-radius: 0.25rem;
+}
+
+.p-3 {
+    padding: 1rem !important;
+}
+
+.img-fluid {
+    max-width: 100%;
+    height: auto;
+}
+
+thead,
+tbody,
+tfoot,
+tr,
+td,
+th {
+  border-color: inherit;
+  border-style: solid;
+  border-width: 0;
+}
+
+.table tbody tr td {
+    vertical-align: middle;
 }

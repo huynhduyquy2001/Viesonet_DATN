@@ -29,6 +29,10 @@ app.config(function($translateProvider, $routeProvider) {
 		templateUrl: "/ngview/productDetails.html",
 		controller: 'ProductController'
 	})
+	.when('/shoppingcart', {
+		templateUrl: "/ngview/shoppingcart.html",
+		controller: 'ShoppingCartController'
+	})
 	
 	;
 	// Set the default language
