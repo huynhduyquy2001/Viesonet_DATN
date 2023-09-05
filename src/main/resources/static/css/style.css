@@ -2231,6 +2231,7 @@ a {
 
 #boxchatMini {
 	bottom: -500px;
+	opacity: 0;
 }
 
 .hver:hover {
@@ -2308,4 +2309,23 @@ th {
 
 .table tbody tr td {
 	vertical-align: middle;
+}
+
+.nav-tabs .nav-link.active {
+	background-size: 100% 2px;
+	transition: background-size 0.3s ease-in-out;
+	background-color: transparent;
+}
+
+.nav-tabs .nav-link {
+	border: none;
+	background-image: linear-gradient(to right, blue, blue);
+	background-size: 0% 2px;
+	background-repeat: no-repeat;
+	background-position: 0 100%;
+	transition: background-size 0.3s ease-in-out;
+}
+
+.nav-tabs {
+	border-bottom: none;
 }

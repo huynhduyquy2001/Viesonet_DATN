@@ -148,7 +148,7 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 			});
 		var boxchatMini = document.getElementById("boxchatMini");
 		boxchatMini.style.bottom = '0';
-
+		boxchatMini.style.opacity = '1';
 
 		angular.element(document.querySelector('.menu')).toggleClass('menu-active');
 		var menu = angular.element(document.querySelector('.menu'));
@@ -174,27 +174,24 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 
 				var mess = reponse.data;
 
-				var objUpdate = $scope.ListUsersMess.find(function (obj) {
-					return (mess.receiver.userId === obj[0] || mess.receiver.userId === obj[2]) && mess.messId === obj[9];
-				});
-				if (objUpdate) {
-					Object.assign(objUpdate, {
-						0: mess.sender.userId,
-						1: mess.sender.username,
-						2: mess.receiver.userId,
-						3: mess.receiver.username,
-						4: mess.sender.avatar,
-						5: mess.receiver.avatar,
-						6: mess.content,
-						7: new Date(),
-						8: "Đã ẩn",
-						9: mess.messId
-					});
-				}
+				// var objUpdate = $scope.ListUsersMess.find(function (obj) {
+				// 	return (mess.receiver.userId === obj[0] || mess.receiver.userId === obj[2]) && mess.messId === obj[9];
+				// });
+				// if (objUpdate) {
+				// 	Object.assign(objUpdate, {
+				// 		0: mess.sender.userId,
+				// 		1: mess.sender.username,
+				// 		2: mess.receiver.userId,
+				// 		3: mess.receiver.username,
+				// 		4: mess.sender.avatar,
+				// 		5: mess.receiver.avatar,
+				// 		6: mess.content,
+				// 		7: new Date(),
+				// 		8: "Đã ẩn",
+				// 		9: mess.messId
+				// 	});
+				// }
 				stompClient.send('/app/sendnewmess', {}, JSON.stringify(mess));
-
-
-
 			}, function (error) {
 				console.log(error);
 			});
@@ -355,7 +352,7 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 			});
 	};
 
-
+	//Cuộn xuống cuổi danh sách tin nhắn
 	$scope.scrollToBottom = function () {
 		var chatContainer = document.getElementById("messMini");
 		chatContainer.scrollTop = chatContainer.scrollHeight;
@@ -402,8 +399,6 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 	};
 
 
-
-
 	// Trong AngularJS controller
 	$scope.toggleMenu = function (event) {
 		event.stopPropagation();
@@ -415,14 +410,20 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 			menu.css("right", "-330px");
 		}
 	};
-
+	// đóng boxchatMini
 	$scope.closeBoxchat = function (event) {
 		event.stopPropagation();
-		angular.element(document.getElementById('boxchatMini')).toggleClass('menu-active');
 		var boxchatMini = angular.element(document.getElementById('boxchatMini'));
-		boxchatMini.css("bottom", "-500px");
-	};
 
+		// Đặt bottom thành -500px với transition
+		boxchatMini.css("bottom", "-500px");
+
+		// Sử dụng setTimeout để đặt opacity thành 0 sau khi transition hoàn tất
+		setTimeout(function () {
+			boxchatMini.css("opacity", "0");
+		}, 300 /* Thời gian chờ tối thiểu, có thể điều chỉnh nếu cần */);
+	};
+	// Đóng mở thanh menu chưa tin nhắn với những người đã gửi 
 	angular.element(document).on('click', function (event) {
 		var menu = angular.element(document.querySelector('.menu'));
 		var toggleButton = angular.element(document.getElementById('toggle-menu'));
@@ -436,8 +437,9 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 	// Ban đầu ẩn menu
 	var menu = angular.element(document.querySelector('.menu'));
 	menu.css("right", "-330px");
-	var boxchatMini = angular.element(document.getElementById('boxchatMini'));
-	boxchatMini.css("bottom", "-500px");
+	// var boxchatMini = angular.element(document.getElementById('boxchatMini'));
+	// boxchatMini.css("bottom", "-500px");
+	// boxchatMini.css("opacity", "0");
 
 })
 
