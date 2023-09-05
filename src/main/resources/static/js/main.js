@@ -18,25 +18,25 @@ app.config(function ($translateProvider, $routeProvider) {
 	}).when('/message/:otherId', {
 		templateUrl: "/ngview/message.html",
 		controller: 'MessController'
-	}).when('/shopping', {
-		templateUrl: "/ngview/shopping.html",
-		controller: 'ShoppingController'
 	}).when('/profile/:userId', {
 		templateUrl: "/ngview/profile.html",
 		controller: 'ProfileController'
-	}).when('/product', {
-		templateUrl: "/ngview/productDetails.html",
-		controller: 'ProductController'
-	}).when('/mystore', {
-		templateUrl: "/ngview/myStore.html",
-		controller: 'MyStoreController'
 	})
+		.when('/product', {
+			templateUrl: "/ngview/productDetails.html",
+			controller: 'ProductController'
+		}).when('/mystore', {
+			templateUrl: "/ngview/myStore.html",
+			controller: 'MyStoreController'
+		})
 		.when('/shoppingcart', {
 			templateUrl: "/ngview/shoppingcart.html",
 			controller: 'ShoppingCartController'
 		})
-
-		;
+		.when('/favouriteProduct', {
+			templateUrl: "/ngview/favouriteProducts.html",
+			controller: 'FavouriteProductsController'
+		});
 	// Set the default language
 	var storedLanguage = localStorage.getItem('myAppLangKey') || 'vie';
 	$translateProvider.preferredLanguage(storedLanguage);
