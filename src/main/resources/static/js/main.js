@@ -33,6 +33,10 @@ app.config(function ($translateProvider, $routeProvider) {
 			templateUrl: "/ngview/shoppingcart.html",
 			controller: 'ShoppingCartController'
 		})
+		.when('/shopping', {
+			templateUrl: "/ngview/shopping.html",
+			controller: 'ShoppingController'
+		})
 		.when('/favouriteProduct', {
 			templateUrl: "/ngview/favouriteProducts.html",
 			controller: 'FavouriteProductsController'
