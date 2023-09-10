@@ -1,7 +1,27 @@
 <div ng-controller="SearchController">
 	<div class="row">
-		<div class="col-md-6 p-3" style="z-index: 10; border: 1px solid #ebf1f6;background-color: white;">
-
+		<div class="col-md-8 p-3" style="z-index: 10; border: 1px solid #ebf1f6;background-color: white; height: 89vh;">
+			<b>Tìm kiếm</b>
+			<a class="dropdown-toggle hidden-arrow btn btn-primary" id="navbarDropdownMenuLink" role="button"
+				data-mdb-toggle="dropdown" aria-expanded="false">
+				dropdown
+			</a>
+			<ul class="dropdown-menu dropdown-menu-left" aria-labelledby="navbarDropdownMenuLink">
+				<li>
+					<div class="input-group mt-2 mx-2">
+						<div class="form-outline w-auto">
+							<input type="search" id="form1" class="form-control-dropdown" />
+							<label class="form-label" for="form1">Search</label>
+						</div>
+					</div>
+				</li>
+				<li>
+					<hr class="dropdown-divider" />
+				</li>
+				<li><a class="dropdown-item" href="#">Action</a></li>
+				<li><a class="dropdown-item" href="#">Another action</a></li>
+				<li><a class="dropdown-item" href="#">Something else here</a></li>
+			</ul>
 			<center>
 				<div style="width: 100%; text-align: left;" data-bs-toggle="modal">
 					<!--Tìm kiếm-->
@@ -9,7 +29,8 @@
 						<form class="position-relative" ng-submit="LS()" onsubmit="return validateSearch()">
 							<input type="search" class="form-control search-chat py-2 ps-5" ng-value="showname.username"
 								ng-keyup="searchUser()" ng-model="username" id="text-srh" ng-keyup="TimKiem(key)"
-								placeholder="{{ 'TK' | translate }}" style="border: 1px solid #ccc;"> <a><i
+								placeholder="Nhập tên người dùng..."
+								style="border: 1px solid #ccc; border-radius: 20px;"> <a><i
 									class="fa-solid fa-magnifying-glass fa-2xs position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i></a>
 							<!--  <button ng-click="LS()">Tìm kiếm</button> -->
 						</form>
@@ -47,7 +68,7 @@
 		<div class="col-md-3 p-3 menuLeft animate__animated animate__backInRight"
 			style="z-index: 10; border: 1px solid #ebf1f6;background-color: white;">
 			<div class="row">
-				<h5>{{ 'LSTK' | translate }}</h5>
+				<b>{{ 'LSTK' | translate }}</b>
 				<div class="col-lg-12" ng-repeat="(key,name) in items"
 					style="display: flex; justify-content: space-between;">
 					<a ng-click="TimKiem(key)" style="cursor: pointer;">{{name.username}}</a> <a
@@ -56,6 +77,32 @@
 			</div>
 		</div>
 	</div>
+	<script>
+		const searchInputDropdown = document.getElementById('search-input-dropdown');
+		const dropdownOptions = document.querySelectorAll('.input-group-dropdown-item');
+
+		searchInputDropdown.addEventListener('input', () => {
+			const filter = searchInputDropdown.value.toLowerCase();
+			showOptions();
+			const valueExist = !!filter.length;
+
+			if (valueExist) {
+				dropdownOptions.forEach((el) => {
+					const elText = el.textContent.trim().toLowerCase();
+					const isIncluded = elText.includes(filter);
+					if (!isIncluded) {
+						el.style.display = 'none';
+					}
+				});
+			}
+		});
+
+		const showOptions = () => {
+			dropdownOptions.forEach((el) => {
+				el.style.display = 'flex';
+			})
+		}
+	</script>
 </div>
 <script>
 	function validateSearch() {
@@ -71,4 +118,5 @@
 		// Nếu người dùng đã nhập kí tự thì cho phép submit form
 		return true;
 	}
+
 </script>

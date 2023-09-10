@@ -87,7 +87,7 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 				return obj[2] === $routeParams.otherId;
 			});
 			check[11] = 0;
-			$scope.$apply();
+			//$scope.$apply();
 		});
 	$http.get('/getunseenmessage')
 		.then(function (response) {
@@ -369,4 +369,5 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 				console.log(error);
 			});
 	};
+
 });

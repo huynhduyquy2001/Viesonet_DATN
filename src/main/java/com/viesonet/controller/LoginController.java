@@ -33,20 +33,21 @@ import com.viesonet.service.UsersService;
 
 @RestController
 public class LoginController {
-	
+
 	@Autowired
 	AuthConfig authConfig;
 
 	@GetMapping("/login")
-	public ModelAndView getLoginPage() {		
+	public ModelAndView getLoginPage() {
 		ModelAndView modelAndView = new ModelAndView("Login");
 		return modelAndView;
 	}
+
 	@RequestMapping("/login-fail")
-    public ModelAndView loginFail() {
-        ModelAndView modelAndView = new ModelAndView("Login");
-        modelAndView.addObject("message", "Thông tin đăng nhập không đúng!");
-        return modelAndView;
-    }
-	   
+	public ModelAndView loginFail() {
+		ModelAndView modelAndView = new ModelAndView("Login");
+		modelAndView.addObject("message", "Thông tin đăng nhập không đúng!");
+		return modelAndView;
+	}
+
 }

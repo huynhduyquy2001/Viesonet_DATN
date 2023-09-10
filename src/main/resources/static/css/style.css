@@ -2195,6 +2195,7 @@ footer {
 		margin-right: 10px;
 		/* Khi hover vào .col-md-6, hiển thị nút */
 	}
+
 	/* CSS ẩn class .price khi hover vào .frame */
 	.frame:hover .price {
 		display: none;
@@ -2307,7 +2308,7 @@ a {
 }
 
 .hver:hover {
-	background-color: rgba(93, 135, 255, 0.1);
+	background-color: #74b9ff;
 	color: #5D87FF;
 }
 

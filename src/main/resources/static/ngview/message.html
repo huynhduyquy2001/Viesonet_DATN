@@ -1,12 +1,13 @@
 <div class="row" ng-controller="MessController">
-	<div class="col-md-8" style="z-index: 10; border: 1px solid #ebf1f6; padding: 0; height: 89vh;">
+	<div class="col-md-8" style="z-index: 10; border: 1px solid #ebf1f6; padding: 0; max-height: 89vh;">
 		<center>
-			<h4 ng-show="isEmptyObject" ng-cloak>Hãy chọn người nào đó để
+			<h4 ng-show="isEmptyObject" id="isEmptyObject" ng-cloak>Hãy chọn người nào đó để
 				trò chuyện ngay nào</h4>
 		</center>
 		<div ng-show="!isEmptyObject" ng-cloak class="msger "
 			style="width: 100%; text-align: left; margin-left: 0; border-radius: 5px">
 			<header class="msger-header animate__animated animate__fadeIn">
+
 				<div class="msger-header-title">
 					<a href="#!/profile/{{userMess.userId}}" style="font-weight: 600; color: #212529"><img
 							ng-src="/images/{{ userMess.avatar }}"
@@ -14,6 +15,11 @@
 						userMess.username }}</a> &nbsp; <small style="font-size: 0.7rem;">Hoạt động:
 						{{getFormattedTimeAgo(userMess.accessTime)}}</small>
 				</div>
+				<a href="#!message">
+					<button style="border: none; background-color: transparent;"><i
+							class="fa-solid fa-arrow-left"></i></button>
+				</a>
+
 			</header>
 			<main class="msger-chat" id="boxChat" ng-drop="onDrop($event)"
 				style="padding-top: 1rem; border-top: 1px solid #dee2e6 !important;">
@@ -57,7 +63,8 @@
 			</form>
 		</div>
 	</div>
-	<div class="col-md-4" style="border: 1px solid #ebf1f6; padding-top: 0.5rem; background-color: #fff;">
+	<div class="col-md-4" id="menuMessLeft"
+		style="border: 1px solid #ebf1f6; padding-top: 0.5rem; background-color: #fff; height: 89vh; overflow: scroll;">
 		<h4><b>Tin Nhắn</b></h4>
 		<input class="form-control" placeholder="{{ 'TK' | translate }}">
 		<br>
@@ -65,8 +72,6 @@
 			<li ng-repeat="UsersMess in ListUsersMess" class="hver"
 				style="padding: 0.7rem!important; padding-right: 1.5rem!important; transition: 0.3s;"
 				ng-style="{'background-color': UsersMess[2] === itemSelected ? 'rgba(93, 135, 255, 0.1)' : 'transparent'}">
-
-
 				<div class="user-profile" ng-click="getmess(UsersMess[0] , UsersMess[9], UsersMess[8])">
 					<!-- Nội dung khi UsersMess[0] = 'UI010' -->
 					<a href="#!/message/{{UsersMess[2]}}"><img ng-src="/images/{{ UsersMess[5] }}"
