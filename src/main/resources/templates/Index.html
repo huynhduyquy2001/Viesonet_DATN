@@ -11,12 +11,8 @@
 		href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@200;300;400;500;600;700;800&display=swap">
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
-		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
-		crossorigin="anonymous"></script>
+
 	<script src="https://kit.fontawesome.com/f737751420.js"></script>
-	<link rel="preconnect" href="https://fonts.googleapis.com">
-	<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 	<link
 		href="https://fonts.googleapis.com/css2?family=Alumni+Sans+Inline+One&family=Bangers&family=Chakra+Petch:ital,wght@0,400;1,300;1,400;1,700&family=Grenze&family=Patrick+Hand&family=Playfair+Display+SC&family=Road+Rage&display=swap"
 		rel="stylesheet">
@@ -27,6 +23,9 @@
 		rel="stylesheet">
 	<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css" />
 	<script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"
+		integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM"
+		crossorigin="anonymous"></script>
 
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 	<!-- Thêm thư viện SockJS và Stomp -->
@@ -38,7 +37,7 @@
 	<script
 		src="https://cdn.jsdelivr.net/npm/angular-translate-loader-static-files@2.19.0/angular-translate-loader-static-files.min.js"></script>
 	<script src="js/translate.js"></script>
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
+
 	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular-route.min.js"></script>
 
 	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/sweetalert2@11.0.18/dist/sweetalert2.min.css">
@@ -84,11 +83,10 @@
 
 		.dropdown {
 			position: relative;
-			display: inline-block;
+			display: block;
 		}
 
 		.dropdown-content {
-			display: none;
 			opacity: 0;
 			position: absolute;
 			background-color: #f9f9f9;
@@ -108,7 +106,7 @@
 		}
 
 		.dropdown:hover .dropdown-content {
-			display: block;
+
 			transition: 0.5s ease-in-out;
 			opacity: 1;
 		}
@@ -191,13 +189,38 @@
 				max-width: 100%;
 			}
 		}
+
+		.rotate-icon {
+			transition: transform 0.5s ease-in-out;
+		}
+
+		.nav-link[aria-expanded="true"] .rotate-icon {
+			transform: rotate(90deg);
+		}
+
+		/* Ẩn sidebar khi màn hình có chiều rộng dưới 1180px */
+		@media (max-width: 1180px) {
+
+			/* Hiện nút menu khi màn hình có chiều rộng dưới 1180px */
+			#menuLeft-toggle {
+				display: block !important;
+			}
+		}
+
+		#menuLeft-toggle {
+			display: none;
+			position: fixed;
+			top: 0;
+			left: 0;
+			box-shadow: none;
+		}
 	</style>
 
-	<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
 	<script src="/js/thoiTiet.js"></script>
 </head>
 
 <body style="padding-top: 70px;" ng-controller="myCtrl">
+
 	<div style="transition: 0.5s;">
 		<div class="row ">
 			<div id="menuLeft" ng-include="'_menuLeft.html'"></div>
@@ -262,6 +285,9 @@
 			<div ng-view id="view" class="col-lg-9 offset-lg-3"></div>
 		</div>
 	</div>
+
+
+
 
 	<!-- Modal hiện  chi tiêt bài viết và danh sách bình luận -->
 	<div class="modal fade" id="chiTietBaiViet" tabindex="-1" role="dialog" aria-labelledby="modalTitleId"
@@ -538,15 +564,9 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
-	<!-- Thư viện sweetalert2 -->
-
-
-
 	<script src="/js/Index.js">
-
 	</script>
 	<script src="/js/main.js"></script>
-	<script src="/js/addActive.js"></script>
 	<script src="/js/home.js"></script>
 	<script src="/js/search.js"></script>
 	<script src="/js/recommend.js"></script>
@@ -554,6 +574,8 @@
 	<script src="/js/profile.js"></script>
 	<script src="/js/shopping.js"></script>
 	<script src="/js/product.js"></script>
+	<script src="/js/myStore.js"></script>
+
 </body>
 
 </html>

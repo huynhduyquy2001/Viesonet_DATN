@@ -63,16 +63,19 @@ public class MessController {
 	@Autowired
 	private ServletContext servletContext;
 
-//	@GetMapping("/mess")
-//	public ModelAndView getHomePage() {
-//		ModelAndView modelAndView = new ModelAndView("Message");
-//		return modelAndView;
-//	}
+	// @GetMapping("/mess")
+	// public ModelAndView getHomePage() {
+	// ModelAndView modelAndView = new ModelAndView("Message");
+	// return modelAndView;
+	// }
 
 	@MessageMapping("/sendnewmess")
 	@SendToUser("/queue/receiveMessage")
-	public void addMess(Message newMessage) {
+	public void addMess(Message newMessage, Authentication auth) {
+		String myId = authConfig.getLoggedInAccount(auth).getUserId();
 		messagingTemplate.convertAndSendToUser(newMessage.getReceiver().getUserId(), "/queue/receiveMessage",
+				newMessage);
+		messagingTemplate.convertAndSendToUser(myId, "/queue/receiveMessage",
 				newMessage);
 	}
 
@@ -80,12 +83,13 @@ public class MessController {
 	public Message saveMess(@RequestBody MessageRequest messageRequest) {
 		// Thêm tin nhắn vào cơ sở dữ liệu
 		Message newMessage = messageService.addMess(usersService.findUserById(messageRequest.getSenderId()),
-				usersService.findUserById(messageRequest.getReceiverId()), messageRequest.getContent(),"");
+				usersService.findUserById(messageRequest.getReceiverId()), messageRequest.getContent(), "");
 		return newMessage;
 	}
 
 	@PostMapping("/sendimage/{receiverId}")
-	public List<Message> sendImage(@RequestParam("photoFiles") MultipartFile[] photoFiles, @PathVariable("receiverId") String receiverId, Authentication authentication) {
+	public List<Message> sendImage(@RequestParam("photoFiles") MultipartFile[] photoFiles,
+			@PathVariable("receiverId") String receiverId, Authentication authentication) {
 		String myId = authConfig.getLoggedInAccount(authentication).getUserId();
 		List<Message> list = new ArrayList<>();
 		if (photoFiles != null && photoFiles.length > 0) {
@@ -118,9 +122,9 @@ public class MessController {
 								Thumbnails.of(pathUpload).scale(1.0).outputQuality(quality).toFile(outputPath);
 							}
 						}
-						 newMessage = messageService.addMess(usersService.findUserById(myId),
-								usersService.findUserById(receiverId), "",newFileName);
-						 list.add(newMessage);
+						newMessage = messageService.addMess(usersService.findUserById(myId),
+								usersService.findUserById(receiverId), "", newFileName);
+						list.add(newMessage);
 					} catch (Exception e) {
 						e.printStackTrace();
 					}
@@ -128,10 +132,9 @@ public class MessController {
 				}
 			}
 		}
-		
-	    return list;
-	}
 
+		return list;
+	}
 
 	@GetMapping("/getmess2/{userId}")
 	public List<Message> getListMess2(@PathVariable("userId") String userId, Authentication authentication) {

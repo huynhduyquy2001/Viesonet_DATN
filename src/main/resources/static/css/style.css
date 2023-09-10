@@ -393,7 +393,6 @@ img {
 
 .accordion-item {
 	background: transparent;
-	color: white;
 	border: none;
 }
 
@@ -440,10 +439,10 @@ ul {
 	padding-left: 0;
 }
 
-.accordion-body ul li a {
+/* .accordion-body ul li a {
 	text-decoration: none;
 	color: #9C9192;
-}
+} */
 
 .accordion-button:not(.collapsed) {
 	color: #A89386;
@@ -743,7 +742,6 @@ input[type=email]:focus {
 .dropdown-item:focus,
 .dropdown-item:hover {
 	background-color: transparent;
-	transform: translateY(-3px);
 	cursor: pointer;
 }
 
@@ -1127,22 +1125,20 @@ img {
 	padding: 15px 20px;
 }
 
-#main-wrapper[data-layout=vertical][data-sidebar-position=fixed] .left-sidebar {
-	position: fixed;
-	top: 0;
-}
-
 .left-sidebar {
-	min-width: 270px;
-	max-width: 27%;
+	width: 270px;
 	background-color: #fff;
 	position: absolute;
-	-webkit-transition: 0.2s ease-in;
-	transition: 0.2s ease-in;
+	transition: .2s ease-in;
 	height: 100%;
-	z-index: 11;
-	border-right: 1px solid rgb(229, 234, 239);
+	border-right: 1px solid #e5eaef;
+	z-index: 100;
+	position: fixed;
+	top: 0;
+	left: 0;
+
 }
+
 
 @media (min-width : 1200px) {
 	#main-wrapper[data-layout=vertical][data-header-position=fixed][data-sidebartype=mini-sidebar] .app-header {
@@ -1246,8 +1242,8 @@ img {
 	color: #5D87FF;
 }
 
-.sidebar-nav ul .sidebar-item .sidebar-link {
-	color: #2A3547;
+.sidebar-item .sidebar-link {
+	color: #393e41;
 	display: -webkit-box;
 	display: -ms-flexbox;
 	display: flex;
@@ -1317,6 +1313,31 @@ img {
 	background-color: red;
 	/* Màu nền của hình tròn */
 	color: white;
+	/* Màu chữ số */
+	width: 20px;
+	/* Kích thước chiều rộng của hình tròn */
+	height: 20px;
+	/* Kích thước chiều cao của hình tròn */
+	border-radius: 50%;
+	/* Đảm bảo hình dạng là hình tròn */
+	text-align: center;
+	/* Căn giữa chữ số trong hình tròn */
+	font-size: 13px;
+	/* Kích thước chữ số */
+	line-height: 19px;
+	/* Đảm bảo chữ số được căn giữa theo chiều dọc */
+}
+
+.circle-shop {
+	position: absolute;
+	/* Đảm bảo thẻ con có vị trí tuyệt đối */
+	top: 14px;
+	/* Điều chỉnh vị trí theo chiều dọc để đặt số chính giữa chuông */
+	right: 1px;
+	/* Điều chỉnh vị trí theo chiều ngang để đặt số chính giữa chuông */
+	background-color: #aaa6a2;
+	/* Màu nền của hình tròn */
+	color: #ffffff;
 	/* Màu chữ số */
 	width: 20px;
 	/* Kích thước chiều rộng của hình tròn */
@@ -1657,10 +1678,10 @@ h3 {
 	color: #a6a6a6;
 }
 
-img {
+/* img {
 	max-width: 100%;
 
-}
+} */
 
 /* ----- Product Section ----- */
 .product {
@@ -1754,7 +1775,6 @@ img {
 .price {
 	margin-top: 1.5em;
 	color: #ff3f40;
-	font-size: 1.2em;
 
 	span {
 		padding-left: 0.15em;
@@ -1811,19 +1831,28 @@ img {
 
 .buy--btn {
 	padding: 0.8em 1em;
-	border: 1px solid #ff3f40;
+	border: 1px solid #007ACC;
 	border-radius: 7px;
 	font-size: 0.8em;
 	font-weight: 700;
 	letter-spacing: 1.3px;
-	color: #ff3f40;
-	box-shadow: 2px 2px 15px -7px #ff3f40;
+	color: #007ACC;
+	transition: 0.3s ease-in-out;
 	cursor: pointer;
 	background-color: #fff;
 
 	&:active {
 		transform: scale(0.97);
 	}
+}
+
+.buy--btn:hover {
+	box-shadow: 2px 2px 15px -7px #007ACC;
+}
+
+.buy--btn:focus {
+	background-color: #007ACC;
+	color: white;
 }
 
 
@@ -2102,4 +2131,181 @@ footer {
 	.frameProduct {
 		height: 47.5vh;
 	}
+}
+
+/*---------- footer area start ----------*/
+.reveal-footer {
+	bottom: 0;
+	left: 0;
+	right: 0;
+	width: 100%;
+	z-index: 5;
+	position: fixed;
+	background-color: #f1f1f1;
+}
+
+.footer-wrapper {
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-pack: justify;
+	-webkit-justify-content: space-between;
+	-ms-flex-pack: justify;
+	justify-content: space-between;
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991.98px) {
+	.footer-wrapper {
+		display: block;
+	}
+}
+
+.footer-card {
+	height: 75px;
+	padding: 0 20px;
+	border-top: none;
+	background-color: #fff;
+	display: -webkit-box;
+	display: -webkit-flex;
+	display: -ms-flexbox;
+	display: flex;
+	-webkit-box-align: center;
+	-webkit-align-items: center;
+	-ms-flex-align: center;
+	align-items: center;
+	width: 325px;
+	-webkit-box-shadow: 0px -5px 36px -5px rgba(51, 51, 51, 0.2);
+	box-shadow: 0px -5px 36px -5px rgba(51, 51, 51, 0.2);
+}
+
+@media only screen and (min-width: 1200px) and (max-width: 1499.98px) {
+	.footer-card {
+		width: 270px;
+	}
+}
+
+@media only screen and (min-width: 992px) and (max-width: 1199.98px) {
+	.footer-card {
+		width: 212px;
+	}
+}
+
+@media only screen and (min-width: 768px) and (max-width: 991.98px) {
+	.footer-card {
+		width: 100%;
+		height: 60px;
+		margin-top: 20px;
+	}
+}
+
+
+.menu {
+	position: fixed;
+	top: 70px;
+	right: -330px;
+	width: 330px;
+	height: 100%;
+	background-color: #fff;
+	transition: right 0.3s ease;
+	border-radius: 8px 0 0 8px;
+}
+
+.menu-content {
+	padding: 20px;
+}
+
+ul {
+	list-style: none;
+	padding: 0;
+}
+
+ul li {
+	margin-bottom: 10px;
+}
+
+a {
+
+	text-decoration: none;
+}
+
+#boxchatMini {
+	bottom: -500px;
+}
+
+.hver:hover {
+	background-color: rgba(93, 135, 255, 0.1);
+	color: #5D87FF;
+}
+
+.listMess {
+	background-color: white;
+	padding-top: 0.7rem !important;
+	padding-bottom: 0.7rem !important;
+	padding-right: 1.5rem !important;
+	transition: 0.3s ease-in-out;
+	border-radius: 3px;
+}
+
+.rotate-icon {
+	transition: transform 0.5s ease-in-out;
+}
+
+.nav-small-cap[aria-expanded="true"] .rotate-icon {
+	transform: rotate(90deg);
+}
+
+.selected-item {
+	background-color: rgba(93, 135, 255, 0.1) !important;
+}
+
+.nav-link[aria-expanded="true"] .rotate-icon {
+	transform: rotate(90deg);
+}
+
+img {
+	max-width: 100%;
+}
+
+.iq-product-bg {
+	background-color: rgba(108, 117, 125, .1);
+}
+
+.object-contain {
+	-o-object-fit: contain;
+	object-fit: contain;
+}
+
+.avatar-100 {
+	height: 6.25rem;
+	width: 6.25rem;
+	min-width: 6.25rem;
+	text-align: center;
+	line-height: 6.25rem;
+	-webkit-border-radius: 0.25rem;
+	border-radius: 0.25rem;
+}
+
+.p-3 {
+	padding: 1rem !important;
+}
+
+.img-fluid {
+	max-width: 100%;
+	height: auto;
+}
+
+thead,
+tbody,
+tfoot,
+tr,
+td,
+th {
+	border-color: inherit;
+	border-style: solid;
+	border-width: 0;
+}
+
+.table tbody tr td {
+	vertical-align: middle;
 }

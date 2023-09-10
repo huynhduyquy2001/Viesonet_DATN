@@ -1,39 +1,20 @@
 
 app.controller('MessController', function ($scope, $rootScope, $window, $http, $timeout, $translate, $location, $routeParams) {
 	$scope.LikePost = [];
-	$scope.ListUsersMess = [];
-	$scope.ListMessWith = [];
+
 	//đây là acc của mình
 	$scope.myAccount = {};
+	//đây là danh sách tin nhắn
 	$scope.ListMess = [];
 	//đây là acc của ngta
 	$scope.userMess = {};
-	var sound = new Howl({
-		src: ['/images/nhacchuong2.mp3']
-	});
+	//đây coi là có đang nhắn vs ai khum
+	$scope.isEmptyObject = false;
 
-	// Hàm để phát âm thanh
-	$scope.playNotificationSound = function () {
-		sound.play();
-	};
+	$scope.itemSelected = $routeParams.otherId;
 
-	if (!$location.path().startsWith('/profile/')) {
-		// Tạo phần tử link stylesheet
-		var styleLink = document.createElement('link');
-		styleLink.rel = 'stylesheet';
-		styleLink.href = '/css/style.css';
-
-		// Thêm phần tử link vào thẻ <head>
-		document.head.appendChild(styleLink);
-	}
-
-	$scope.isEmptyObject = function (obj) {
-		return Object.keys(obj).length === 0 && obj.constructor === Object;
-	};
-
-
-
-
+	// if (!$location.path().startsWith('/profile/')) {
+	//gưir ảnh qua tin nhắn
 	$scope.uploadFile = function () {
 		var fileInput = document.getElementById('inputGroupFile01');
 		if (fileInput.files.length > 0) {
@@ -68,14 +49,12 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 		}
 	};
 
-
-
-
-	//tìm sách nhắn tin nhắn với người nào đó
+	//tìm danh sách tin nhắn với người nào đó
 	if ($routeParams.otherId) {
 		$http.get('/getUser/' + $routeParams.otherId)
 			.then(function (response) {
 				$scope.userMess = response.data;
+
 			})
 		$http.get('/getmess2/' + $routeParams.otherId)
 			.then(function (response) {
@@ -88,6 +67,8 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 				console.log(error);
 			});
 
+	} else {
+		$scope.isEmptyObject = true;
 	}
 	//kéo thả ảnh
 	$scope.onDrop = function (event) {
@@ -137,14 +118,6 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 			console.log(error);
 		});
 
-	// Sử dụng $http để lấy danh sách người đã từng nhắn tin
-	$http.get('/getusersmess')
-		.then(function (response) {
-			$scope.ListUsersMess = response.data;
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
 
 	//Kết nối khi mở trang web
 	$scope.ConnectNotification();
@@ -167,23 +140,24 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 		// Lắng nghe các tin nhắn được gửi về cho người dùng
 		stompClient.subscribe('/user/' + $scope.myAccount.user.userId + '/queue/receiveMessage', function (message) {
 			try {
-
 				var newMess = JSON.parse(message.body);
 				// Xử lý tin nhắn mới nhận được ở đây khi nhắn đúng người
 				var checkMess = $scope.ListMess.find(function (obj) {
-					return obj.messId === newMess.messId; // Sửa dấu === ở đây
+					return obj.messId === newMess.messId;
 				});
 				if (checkMess) {
 					checkMess.status = 'Đã ẩn';
-				} else if ($scope.userMess.userId === newMess.sender.userId && !checkMess) {
+				} else if (($scope.userMess.userId === newMess.sender.userId || $scope.myAccount.user.userId === newMess.sender.userId) && !checkMess) {
 					$scope.ListMess.push(newMess);
 				}
-
+				if ($scope.myAccount.user.userId !== newMess.sender.userId) {
+					$scope.playNotificationSound();
+				}
 				//cập nhật lại danh sách người đang nhắn tin với mình
 				$http.get('/getusersmess')
 					.then(function (response) {
 						$scope.ListUsersMess = response.data;
-						$scope.playNotificationSound();
+						//$scope.playNotificationSound();
 					})
 					.catch(function (error) {
 						console.log(error);
@@ -203,9 +177,7 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 	});
 
 
-
-
-	// Hàm gửi tin nhắn
+	// Hàm gửi tin nhắn và lưu vào csdl
 	$scope.sendMessage = function (senderId, content, receiverId) {
 		if (content == '' || content.trim() === undefined) {
 			return;
@@ -220,11 +192,6 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 			.then(function (response) {
 				//hàm gửi tin nhắn qua websocket
 				stompClient.send('/app/sendnewmess', {}, JSON.stringify(response.data));
-				//cập nhật lại tin nhắn và những người đã gửi bên cột những người đã gửi
-				var check = response.data;
-				var existingUserIndex = $scope.ListUsersMess.findIndex(function (obj) {
-					return check.receiver.userId === obj[0] || check.receiver.userId === obj[2];
-				});
 				$http.post('/seen/' + $routeParams.otherId)
 					.then(function (response) {
 						$http.get('/getunseenmessage')
@@ -236,51 +203,54 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 								console.log(error);
 							});
 					});
+				// Nếu người nhận đã tồn tại trong danh sách, cập nhật thông tin tin nhắn mới nhất
+				// var newObj = {
+				// 	0: newMess.sender.userId,
+				// 	1: newMess.sender.username,
+				// 	2: newMess.receiver.userId,
+				// 	3: newMess.receiver.username,
+				// 	4: newMess.sender.avatar,
+				// 	5: newMess.receiver.avatar,
+				// 	6: newMess.content,
+				// 	7: new Date(),
+				// 	8: newMess.status,
+				// 	9: newMess.messId
+				// };
 
-				var newObj = {
-					0: check.sender.userId,
-					1: check.sender.username,
-					2: check.receiver.userId,
-					3: check.receiver.username,
-					4: check.sender.avatar,
-					5: check.receiver.avatar,
-					6: check.content,
-					7: new Date(),
-					8: "Đã gửi",
-					9: check.messId
-				};
+				// if (existingUserIndex !== -1) {
 
-				if (existingUserIndex !== -1) {
-					// Nếu người nhận đã tồn tại trong danh sách, cập nhật thông tin tin nhắn mới nhất
-					$scope.ListUsersMess.splice(existingUserIndex, 1);
-				}
+				// 	$scope.ListUsersMess.splice(existingUserIndex, 1);
+				// }
 
 				// Thêm tin nhắn mới vào đầu danh sách
-				$scope.ListUsersMess.unshift(newObj);
+				//$scope.ListUsersMess.unshift(newObj);
 
 				//cập nhật tin nhắn bên người gửi
-				var newMess = {
-					sender: { userId: senderId, username: $scope.myAccount.user.username, avatar: $scope.myAccount.user.avatar },
-					receiver: { userId: receiverId },
-					content: content,
-					sendDate: new Date(),
-					messId: check.messId
-				};
+				// var newMess2 = {
+				// 	sender: { userId: senderId, username: $scope.myAccount.user.username, avatar: $scope.myAccount.user.avatar },
+				// 	receiver: { userId: receiverId },
+				// 	content: content,
+				// 	sendDate: new Date(),
+				// 	messId: newMess.messId,
+				// 	status: newMess.status
+				// };
+				//$scope.ListMess.push(newMess2);
 
-				$scope.ListMess.push(newMess);
+				// $timeout(function () {
+				// 	$scope.scrollToBottom();
+				// }, 10);
 			})
 			.catch(function (error) {
 				console.log(error);
 			});
 		console.log('Tin nhắn đã được gửi thành công!');
 		$scope.newMess = '';
-
-		var foundUser = $scope.ListUsersMess.find(function (user) {
-			return user.userId === receiverId;
-		});
-		if (foundUser) {
-			foundUser.status = 'Đã gửi';
-		}
+		// var foundUser = $scope.ListUsersMess.find(function (user) {
+		// 	return user.userId === receiverId;
+		// });
+		// if (foundUser) {
+		// 	foundUser.status = 'Đã gửi';
+		// }
 
 		$timeout(function () {
 			$scope.scrollToBottom();
@@ -290,7 +260,7 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 
 
 	// Tìm người đang nhắn với mình
-	$scope.getmess2 = function (userId, messId, status) {
+	$scope.getmess = function (userId, messId, status) {
 		$http.post('/seen/' + userId)
 			.then(function (response) {
 				return $http.get('/getunseenmessage');
@@ -310,10 +280,10 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 	};
 
 	$scope.scrollToBottom = function () {
-		var chatContainer = document.querySelector('.msger-chat');
+		var chatContainer = document.getElementById("boxChat");
 		chatContainer.scrollTop = chatContainer.scrollHeight;
 	};
-
+	$scope.scrollToBottom();
 	$scope.getFormattedTimeAgo = function (date) {
 		var currentTime = new Date();
 		var activityTime = new Date(date);
@@ -348,11 +318,7 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 			return formattedTime;
 		}
 	};
-
-
-
-
-
+	//Hàm thu hồi tin nhắn
 	$scope.revokeMessage = function (messId) {
 		$http.post('/removemess/' + messId)
 			.then(function (reponse) {
