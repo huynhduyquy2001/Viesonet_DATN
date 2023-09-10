@@ -35,7 +35,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.viesonet.AuthConfig;
+import com.viesonet.security.AuthConfig;
 import com.viesonet.dao.UsersDao;
 import com.viesonet.entity.AccountAndFollow;
 import com.viesonet.entity.Accounts;

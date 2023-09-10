@@ -9,7 +9,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
 
-import com.viesonet.AuthConfig;
+import com.viesonet.security.AuthConfig;
 import com.viesonet.entity.*;
 import com.viesonet.service.*;
 

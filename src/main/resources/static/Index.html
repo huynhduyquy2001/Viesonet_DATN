@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="myApp">
+<html>
 
 <head>
 	<!-- Required meta tags -->
@@ -46,7 +46,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 
 	<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css'>
-	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="css/style.css">
 
 	<title>Trang chủ</title>
 	<style type="text/css">
@@ -220,11 +220,10 @@
 		}
 	</style>
 
-	<script src="/js/thoiTiet.js"></script>
+	<script src="js/thoiTiet.js"></script>
 </head>
 
-<body style="padding-top: 70px;" ng-controller="myCtrl">
-
+<body style="padding-top: 70px;" ng-controller="myCtrl" ng-app="myApp">
 	<div style="transition: 0.5s;">
 		<div class="row ">
 			<div id="menuLeft" ng-include="'_menuLeft.html'"></div>
@@ -568,18 +567,21 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
 
-	<script src="/js/Index.js">
-	</script>
-	<script src="/js/main.js"></script>
-	<script src="/js/home.js"></script>
-	<script src="/js/search.js"></script>
-	<script src="/js/recommend.js"></script>
-	<script src="/js/Message.js"></script>
-	<script src="/js/profile.js"></script>
-	<script src="/js/shopping.js"></script>
-	<script src="/js/product.js"></script>
-	<script src="/js/myStore.js"></script>
+	<!-- Thư viện sweetalert2 -->
 
+
+	<script src="js/app.js"></script>
+	<script src="js/Index.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/addActive.js"></script>
+	<script src="js/home.js"></script>
+	<script src="js/search.js"></script>
+	<script src="js/recommend.js"></script>
+	<script src="js/Message.js"></script>
+	<script src="js/profile.js"></script>
+	<script src="js/shopping.js"></script>
+	<script src="js/product.js"></script>
+	<script src="js/myStore.js"></script>
 </body>
 
 </html>

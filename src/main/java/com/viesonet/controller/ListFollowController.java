@@ -26,7 +26,7 @@ import com.viesonet.service.UsersService;
 
 import jakarta.websocket.server.PathParam;
 
-import com.viesonet.AuthConfig;
+import com.viesonet.security.AuthConfig;
 import com.viesonet.dao.UsersDao;
 import com.viesonet.entity.Accounts;
 import com.viesonet.entity.Follow;
