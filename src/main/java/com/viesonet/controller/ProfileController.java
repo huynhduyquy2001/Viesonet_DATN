@@ -431,8 +431,10 @@ public class ProfileController {
 				violationTypesService.getById(violationTypeId));
 	}
 
-	@PostMapping("/shop/{userId}")
-	public Users getOtherShop(@PathVariable String userId) {
-		return usersService.findUserById(userId);
-	}
+	// @PostMapping("/shop/{userId}")
+	// public Users getOtherShop(@PathVariable String userId) {
+	// return usersService.findUserById(userId);
+	// }
+
+	// @PostMapping("/shop/")
 }

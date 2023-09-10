@@ -320,6 +320,10 @@
 		line-height: 19px;
 		/* Đảm bảo chữ số được căn giữa theo chiều dọc */
 	}
+
+	.column {
+		width: 100%;
+	}
 </style>
 
 <body>
@@ -400,10 +404,6 @@
 												data-bs-target="#exampleModal2">
 												<i class="fa-light fa-pen-to-square"></i> Tài khoản
 											</button></li>
-										<a href="#!/shop/{{UserInfo.userId}}"><button class="btn btn-warning text-end">
-												<i class="fa-light fa-pen-to-square"></i> Shop nè
-											</button></a>
-
 									</ul>
 
 									<ul class="list-unstyled d-flex align-items-center justify-content-end mx-2 gap-3"
@@ -455,7 +455,7 @@
 										tabindex="-1">
 										<i class="fa-regular fa-square-user" style="color: #5d87ff;"></i>
 										<span class="d-none d-md-block" style="color: #5D87FF;">&nbsp;
-											Theo dõi</span>
+											Đang theo dõi</span>
 									</button>
 								</li>
 								<li class="nav-item flex-fill" role="presentation">
@@ -735,7 +735,7 @@
 							aria-labelledby="pills-friends-tab" tabindex="0">
 							<div class="d-sm-flex align-items-center justify-content-between mt-3 mb-4">
 								<h3 class="mb-3 mb-sm-0 fw-semibold d-flex align-items-center">
-									Theo dõi <span
+									Đang theo dõi <span
 										class="badge text-bg-secondary fs-2 rounded-4 py-1 px-2 ms-2">{{totalFollowing}}</span>
 								</h3>
 							</div>

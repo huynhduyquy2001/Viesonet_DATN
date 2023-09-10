@@ -85,8 +85,8 @@
 											class="hide-menu">Cá nhân</b></li>
 									<br>
 									<li class="sidebar-item"><a class="sidebar-link" ng-click="handleLinkClick('')"
-											href="/" aria-expanded="false"> <span> <i
-													class="fa-sharp fa-regular fa-house"></i>
+											href="/#!/profile/{{myAccount.user.userId}}" aria-expanded="false"> <span>
+												<i class="fa-sharp fa-regular fa-house"></i>
 											</span> <span class="hide-menu">&nbsp;Trang cá nhân</span>
 										</a></li>
 									<li class="sidebar-item"><a class="sidebar-link" ng-click="handleLinkClick('')"
@@ -95,11 +95,15 @@
 											</span> <span class="hide-menu">&nbsp;Cửa hàng</span>
 										</a></li>
 									<li class="sidebar-item"><a class="sidebar-link" ng-click="handleLinkClick('')"
-											href="/" aria-expanded="false"> <span> <i
-													class="fa-sharp fa-regular fa-house"></i>
+											href="/#!/shopping/history/{{myAccount.user.userId}}" aria-expanded="false">
+											<span> <i class="fa-sharp fa-regular fa-house"></i>
 											</span> <span class="hide-menu">&nbsp;Đơn hàng</span>
 										</a></li>
-
+									<li class="sidebar-item"><a class="sidebar-link" ng-click="handleLinkClick('')"
+											href="/#!/shopping/add/{{myAccount.user.userId}}" aria-expanded="false">
+											<span> <i class="fa-sharp fa-regular fa-house"></i>
+											</span> <span class="hide-menu">&nbsp;Đặt hàng</span>
+										</a></li>
 								</ul>
 							</div>
 						</div>
