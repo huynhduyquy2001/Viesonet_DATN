@@ -18,7 +18,9 @@ import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.scheduling.annotation.EnableScheduling;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -35,7 +37,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.viesonet.AuthConfig;
+import com.viesonet.security.AuthConfig;
 import com.viesonet.dao.UsersDao;
 import com.viesonet.entity.AccountAndFollow;
 import com.viesonet.entity.Accounts;
@@ -69,8 +71,8 @@ import com.viesonet.service.ViolationsService;
 import jakarta.servlet.ServletContext;
 import net.coobird.thumbnailator.Thumbnails;
 
-@EnableScheduling
 @RestController
+@CrossOrigin("*")
 public class IndexController {
 
 	@Autowired
@@ -161,11 +163,9 @@ public class IndexController {
 		return favoritesService.findLikedPosts(userId);
 	}
 
-	@ResponseBody
 	@GetMapping("/findmyaccount")
 	public AccountAndFollow findMyAccount(Authentication authentication) {
-		Accounts account = authConfig.getLoggedInAccount(authentication);
-		String userId = account.getUserId();
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		return followService.getFollowingFollower(usersService.findUserById(userId));
 	}
 

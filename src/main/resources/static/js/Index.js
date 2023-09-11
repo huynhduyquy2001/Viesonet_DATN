@@ -1,7 +1,55 @@
 
 var app = angular.module('myApp', ['pascalprecht.translate', 'ngRoute'])
+app.config(function ($httpProvider) {
+	$httpProvider.interceptors.push('AuthInterceptor');
+})
+app.factory('AuthInterceptor', function ($q, $window) {
+	return {
+		responseError: function (rejection) {
+			if (rejection.status === 403) {
+				// Redirect to the login page
+				$window.location.href = 'login.html';
+			}
+			return $q.reject(rejection);
+		}
+	}
+})
+app.factory('apiService', function ($http) {
 
-app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScope, $location, $timeout, $interval) {
+	// Function to get the JWT token from local storage
+	function getJwtToken() {
+		// Replace 'YOUR_JWT_TOKEN_KEY' with the key you used to store the token in local storage
+		console.log(localStorage.getItem('jwtToken'))
+		return localStorage.getItem('jwtToken');
+	}
+
+	// Function to set the JWT token in the HTTP headers of the API request
+	function setAuthorizationHeader() {
+		var jwtToken = getJwtToken();
+		if (jwtToken) {
+			$http.defaults.headers.common['Authorization'] = 'Bearer ' + jwtToken;
+		}
+	}
+
+	// Function to remove the JWT token from the HTTP headers
+	function removeAuthorizationHeader() {
+		delete $http.defaults.headers.common['Authorization'];
+	}
+
+	// Expose the public methods of the factory
+	return {
+		setAuthorizationHeader: setAuthorizationHeader,
+		removeAuthorizationHeader: removeAuthorizationHeader
+	};
+});
+app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScope, $location, $timeout, $interval, apiService) {
+	apiService.setAuthorizationHeader();
+
+	$scope.isAuthenticated = function () {
+		console.log("isAuthenticated", isAuthenticated);
+		return apiService.getJwtToken() !== null;
+	};
+
 	$scope.myAccount = {};
 	$rootScope.unseenmess = 0;
 	$rootScope.check = false;
@@ -109,10 +157,12 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 			return formattedDate + '-' + formattedMonth + '-' + formattedYear;
 		}
 	};
-	$http.get('/findmyaccount')
+	$http.get('http://localhost:8080/findmyaccount')
 		.then(function (response) {
 			var myAccount = response.data;
 			$scope.myAccount = myAccount;
+			alert($scope.myAccount.user.userId);
+			console.log($scope.myAccount);
 		})
 		.catch(function (error) {
 			console.log(error);
