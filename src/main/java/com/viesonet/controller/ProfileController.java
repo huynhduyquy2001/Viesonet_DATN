@@ -81,8 +81,8 @@ public class ProfileController {
 	// Lấy thông tin về follow người dùng hiện tại
 	@GetMapping("/findmyfollow")
 	public AccountAndFollow findMyAccount() {
-		String account = SecurityContextHolder.getContext().getAuthentication().getName();
-		return followService.getFollowingFollower(usersService.findUserById(account));
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		return followService.getFollowingFollower(usersService.findUserById(userId));
 	}
 
 	// Lấy thông tin chi tiết các followers
@@ -99,9 +99,9 @@ public class ProfileController {
 
 	// Lấy thông tin chi tiết của người dùng trong bảng Users
 	@GetMapping("/findusers")
-	public Users findmyi1(Authentication authentication) {
-		Accounts account = authConfig.getLoggedInAccount(authentication);
-		return usersService.findUserById(account.getUserId());
+	public Users findmyi1() {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		return usersService.findUserById(userId);
 	}
 
 	// Lấy thông tin chi tiết của người dùng trong bảng Account
@@ -118,9 +118,9 @@ public class ProfileController {
 	}
 
 	@GetMapping("/findmyusers")
-	public Users findmyi2(Authentication authentication) {
-		Accounts account = authConfig.getLoggedInAccount(authentication);
-		return usersService.findUserById(account.getUserId());
+	public Users findmyi2() {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		return usersService.findUserById(userId);
 	}
 
 	// Đếm số bài viết của người dùng hiện tại
@@ -132,7 +132,7 @@ public class ProfileController {
 	// Phương thức này trả về thông tin người dùng (Users) dựa vào session attribute
 	// "id".
 	@GetMapping("/getUserInfo")
-	public Users getUserInfo(Authentication authentication) {
+	public Users getUserInfo() {
 		Accounts account = authConfig.getLoggedInAccount(authentication);
 		return usersService.getUserById(account.getUserId());
 	}
@@ -140,7 +140,7 @@ public class ProfileController {
 	// Phương thức này trả về thông tin tài khoản (Accounts) dựa vào session
 	// attribute "id".
 	@GetMapping("/getAccInfo")
-	public Accounts getAccInfo(Authentication authentication) {
+	public Accounts getAccInfo() {
 		Accounts account = authConfig.getLoggedInAccount(authentication);
 		return accountsService.getAccountById(account.getUserId());
 	}
@@ -156,7 +156,7 @@ public class ProfileController {
 	// liệu từ các path variable email và statusId.
 	@PostMapping("/updateAccInfo/{email}/{statusId}")
 	public void updateAccInfo(@PathVariable String email, @PathVariable String statusId,
-			Authentication authentication) {
+			 ) {
 		Accounts account = authConfig.getLoggedInAccount(authentication);
 		int id = 0;
 		if (statusId.equals("Công khai")) {
@@ -234,7 +234,7 @@ public class ProfileController {
 	@ResponseBody
 	@PostMapping("/updateBackground")
 	public String doiAnhBia(@RequestParam("photoFiles2") MultipartFile[] photoFiles,
-			@RequestParam("content") String content, Authentication authentication) {
+			@RequestParam("content") String content,  ) {
 		Accounts account = authConfig.getLoggedInAccount(authentication);
 		// Lưu bài đăng vào cơ sở dữ liệu
 		Posts myPost = postsService.post(usersService.findUserById(account.getUserId()), content);
@@ -289,7 +289,7 @@ public class ProfileController {
 	@ResponseBody
 	@PostMapping("/updateAvatar")
 	public String doiAnhDaiDien(@RequestParam("photoFiles3") MultipartFile[] photoFiles,
-			@RequestParam("content") String content, Authentication authentication) {
+			@RequestParam("content") String content,  ) {
 		Accounts account = authConfig.getLoggedInAccount(authentication);
 		// Lưu bài đăng vào cơ sở dữ liệu
 		Posts myPost = postsService.post(usersService.findUserById(account.getUserId()), content);
@@ -424,7 +424,7 @@ public class ProfileController {
 
 	@PostMapping("/user/report/{postId}/{violationTypeId}")
 	public Violations report(@PathVariable("postId") int postId, @PathVariable("violationTypeId") int violationTypeId,
-			Authentication authentication) {
+			 ) {
 		Accounts account = authConfig.getLoggedInAccount(authentication);
 
 		String userId = account.getUserId();
