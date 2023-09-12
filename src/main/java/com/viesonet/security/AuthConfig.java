@@ -85,10 +85,7 @@ public class AuthConfig { // extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .requestMatchers("/api/**", "/forgotpassword", "/quenmatkhau/**",
-                        "/change_password", "/doimatkhau2",
-                        "/register", "/dangky/**", "/images/**", "/js/**", "/css/**", "/chat", "/findlikedposts",
-                        "/private-notification")
+                .requestMatchers("/**")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -98,17 +95,6 @@ public class AuthConfig { // extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
 
         return http.build();
-    }
-
-    @Bean
-    public CorsConfigurationSource corsConfigurationSource() {
-        CorsConfiguration configuration = new CorsConfiguration();
-        configuration.addAllowedOrigin("*"); // Cho phép tất cả các origin
-        System.out.println("Ket noi da");
-        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/chat", configuration);
-
-        return source;
     }
 
     public Accounts getLoggedInAccount(Authentication authentication) {
