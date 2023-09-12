@@ -133,16 +133,16 @@ public class ProfileController {
 	// "id".
 	@GetMapping("/getUserInfo")
 	public Users getUserInfo() {
-		Accounts account = authConfig.getLoggedInAccount(authentication);
-		return usersService.getUserById(account.getUserId());
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		return usersService.getUserById(userId);
 	}
 
 	// Phương thức này trả về thông tin tài khoản (Accounts) dựa vào session
 	// attribute "id".
 	@GetMapping("/getAccInfo")
 	public Accounts getAccInfo() {
-		Accounts account = authConfig.getLoggedInAccount(authentication);
-		return accountsService.getAccountById(account.getUserId());
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		return accountsService.getAccountById(userId);
 	}
 
 	// Phương thức này thực hiện cập nhật thông tin người dùng (Users) dựa vào dữ
@@ -155,9 +155,8 @@ public class ProfileController {
 	// Phương thức này thực hiện cập nhật thông tin tài khoản (Accounts) dựa vào dữ
 	// liệu từ các path variable email và statusId.
 	@PostMapping("/updateAccInfo/{email}/{statusId}")
-	public void updateAccInfo(@PathVariable String email, @PathVariable String statusId,
-			 ) {
-		Accounts account = authConfig.getLoggedInAccount(authentication);
+	public void updateAccInfo(@PathVariable String email, @PathVariable String statusId) {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		int id = 0;
 		if (statusId.equals("Công khai")) {
 			id = 1;
@@ -166,7 +165,7 @@ public class ProfileController {
 		} else if (statusId.equals("Tạm ẩn")) {
 			id = 3;
 		}
-		accountsService.updateAccInfo(account.getUserId(), email, id);
+		accountsService.updateAccInfo(userId, email, id);
 	}
 
 	// Lấy danh sách follow
@@ -234,10 +233,10 @@ public class ProfileController {
 	@ResponseBody
 	@PostMapping("/updateBackground")
 	public String doiAnhBia(@RequestParam("photoFiles2") MultipartFile[] photoFiles,
-			@RequestParam("content") String content,  ) {
-		Accounts account = authConfig.getLoggedInAccount(authentication);
+			@RequestParam("content") String content) {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		// Lưu bài đăng vào cơ sở dữ liệu
-		Posts myPost = postsService.post(usersService.findUserById(account.getUserId()), content);
+		Posts myPost = postsService.post(usersService.findUserById(userId), content);
 		// Lưu hình ảnh vào thư mục static/images
 		if (photoFiles != null && photoFiles.length > 0) {
 			for (MultipartFile photoFile : photoFiles) {
@@ -275,7 +274,7 @@ public class ProfileController {
 					// Cập nhật ảnh bìa cho người dùng
 					if (myPost != null) {
 						String newBackgroundImageUrl = newFileName;
-						usersService.updateBackground(account.getUserId(), newBackgroundImageUrl);
+						usersService.updateBackground(userId, newBackgroundImageUrl);
 					}
 				}
 
@@ -289,10 +288,10 @@ public class ProfileController {
 	@ResponseBody
 	@PostMapping("/updateAvatar")
 	public String doiAnhDaiDien(@RequestParam("photoFiles3") MultipartFile[] photoFiles,
-			@RequestParam("content") String content,  ) {
-		Accounts account = authConfig.getLoggedInAccount(authentication);
+			@RequestParam("content") String content) {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		// Lưu bài đăng vào cơ sở dữ liệu
-		Posts myPost = postsService.post(usersService.findUserById(account.getUserId()), content);
+		Posts myPost = postsService.post(usersService.findUserById(userId), content);
 		// Lưu hình ảnh vào thư mục static/images
 		if (photoFiles != null && photoFiles.length > 0) {
 			for (MultipartFile photoFile : photoFiles) {
@@ -331,7 +330,7 @@ public class ProfileController {
 					// Cập nhật ảnh bìa cho người dùng
 					if (myPost != null) {
 						String newAvatarImageUrl = newFileName;
-						usersService.updateAvatar(account.getUserId(), newAvatarImageUrl);
+						usersService.updateAvatar(userId, newAvatarImageUrl);
 					}
 				}
 
@@ -423,11 +422,9 @@ public class ProfileController {
 	}
 
 	@PostMapping("/user/report/{postId}/{violationTypeId}")
-	public Violations report(@PathVariable("postId") int postId, @PathVariable("violationTypeId") int violationTypeId,
-			 ) {
-		Accounts account = authConfig.getLoggedInAccount(authentication);
+	public Violations report(@PathVariable("postId") int postId, @PathVariable("violationTypeId") int violationTypeId) {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
-		String userId = account.getUserId();
 		return violationService.report(usersService.getUserById(userId), postsService.findPostById(postId),
 				violationTypesService.getById(violationTypeId));
 	}
