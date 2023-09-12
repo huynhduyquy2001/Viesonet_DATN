@@ -5,11 +5,20 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
+import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.viesonet.dao.UsersDao;
+import com.viesonet.entity.AccountAndFollow;
+import com.viesonet.entity.Accounts;
+import com.viesonet.entity.Roles;
+import com.viesonet.entity.UserInformation;
 import com.viesonet.entity.Users;
 
 @Service
@@ -47,8 +56,8 @@ public class UsersService {
 		return usersDao.getById(userId);
 	}
 
-	public List<Object> findByAll() {
-		return usersDao.findByAll();
+	public List<Users> findByUserAndStaff(String userId) {
+		return usersDao.findByUserAndStaff(userId);
 	}
 
 	public List<Object> findByUserSearch(String userId) {

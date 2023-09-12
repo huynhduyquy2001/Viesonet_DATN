@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org"
+	th:replace="~{/layout/layout.html::dynamic(~{::body})}">
+
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Admin</title>
+</head>
+
+<body>
+<style>
+body {
+	font-family: 'Plus Jakarta Sans', sans-serif;
+}
+
+.circle {
+	width: 7px;
+	height: 7px;
+	background-color: rgb(225, 15, 15);
+	border-radius: 50%;
+}
+
+.image-link {
+	display: flex;
+	align-items: center;
+	text-decoration: none;
+	color: #989692;
+	margin-left: 30px;
+}
+
+.content {
+	display: flex;
+	flex-direction: column;
+	margin-left: 10px;
+}
+
+.sidebar-scrollable {
+	max-height: 100px; /* Đặt chiều cao tối đa của vùng cuộn */
+	overflow-y: auto; /* Tạo thanh cuộn dọc */
+}
+
+.sidebar-scrollable::-webkit-scrollbar {
+	width: 5px; /* Độ rộng của thanh cuộn */
+}
+
+.sidebar-scrollable::-webkit-scrollbar-thumb {
+	background-color: #888; /* Màu sắc của thanh cuộn */
+	border-radius: 4px; /* Bo tròn viền thanh cuộn */
+}
+
+.sidebar-scrollable::-webkit-scrollbar-track {
+	background-color: #f5f5f5; /* Màu sắc của vùng di chuyển thanh cuộn */
+}
+</style>
+	<!--  Row 1 -->
+	<div class="row">
+		<div class="card-title fw-semibold mb-2">
+			<nav class="navbar navbar-expand-lg navbar-light">
+				<ul class="navbar-nav">
+					<input type="checkbox" id="selectAll"
+						class="form-check-input ms-3 me-4 hover-effect"
+						style="border: 3px solid rgb(34, 31, 31);">
+					<a href="#" class="me-5" data-bs-placement="top"
+						th:onclick="deleteViolation()" th:title="#{tooltip.title}"> <i
+						class="fa-regular fa-trash-can fa-lg" style="color: black;"></i>
+					</a>
+					<small class="mt-1 me-1 text-danger" id="selectedCount"></small>
+					<small class="mt-1 my-hidden" style="display: none;"
+						th:text="#{selected}">mục đã chọn</small>
+				</ul>
+				<div class="navbar-collapse justify-content-end px-0">
+					<ul
+						class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+						<small class="me-3"> <span
+							th:text="${listPosts.number + 1}"></span> / <span
+							th:text="${listPosts.totalPages}"></span>
+						</small>
+						<a th:if="${listPosts.number > 0}" style="color: black;"
+							th:href="@{/admin/postsviolation(page=${listPosts.number - 1}, size=${listPosts.size})}"
+							class="me-4"> <i class="fa-solid fa-chevron-left fa-xs"></i>
+						</a>
+						<a th:if="${listPosts.number == 0}" style="color: black;" href="#"
+							class="me-4"> <i class="fa-solid fa-chevron-left fa-xs"></i>
+						</a>
+						<a th:if="${listPosts.number < listPosts.totalPages - 1}"
+							style="color: black;"
+							th:href="@{/admin/postsviolation(page=${listPosts.number + 1}, size=${listPosts.size})}"
+							class="me-4"> <i class="fa-solid fa-chevron-right fa-xs"></i>
+						</a>
+						<a th:unless="${listPosts.number < listPosts.totalPages - 1}"
+							style="color: black;" href="#" class="me-4"> <i
+							class="fa-solid fa-chevron-right fa-xs"></i>
+						</a>
+						<form class="position-relative">
+							<input type="search" id="search"
+								class="form-control search-chat py-2 ps-5"
+								th:placeholder="#{placeholder.userpost}"
+								style="border: 1px solid #ccc;"> <i
+								class="fa-solid fa-magnifying-glass fa-2xs position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
+						</form>
+					</ul>
+				</div>
+			</nav>
+		</div>
+		<div class="table-responsive">
+			<table class="table text-nowrap mb-0 align-middle">
+				<thead class="text-dark fs-4">
+					<tr>
+						<th class="border-bottom-0">#</th>
+						<th class="border-bottom-0">
+							<h6 class="fw-semibold mb-0" th:text="#{table.title}">Tiêu
+								đề bài viết</h6>
+						</th>
+						<th class="border-bottom-0">
+							<h6 class="fw-semibold mb-0" th:text="#{table.userpost}">Người
+								đăng</h6>
+						</th>
+						<th class="border-bottom-0">
+							<h6 class="fw-semibold mb-0" th:text="#{table.postdate}">Ngày
+								đăng</h6>
+						</th>
+						<th class="border-bottom-0">
+							<h6 class="fw-semibold mb-0 text-center"
+								th:text="#{table.detail}">Chi tiết</h6>
+						</th>
+					</tr>
+				</thead>
+				<tbody id="listTable">
+					<tr th:each="item : ${listPosts}">
+						<td class="border-bottom-0"><input type="checkbox"
+							th:value="${item[0]}"
+							class="table-checkbox form-check-input hover-effect"></td>
+						<td class="border-bottom-0"><span class="fw-normal mb-0"
+							th:text="${item[1]}"
+							style="max-width: 250px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+						</span></td>
+						<td class="border-bottom-0"
+							style="max-width: 200px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
+							<span class="fw-normal" th:text="${item[2]}"></span>
+						</td>
+						<td class="border-bottom-0">
+							<p class="mb-0 fw-normal"
+								th:text="${#dates.format(item[3], 'dd/MM/yyyy')}"></p>
+						</td>
+						<td class="border-bottom-0 text-center"><a href="#"
+							data-bs-placement="top" title="Xem chi tiết bài viết"
+							th:onclick="'detail(\'' + ${item[0]} + '\')'"> <i
+								class="fa-light fa-eye" style="color: #336cce;"></i>
+						</a></td>
+					</tr>
+
+				</tbody>
+			</table>
+		</div>
+	</div>
+	<!-- Modal -->
+	<div class="modal fade" id="exampleModal" tabindex="-1"
+		aria-labelledby="exampleModalLabel" aria-hidden="true">
+		<div
+			class="modal-dialog modal-dialog-centered modal-dialog-scrollable modal-xl">
+			<div class="modal-content" style="background-color: #fff">
+				<div class="modal-header">
+					<h4 th:text="#{table.detail}">Chi tiết</h4>
+					<button type="button" class="btn-close" data-bs-dismiss="modal"
+						aria-label="Close"></button>
+				</div>
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-5">
+							<div
+								style="margin-bottom: 20px; box-shadow: 0px 2px 4px rgba(0, 0, 0, 0.2);">
+								<a href="#" target="_blank" class="image-link" id="avatar">
+
+								</a>
+								<div id="detailContent"
+									style="margin-top: 15px; margin-left: 25px;"></div>
+							</div>
+						</div>
+						<div class="col-1"></div>
+						<div class="col-6">
+							<div class="table-responsive">
+								<table class="table">
+									<thead>
+										<tr>
+											<th scope="col" th:text="#{modal.violation}">Lý do bị vi
+												phạm</th>
+											<th scope="col" th:text="#{modal.number}" class="text-center">Số
+												lượng</th>
+										</tr>
+									</thead>
+									<tbody id="listViolation">
+
+									</tbody>
+								</table>
+							</div>
+						</div>
+					</div>
+				</div>
+			</div>
+		</div>
+	</div>
+	<script src="https://code.jquery.com/jquery-3.4.0.min.js"></script>
+	<script type="text/javascript" src="/js/postsviolations.js"></script>
+	<script
+		src="https://maxcdn.bootstrapcdn.com/bootstrap/3.4.0/js/bootstrap.bundle.min.js"></script>
+	<script
+		src="https://cdn.jsdelivr.net/npm/simplebar@5.3.0/dist/simplebar.min.js"></script>
+</body>
+
+</html>
