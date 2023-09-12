@@ -75,7 +75,7 @@
 					<div style="display: flex; align-items: center; justify-content: space-between; padding-left: 10px">
 						<div class="dropdown">
 							<div class="user-profile ">
-								<a href="#!/profile/{{post.user.userId}}"><img ng-src="/images/{{post.user.avatar }}"
+								<a href="#!/profile/{{post.user.userId}}"><img ng-src="images/{{post.user.avatar }}"
 										style="border-radius: 100%;" alt=""></a>
 								<div>
 
@@ -91,7 +91,7 @@
 								style="padding-bottom: 0.5rem; padding-top: 0.5rem; transition: 0.3s;">
 								<div class="user-profile ">
 									<a href="#!/profile/{{post.user.userId}}"><img
-											ng-src="/images/{{ post.user.avatar }}" style="border-radius: 100%;"
+											ng-src="images/{{ post.user.avatar }}" style="border-radius: 100%;"
 											alt=""></a>
 									<div>
 										<b>{{ post.user.username }}</b>
@@ -143,7 +143,7 @@
 												ng-class="{ 'active': $index === 0 }">
 
 												<img ng-click="getPostDetails(post.postId)" ng-if="image.type === true"
-													ng-src="/images/{{ image.imageUrl }}" class="w-100 d-block"
+													ng-src="images/{{ image.imageUrl }}" class="w-100 d-block"
 													alt="Slide {{$index + 1}}"
 													style="max-height: 90vh; object-fit: contain; width: 100%; transform: translateY(-50%); top: 50%; position: absolute;">
 
@@ -175,7 +175,7 @@
 									</video>
 									<!-- Single image HTML code -->
 									<img ng-if="post.images[0].type === true" ng-click="getPostDetails(post.postId)"
-										ng-src="/images/{{ post.images[0].imageUrl }}" class="w-100" alt="Single image"
+										ng-src="images/{{ post.images[0].imageUrl }}" class="w-100" alt="Single image"
 										style="max-height: 90vh; object-fit: cover; width: 100%; background-color: black;">
 								</div>
 
@@ -217,7 +217,7 @@
 						style=" background-size: cover; color: #234662; padding: 0; width: 100%; max-height: 188px; border-radius: 3px; position: relative;">
 						<div id="weather-info"
 							style=" margin: 0; padding: 10px; border: 1px solid #ebf1f6; margin-bottom: 1rem; padding-bottom: 0px;">
-							<img src="/images/thoiTiet.png" alt=""
+							<img src="images/thoiTiet.png" alt=""
 								style="position: absolute; width: 7rem; top: 0; right: 0;">
 							<ul style="font-size: 13px">
 								<li><b>{{ 'TP' | translate }}:</b> <span id="city"></span></li>
@@ -240,7 +240,7 @@
 				style=" border: none; background-color: #f8f9fa!important;">
 				<div class="card-body d-flex align-items-center gap-3">
 					<a href="#!/profile/BZOL98493464"><img class="rounded-circle" width="40" height="40"
-							style="object-fit: cover;" src="/images/{{user.avatar}}"></a>
+							style="object-fit: cover;" src="images/{{user.avatar}}"></a>
 					<div>
 						<h5 class="fw-semibold mb-0 ng-binding" style="font-size: 1rem;font-weight: 600 !important">
 							{{user.username}}</h5>
@@ -261,7 +261,7 @@
 						<div class="username-dt dpbg-1"
 							style="background-image: url(images/{{myAccount.user.background}}); background-size: cover;">
 							<div class="usr-pic">
-								<img ng-src="/images/{{myAccount.user.avatar}}" alt="">
+								<img ng-src="images/{{myAccount.user.avatar}}" alt="">
 							</div>
 						</div>
 					</a>
@@ -376,7 +376,7 @@
 										<div class="carousel-item"
 											ng-repeat="image in postDetails.images track by $index"
 											ng-class="{ 'active': $index === 0 }">
-											<img ng-src="/images/{{ image.imageUrl }}" class="w-100 d-block"
+											<img ng-src="images/{{ image.imageUrl }}" class="w-100 d-block"
 												alt="Slide {{$index + 1}} ">
 										</div>
 									</div>
@@ -396,7 +396,7 @@
 							<div ng-if="postDetails.images.length === 1"
 								style="display: flex; justify-items: center; height: 90vh;">
 								<!-- Single image HTML code -->
-								<img ng-src="/images/{{ postDetails.images[0].imageUrl }}" class="w-100"
+								<img ng-src="images/{{ postDetails.images[0].imageUrl }}" class="w-100"
 									alt="Single image"
 									style=" object-fit: contain; max-height: 100vh; border-radius: 10px; border-radius: 10px;">
 
@@ -411,7 +411,7 @@
 									<div style="display: flex; align-items: center; justify-content: space-between;">
 										<div class="user-profile ">
 											<a href="/nguoiDung/{{postDetails.user.userId}}"><img
-													ng-src="/images/{{postDetails.user.avatar}}"
+													ng-src="images/{{postDetails.user.avatar}}"
 													style="border-radius: 100%;" alt=""></a>
 											<div>
 
@@ -455,7 +455,7 @@
 										ng-repeat="comment in postComments | limitTo:numOfCommentsToShow track by comment.commentId">
 										<div class="msg ng-scope left-msg" ng-class="left-msg">
 											<div class="msg-img"
-												style="background-image: url(/images/{{comment.user.avatar}}); transform: translateY(-50%); border: 1px solid #ebf1f6;">
+												style="background-image: url(images/{{comment.user.avatar}}); transform: translateY(-50%); border: 1px solid #ebf1f6;">
 											</div>
 											<div class="msg-bubble" style="border-radius: 15px;">
 												<div>
@@ -493,8 +493,7 @@
 
 										<div ng-show="o_reply" class="user-profile  img-thumbnail ng-scope"
 											style="box-sizing: border-box; padding: 4px; border-radius: 5px; background-color: white; margin-bottom: 5px; margin-left: 5rem; width: 85%; border: 1px solid #dee2e6;">
-											<img ng-src="/images/{{myAccount.user.avatar}}" class="img-thumbnail"
-												alt="">
+											<img ng-src="images/{{myAccount.user.avatar}}" class="img-thumbnail" alt="">
 											<div style="width: 70%">
 												<small style="font-size: 12px; font-weight: 600;" class="ng-binding"> <i
 														class="fa-regular fa-tag"></i> <small class="ng-binding">
@@ -527,7 +526,7 @@
 												<div class="msg ng-scope" ng-class="left-msg"
 													style="margin-left: 50px;">
 													<div class="msg-img"
-														style="background-image: url(/images/{{obj.responder.avatar}}); transform: translateY(-50%); border: 1px solid #ebf1f6;">
+														style="background-image: url(images/{{obj.responder.avatar}}); transform: translateY(-50%); border: 1px solid #ebf1f6;">
 													</div>
 													<div class="msg-bubble" style="border-radius: 15px;">
 
@@ -571,8 +570,8 @@
 
 												<div ng-show="o_reply2" class="user-profile  img-thumbnail ng-scope"
 													style="box-sizing: border-box; padding: 4px; border-radius: 5px; background-color: white; margin-bottom: 5px; margin-left: 5rem; width: 85%">
-													<img ng-src="/images/{{myAccount.user.avatar}}"
-														class="img-thumbnail" alt="">
+													<img ng-src="images/{{myAccount.user.avatar}}" class="img-thumbnail"
+														alt="">
 													<div style="width: 65%">
 														<small style="font-size: 12px;" class="ng-binding">
 															<i class="fa-regular fa-tag"></i> <small

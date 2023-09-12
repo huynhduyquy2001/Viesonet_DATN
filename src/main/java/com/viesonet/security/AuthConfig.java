@@ -19,6 +19,9 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.viesonet.entity.Accounts;
 import com.viesonet.service.AccountsService;
@@ -84,7 +87,8 @@ public class AuthConfig { // extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 .requestMatchers("/api/**", "/forgotpassword", "/quenmatkhau/**",
                         "/change_password", "/doimatkhau2",
-                        "/register", "/dangky/**", "/images/**", "/js/**", "/css/**")
+                        "/register", "/dangky/**", "/images/**", "/js/**", "/css/**", "/chat", "/findlikedposts",
+                        "/private-notification")
                 .permitAll()
                 .anyRequest()
                 .authenticated()
@@ -92,7 +96,19 @@ public class AuthConfig { // extends WebSecurityConfigurerAdapter {
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+
         return http.build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.addAllowedOrigin("*"); // Cho phép tất cả các origin
+        System.out.println("Ket noi da");
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/chat", configuration);
+
+        return source;
     }
 
     public Accounts getLoggedInAccount(Authentication authentication) {

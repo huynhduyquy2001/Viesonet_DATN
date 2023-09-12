@@ -15,7 +15,6 @@ app.factory('AuthInterceptor', function ($q, $window) {
 	}
 })
 app.factory('apiService', function ($http) {
-
 	// Function to get the JWT token from local storage
 	function getJwtToken() {
 		// Replace 'YOUR_JWT_TOKEN_KEY' with the key you used to store the token in local storage
@@ -50,6 +49,11 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 		return apiService.getJwtToken() !== null;
 	};
 
+	var findMyAccount = "http://localhost:8080/findmyaccount";
+	var getUnseenMess = "http://localhost:8080/getunseenmessage";
+	var getChatlistwithothers = "http://localhost:8080/chatlistwithothers";
+	var loadnotification = "http://localhost:8080/loadnotification";
+	var loadallnotification = "http://localhost:8080/loadallnotification"
 	$scope.myAccount = {};
 	$rootScope.unseenmess = 0;
 	$rootScope.check = false;
@@ -62,14 +66,14 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 	$scope.newMessMini = '';
 	$rootScope.ListMess = [];
 	var sound = new Howl({
-		src: ['/images/nhacchuong2.mp3']
+		src: ['images/nhacchuong2.mp3']
 	});
 	// Hàm để phát âm thanh
 	$scope.playNotificationSound = function () {
 		sound.play();
 	};
 
-	$http.get('/getusersmess')
+	$http.get(getChatlistwithothers)
 		.then(function (response) {
 			$scope.ListUsersMess = response.data;
 		})
@@ -157,11 +161,10 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 			return formattedDate + '-' + formattedMonth + '-' + formattedYear;
 		}
 	};
-	$http.get('http://localhost:8080/findmyaccount')
+	$http.get(findMyAccount)
 		.then(function (response) {
 			var myAccount = response.data;
 			$scope.myAccount = myAccount;
-			alert($scope.myAccount.user.userId);
 			console.log($scope.myAccount);
 		})
 		.catch(function (error) {
@@ -173,7 +176,7 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 		localStorage.setItem('myAppLangKey', langKey); // Lưu ngôn ngữ đã chọn vào localStorages
 	};
 	// Kiểm tra xem còn tin nhắn nào chưa đọc không
-	$http.get('/getunseenmessage')
+	$http.get(getUnseenMess)
 		.then(function (response) {
 			$rootScope.check = response.data > 0;
 			$rootScope.unseenmess = response.data;
@@ -184,11 +187,11 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 
 	//tìm người mình nhắn tin và danh sách tin nhắn với người đó
 	$scope.getMess = function (receiverId) {
-		$http.get('/getUser/' + receiverId)
+		$http.get('http://localhost:8080/getUser/' + receiverId)
 			.then(function (response) {
 				$scope.receiver = response.data;
 			})
-		$http.get('/getmess2/' + receiverId)
+		$http.get('http://localhost:8080/getmess2/' + receiverId)
 			.then(function (response) {
 				$rootScope.ListMess = response.data;
 
@@ -215,7 +218,7 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 
 	//Hàm thu hồi tin nhắn
 	$scope.revokeMessage = function (messId) {
-		$http.post('/removemess/' + messId)
+		$http.post('http://localhost:8080/removemess/' + messId)
 			.then(function (reponse) {
 				var messToUpdate = $scope.ListMess.find(function (mess) {
 					return mess.messId === messId;
@@ -251,7 +254,7 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 	$scope.hasNewNotification = false;
 	$scope.notificationNumber = [];
 	//Load thông báo chưa đọc
-	$http.get('/loadnotification')
+	$http.get(loadnotification)
 		.then(function (response) {
 			var data = response.data;
 			console.log(data)
@@ -267,7 +270,7 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 			console.log(error);
 		});
 	//Load tất cả thông báo
-	$http.get('/loadallnotification')
+	$http.get(loadallnotification)
 		.then(function (response) {
 			$scope.allNotification = response.data;
 		})
@@ -276,10 +279,10 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 		});
 	//Kết nối websocket
 	$scope.ConnectNotification = function () {
-		var socket = new SockJS('/private-notification');
+		var socket = new SockJS('http://localhost:8080/private-notification');
 		var stompClient = Stomp.over(socket);
 		stompClient.connect({}, function (frame) {
-			stompClient.subscribe('/private-user', function (response) {
+			stompClient.subscribe('http://localhost:8080/private-user', function (response) {
 
 				var data = JSON.parse(response.body)
 				// Kiểm tra điều kiện đúng với user hiện tại thì thêm thông báo mới
@@ -302,19 +305,17 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 
 	//Kết nối khi mở trang web
 	$scope.ConnectNotification();
-	// Hàm này sẽ được gọi sau khi ng-include hoàn tất nạp tập tin "_menuLeft.html"
-
-	// Thay đổi URL SockJS tại đây nếu cần thiết
-	var sockJSUrl = '/chat';
 
 	// Tạo một đối tượng SockJS bằng cách truyền URL SockJS
-	var socket = new SockJS(sockJSUrl);
+	var socket = new SockJS("http://localhost:8080/chat"); // Thay thế bằng đúng địa chỉ của máy chủ WebSocket
 
 	// Tạo một kết nối thông qua Stomp over SockJS
 	var stompClient = Stomp.over(socket);
 
 	// Khi kết nối WebSocket thành công
 	stompClient.connect({}, function (frame) {
+		alert("Đã kết nối")
+		console.log('Connected: ' + frame);
 		// Đăng ký hàm xử lý khi nhận thông điệp từ server
 		// Lắng nghe các tin nhắn được gửi về cho người dùng
 		stompClient.subscribe('/user/' + $scope.myAccount.user.userId + '/queue/receiveMessage', function (message) {
@@ -335,7 +336,7 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 					$scope.playNotificationSound();
 				}
 				//cập nhật lại danh sách người đang nhắn tin với mình
-				$http.get('/getusersmess')
+				$http.get('http://localhost:8080/getusersmess')
 					.then(function (response) {
 						$scope.ListUsersMess = response.data;
 						//$scope.playNotificationSound();
@@ -370,13 +371,13 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 			content: content
 		};
 		// Lưu tin nhắn vào cơ sở dữ liệu
-		$http.post('/savemess', message)
+		$http.post('http://localhost:8080/savemess', message)
 			.then(function (response) {
 				// Hàm gửi tin nhắn qua websocket
 				stompClient.send('/app/sendnewmess', {}, JSON.stringify(response.data));
-				$http.post('/seen/' + receiver)
+				$http.post('http://localhost:8080/seen/' + receiver)
 					.then(function (response) {
-						$http.get('/getunseenmessage')
+						$http.get(getChatlistwithothers)
 							.then(function (response) {
 								$rootScope.check = response.data > 0;
 								$rootScope.unseenmess = response.data;
@@ -411,7 +412,7 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 
 	//Ẩn tất cả thông báo khi click vào xem
 	$scope.hideNotification = function () {
-		$http.post('/setHideNotification', $scope.notification)
+		$http.post('http://localhost:8080/setHideNotification', $scope.notification)
 			.then(function (response) {
 				// Xử lý phản hồi từ backend nếu cần
 			})
@@ -424,7 +425,7 @@ app.controller('myCtrl', function ($scope, $http, $translate, $window, $rootScop
 
 	//Xóa thông báo
 	$scope.deleteNotification = function (notificationId) {
-		$http.delete('/deleteNotification/' + notificationId)
+		$http.delete('http://localhost:8080/deleteNotification/' + notificationId)
 			.then(function (response) {
 				$scope.allNotification = $scope.allNotification.filter(function (allNotification) {
 					return allNotification.notificationId !== notificationId;

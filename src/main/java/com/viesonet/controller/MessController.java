@@ -46,6 +46,7 @@ import jakarta.servlet.ServletContext;
 import net.coobird.thumbnailator.Thumbnails;
 
 @RestController
+@CrossOrigin("*")
 public class MessController {
 
 	@Autowired
@@ -142,7 +143,7 @@ public class MessController {
 		return messageService.getListMess(myId, userId);
 	}
 
-	@GetMapping("/getusersmess")
+	@GetMapping("/chatlistwithothers")
 	public List<Object> getUsersMess(Authentication authentication) {
 		String myId = authConfig.getLoggedInAccount(authentication).getUserId();
 		return messageService.getListUsersMess(myId);
