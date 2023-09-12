@@ -1,4 +1,5 @@
 package com.viesonet.handler;
+
 import org.springframework.security.web.authentication.SimpleUrlAuthenticationSuccessHandler;
 import org.springframework.stereotype.Component;
 
@@ -12,13 +13,13 @@ import java.io.IOException;
 public class CustomAuthenticationSuccessHandler extends SimpleUrlAuthenticationSuccessHandler {
 
     @Override
-    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response, org.springframework.security.core.Authentication authentication) throws IOException, ServletException {
+    public void onAuthenticationSuccess(HttpServletRequest request, HttpServletResponse response,
+            org.springframework.security.core.Authentication authentication) throws IOException, ServletException {
         // Xử lý các tác vụ sau khi đăng nhập thành công
         // Ví dụ: Ghi log, thực hiện các hành động tùy chỉnh khác
         System.out.println("Đăng nhập thành công!");
 
         // Chuyển hướng đến trang có URL "/"
-        getRedirectStrategy().sendRedirect(request, response, "/");
+        getRedirectStrategy().sendRedirect(request, response, "Index.html");
     }
 }
-

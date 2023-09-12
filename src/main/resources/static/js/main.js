@@ -9,7 +9,7 @@ app.config(function ($translateProvider, $routeProvider) {
 	}).when('/search', {
 		templateUrl: "ngview/search.html",
 		controller: 'SearchController'
-	}).when('recommend', {
+	}).when('/recommend', {
 		templateUrl: "ngview/recommend.html",
 		controller: 'RecommendController'
 	}).when('/message', {
@@ -27,6 +27,9 @@ app.config(function ($translateProvider, $routeProvider) {
 	}).when('/favouriteProduct', {
 		templateUrl: "ngview/favouriteProducts.html",
 		controller: 'FavouriteProductsController'
+	}).when('/shopping', {
+		templateUrl: "ngview/shopping.html",
+		controller: 'ShoppingController'
 	});
 	// Set the default language
 	var storedLanguage = localStorage.getItem('myAppLangKey') || 'vie';

@@ -3,12 +3,13 @@ package com.viesonet.handler;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.springframework.context.annotation.Bean;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.socket.*;
 import org.springframework.web.socket.handler.*;
 
 @CrossOrigin("*")
-public class MyWebSocketHandler extends TextWebSocketHandler {
+public class MyHandler extends TextWebSocketHandler {
     private final Set<WebSocketSession> sessions = new HashSet<>();
 
     @Override
@@ -27,4 +28,5 @@ public class MyWebSocketHandler extends TextWebSocketHandler {
             s.sendMessage(message);
         }
     }
+
 }
