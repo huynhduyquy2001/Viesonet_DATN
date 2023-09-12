@@ -29,15 +29,18 @@ app.config(function ($translateProvider, $routeProvider) {
 			templateUrl: "/ngview/productDetails.html",
 			controller: 'ProductController'
 		})
-		.when('/shopping/history/:userId', {
-			templateUrl: "/ngview/history.html",
+		.when('/shopping/order/:userId', {
+			templateUrl: "/ngview/order.html",
 			controller: 'ProductController'
 		})
 		.when('/shopping/add/:userId', {
 			templateUrl: "/ngview/addorder.html",
 			controller: 'ProductController'
 		})
-		;
+		.when('/shoppingcart', {
+			templateUrl: "/ngview/shoppingcart.html",
+			controller: 'ShoppingCartController'
+		})
 	// Set the default language
 	var storedLanguage = localStorage.getItem('myAppLangKey') || 'vie';
 	$translateProvider.preferredLanguage(storedLanguage);
