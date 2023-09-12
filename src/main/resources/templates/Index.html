@@ -186,6 +186,12 @@
 				flex: 0 0 100%;
 				max-width: 100%;
 			}
+
+			.view-col-lg-11{
+				flex: 0 0 auto;
+    			width: 100%;
+			}
+			
 		}
 
 		.rotate-icon {
@@ -203,6 +209,7 @@
 			#menuLeft-toggle {
 				display: block !important;
 			}
+
 		}
 
 		@media (max-width: 768px) {
@@ -217,6 +224,19 @@
 			top: 0;
 			left: 0;
 			box-shadow: none;
+		}
+
+		@media screen and (max-width: 860px){
+			.view-col-lg-11{
+				font-size: 14px;
+			}
+			
+		    h5{
+				font-size: 16px;
+			}
+		    h6{
+				font-size: 14px;
+			}
 		}
 	</style>
 
@@ -567,19 +587,21 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-
-	<script src="/js/Index.js">
-	</script>
+	<script src="/js/apexcharts.min.js"></script>
+	<script src="https://cdn.jsdelivr.net/npm/simplebar@5.3.0/dist/simplebar.min.js"></script>
+	<script src="/js/Index.js"></script>
 	<script src="/js/main.js"></script>
 	<script src="/js/home.js"></script>
 	<script src="/js/search.js"></script>
 	<script src="/js/recommend.js"></script>
 	<script src="/js/Message.js"></script>
 	<script src="/js/profile.js"></script>
+	<script src="/js/report.js"></script>
 	<script src="/js/shopping.js"></script>
 	<script src="/js/product.js"></script>
 	<script src="/js/myStore.js"></script>
-
+	<script src="/js/usermanager.js"></script>
+	<script src="/js/postsviolation.js"></script>
 </body>
 
 </html>
