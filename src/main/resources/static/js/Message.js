@@ -83,6 +83,11 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 	//đánh dấu là đã xem
 	$http.post('/seen/' + $routeParams.otherId)
 		.then(function (response) {
+			var check = $scope.ListUsersMess.find(function (obj) {
+				return obj[2] === $routeParams.otherId;
+			});
+			check[11] = 0;
+			//$scope.$apply();
 		});
 	$http.get('/getunseenmessage')
 		.then(function (response) {
@@ -152,7 +157,16 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 				}
 				if ($scope.myAccount.user.userId !== newMess.sender.userId) {
 					$scope.playNotificationSound();
+
 				}
+				$http.get('/getunseenmessage')
+					.then(function (response) {
+						$rootScope.check = response.data > 0;
+						$rootScope.unseenmess = response.data;
+					})
+					.catch(function (error) {
+						console.log(error);
+					});
 				//cập nhật lại danh sách người đang nhắn tin với mình
 				$http.get('/getusersmess')
 					.then(function (response) {
@@ -194,14 +208,15 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 				stompClient.send('/app/sendnewmess', {}, JSON.stringify(response.data));
 				$http.post('/seen/' + $routeParams.otherId)
 					.then(function (response) {
-						$http.get('/getunseenmessage')
-							.then(function (response) {
-								$rootScope.check = response.data > 0;
-								$rootScope.unseenmess = response.data;
-							})
-							.catch(function (error) {
-								console.log(error);
-							});
+						// $http.get('/getunseenmessage')
+						// 	.then(function (response) {
+						// 		$rootScope.check = response.data > 0;
+						// 		$rootScope.unseenmess = response.data;
+						// 		alert($rootScope.unseenmess);
+						// 	})
+						// 	.catch(function (error) {
+						// 		console.log(error);
+						// 	});
 					});
 				// Nếu người nhận đã tồn tại trong danh sách, cập nhật thông tin tin nhắn mới nhất
 				// var newObj = {
@@ -354,4 +369,5 @@ app.controller('MessController', function ($scope, $rootScope, $window, $http, $
 				console.log(error);
 			});
 	};
+
 });

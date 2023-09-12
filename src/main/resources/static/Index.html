@@ -1,5 +1,5 @@
 <!doctype html>
-<html ng-app="myApp">
+<html>
 
 <head>
 	<!-- Required meta tags -->
@@ -46,7 +46,7 @@
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/howler/2.2.3/howler.min.js"></script>
 
 	<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css'>
-	<link rel="stylesheet" href="/css/style.css">
+	<link rel="stylesheet" href="css/style.css">
 
 	<title>Trang chủ</title>
 	<style type="text/css">
@@ -186,12 +186,6 @@
 				flex: 0 0 100%;
 				max-width: 100%;
 			}
-
-			.view-col-lg-11{
-				flex: 0 0 auto;
-    			width: 100%;
-			}
-			
 		}
 
 		.rotate-icon {
@@ -209,7 +203,6 @@
 			#menuLeft-toggle {
 				display: block !important;
 			}
-
 		}
 
 		@media (max-width: 768px) {
@@ -225,26 +218,12 @@
 			left: 0;
 			box-shadow: none;
 		}
-
-		@media screen and (max-width: 860px){
-			.view-col-lg-11{
-				font-size: 14px;
-			}
-			
-		    h5{
-				font-size: 16px;
-			}
-		    h6{
-				font-size: 14px;
-			}
-		}
 	</style>
 
-	<script src="/js/thoiTiet.js"></script>
+	<script src="js/thoiTiet.js"></script>
 </head>
 
-<body style="padding-top: 70px;" ng-controller="myCtrl">
-
+<body style="padding-top: 70px;" ng-controller="myCtrl" ng-app="myApp">
 	<div style="transition: 0.5s;">
 		<div class="row ">
 			<div id="menuLeft" ng-include="'_menuLeft.html'"></div>
@@ -341,7 +320,7 @@
 												<div class="carousel-item"
 													ng-repeat="image in postDetails.images track by $index"
 													ng-class="{ 'active': $index === 0 }">
-													<img ng-src="/images/{{ image.imageUrl }}" class="w-100 d-block"
+													<img ng-src="images/{{ image.imageUrl }}" class="w-100 d-block"
 														alt="Slide {{$index + 1}} ">
 												</div>
 											</div>
@@ -362,7 +341,7 @@
 									</div>
 									<div ng-if="postDetails.images.length === 1">
 										<!-- Single image HTML code -->
-										<img ng-src="/images/{{ postDetails.images[0].imageUrl }}" class="w-100"
+										<img ng-src="images/{{ postDetails.images[0].imageUrl }}" class="w-100"
 											alt="Single image"
 											style="margin-top: 10px; margin-bottom: 10px; max-height: 90vh; object-fit: cover;">
 
@@ -379,8 +358,8 @@
 								<div style="display: flex; align-items: center; justify-content: space-between;">
 									<div class="user-profile ">
 										<a href="/nguoiDung/{{postDetails.user.userId}}"><img
-												ng-src="/images/{{postDetails.user.avatar}}"
-												style="border-radius: 100%;" alt=""></a>
+												ng-src="images/{{postDetails.user.avatar}}" style="border-radius: 100%;"
+												alt=""></a>
 										<div>
 
 											<span
@@ -420,7 +399,7 @@
 								<div ng-repeat="comment in postComments | limitTo:numOfCommentsToShow">
 									<div class="msg ng-scope left-msg" ng-class="left-msg">
 										<div class="msg-img"
-											style="background-image: url(/images/{{comment.user.avatar}}); transform: translateY(-100%); border: 1px solid #ebf1f6;">
+											style="background-image: url(images/{{comment.user.avatar}}); transform: translateY(-100%); border: 1px solid #ebf1f6;">
 										</div>
 										<div class="msg-bubble" style="border-radius: 15px;">
 
@@ -460,7 +439,7 @@
 									<div ng-show="o_reply"
 										class="user-profile animate__animated animate__headShake img-thumbnail ng-scope"
 										style="box-sizing: border-box; padding: 4px; border-radius: 5px; background-color: white; margin-bottom: 5px; margin-left: 5rem; width: 85%; border: 1px solid #dee2e6;">
-										<img ng-src="/images/{{myAccount.user.avatar}}" class="img-thumbnail" alt="">
+										<img ng-src="images/{{myAccount.user.avatar}}" class="img-thumbnail" alt="">
 										<div style="width: 70%">
 											<small style="font-size: 12px;" class="ng-binding"> <i
 													class="fa-regular fa-tag"></i> <small style="font-size: 12px;"
@@ -494,7 +473,7 @@
 											<div class="msg ng-scope left-msg" ng-class="left-msg"
 												style="margin-left: 4rem;">
 												<div class="msg-img"
-													style="background-image: url(/images/{{obj.responder.avatar}}); transform: translateY(-100%); border: 1px solid #ebf1f6;">
+													style="background-image: url(images/{{obj.responder.avatar}}); transform: translateY(-100%); border: 1px solid #ebf1f6;">
 												</div>
 												<div class="msg-bubble" style="border-radius: 15px;">
 
@@ -533,7 +512,7 @@
 											<div ng-show="o_reply2"
 												class="user-profile animate__animated animate__headShake img-thumbnail ng-scope"
 												style="box-sizing: border-box; padding: 4px; border-radius: 5px; background-color: white; margin-bottom: 5px; margin-left: 5rem; width: 85%">
-												<img ng-src="/images/{{myAccount.user.avatar}}" class="img-thumbnail"
+												<img ng-src="images/{{myAccount.user.avatar}}" class="img-thumbnail"
 													alt="">
 												<div style="width: 65%">
 													<small style="font-size: 12px;" class="ng-binding">
@@ -587,21 +566,21 @@
 
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/sockjs-client/1.5.1/sockjs.min.js"></script>
 	<script src="https://cdnjs.cloudflare.com/ajax/libs/stomp.js/2.3.3/stomp.min.js"></script>
-	<script src="/js/apexcharts.min.js"></script>
-	<script src="https://cdn.jsdelivr.net/npm/simplebar@5.3.0/dist/simplebar.min.js"></script>
-	<script src="/js/Index.js"></script>
-	<script src="/js/main.js"></script>
-	<script src="/js/home.js"></script>
-	<script src="/js/search.js"></script>
-	<script src="/js/recommend.js"></script>
-	<script src="/js/Message.js"></script>
-	<script src="/js/profile.js"></script>
-	<script src="/js/report.js"></script>
-	<script src="/js/shopping.js"></script>
-	<script src="/js/product.js"></script>
-	<script src="/js/myStore.js"></script>
-	<script src="/js/usermanager.js"></script>
-	<script src="/js/postsviolation.js"></script>
+
+	<!-- Thư viện sweetalert2 -->
+	<script src="js/app.js"></script>
+	<script src="js/Index.js"></script>
+	<script src="js/main.js"></script>
+	<script src="js/home.js"></script>
+	<!-- <script src="js/addActive.js"></script>
+	
+	<script src="js/search.js"></script>
+	<script src="js/recommend.js"></script>
+	<script src="js/Message.js"></script>
+	<script src="js/profile.js"></script>
+	<script src="js/shopping.js"></script>
+	<script src="js/product.js"></script>
+	<script src="js/myStore.js"></script> -->
 </body>
 
 </html>

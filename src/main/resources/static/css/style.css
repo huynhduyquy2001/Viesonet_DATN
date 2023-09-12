@@ -1855,6 +1855,57 @@ h3 {
 	color: white;
 }
 
+.add--btn {
+	padding: 0.8em 1em;
+	border: 1px solid #007ACC;
+	border-radius: 7px;
+	font-size: 0.8em;
+	font-weight: 700;
+	letter-spacing: 1.3px;
+	color: #007ACC;
+	transition: 0.3s ease-in-out;
+	cursor: pointer;
+	background-color: #fff;
+
+	&:active {
+		transform: scale(0.97);
+	}
+}
+
+.add--btn:hover {
+	box-shadow: 2px 2px 15px -7px #007ACC;
+}
+
+.add--btn:focus {
+	background-color: #007ACC;
+	color: white;
+}
+
+.dislike--btn {
+	padding: 0.8em 1em;
+	border: 1px solid #ff3f40;
+	border-radius: 7px;
+	font-size: 0.8em;
+	font-weight: 700;
+	letter-spacing: 1.3px;
+	color: #ff3f40;
+	transition: 0.3s ease-in-out;
+	cursor: pointer;
+	background-color: #fff;
+
+	&:active {
+		transform: scale(0.97);
+	}
+}
+
+.dislike--btn:hover {
+	box-shadow: 2px 2px 15px -7px #ff3f40;
+}
+
+.dislike--btn:focus {
+	background-color: #ff3f40;
+	color: white;
+}
 
 .photo-album ul {
 	display: flex;
@@ -2123,6 +2174,28 @@ footer {
 		/* Khi hover vào .col-md-6, hiển thị nút */
 	}
 
+	.add--btn {
+		display: none;
+		/* Ban đầu ẩn nút */
+	}
+
+	.frame:hover .add--btn {
+		display: inline-block;
+		margin-right: 10px;
+		/* Khi hover vào .col-md-6, hiển thị nút */
+	}
+
+	.dislike--btn {
+		display: none;
+		/* Ban đầu ẩn nút */
+	}
+
+	.frame:hover .dislike--btn {
+		display: inline-block;
+		margin-right: 10px;
+		/* Khi hover vào .col-md-6, hiển thị nút */
+	}
+
 	/* CSS ẩn class .price khi hover vào .frame */
 	.frame:hover .price {
 		display: none;
@@ -2231,10 +2304,11 @@ a {
 
 #boxchatMini {
 	bottom: -500px;
+	opacity: 0;
 }
 
 .hver:hover {
-	background-color: rgba(93, 135, 255, 0.1);
+	background-color: #74b9ff;
 	color: #5D87FF;
 }
 
@@ -2308,4 +2382,23 @@ th {
 
 .table tbody tr td {
 	vertical-align: middle;
+}
+
+.nav-tabs .nav-link.active {
+	background-size: 100% 2px;
+	transition: background-size 0.3s ease-in-out;
+	background-color: transparent;
+}
+
+.nav-tabs .nav-link {
+	border: none;
+	background-image: linear-gradient(to right, blue, blue);
+	background-size: 0% 2px;
+	background-repeat: no-repeat;
+	background-position: 0 100%;
+	transition: background-size 0.3s ease-in-out;
+}
+
+.nav-tabs {
+	border-bottom: none;
 }

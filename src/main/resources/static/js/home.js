@@ -22,7 +22,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 		localStorage.setItem('myAppLangKey', langKey); // Lưu ngôn ngữ đã chọn vào localStorage
 	};
 	// Kiểm tra xem còn tin nhắn nào chưa đọc không
-	$http.get('/getunseenmessage')
+	$http.get('http://localhost:8080/getunseenmessage')
 		.then(function (response) {
 			$rootScope.check = response.data > 0;
 			$rootScope.unseenmess = response.data;
@@ -36,7 +36,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 	};
 
 	// Kiểm tra xem còn tin nhắn nào chưa đọc không
-	$http.get('/findfollowing')
+	$http.get('http://localhost:8080/findfollowing')
 		.then(function (response) {
 			$scope.followings = response.data;
 			$scope.totalFollowing = response.data.length;
@@ -46,7 +46,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 		});
 
 	//kiểm tra xem còn tin nhắn nào chưa đọc không
-	$http.get('/getunseenmessage')
+	$http.get('http://localhost:8080/getunseenmessage')
 		.then(function (response) {
 			var count = response.data;
 			if (count > 0) {
@@ -59,7 +59,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 		});
 
 	//Lấy danh sách vi phạm
-	$http.get('/getviolations')
+	$http.get('http://localhost:8080/getviolations')
 		.then(function (response) {
 			$scope.violations = response.data;
 
@@ -69,7 +69,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 		});
 
 	$scope.loadMore = function () {
-		$http.get('/get-more-posts/' + $scope.page)
+		$http.get('http://localhost:8080/get-more-posts/' + $scope.page)
 			.then(function (response) {
 				var newPosts = response.data;
 				if (newPosts.length > 0) {
@@ -86,7 +86,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 	$scope.loadMore();
 
 
-	$http.get('/findlikedposts')
+	$http.get('http://localhost:8080/findlikedposts')
 		.then(function (response) {
 			var likedPosts = response.data;
 			$scope.likedPosts = likedPosts;
@@ -121,7 +121,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 			})
 			return;
 		}
-		$http.post('/report/' + postId + '/' + $scope.selectedViolationType)
+		$http.post('http://localhost:8080/report/' + postId + '/' + $scope.selectedViolationType)
 			.then(function (response) {
 				const Toast = Swal.mixin({
 					toast: true,
@@ -149,8 +149,8 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 
 	$scope.likePost = function (postId) {
 		var likedIndex = $scope.likedPosts.indexOf(postId.toString());
-		var likeEndpoint = '/likepost/' + postId;
-		var dislikeEndpoint = '/didlikepost/' + postId;
+		var likeEndpoint = 'http://localhost:8080/likepost/' + postId;
+		var dislikeEndpoint = 'http://localhost:8080/didlikepost/' + postId;
 
 		// Nếu postId chưa tồn tại trong mảng likedPosts
 		if (likedIndex === -1) {
@@ -202,7 +202,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 	};
 
 	$scope.getPostDetails = function (postId) {
-		$http.get('/findpostcomments/' + postId)
+		$http.get('http://localhost:8080/findpostcomments/' + postId)
 			.then(function (response) {
 				var count = response.data;
 				if (count > 0) {
@@ -213,7 +213,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 				console.log(error);
 			});
 	}
-	$http.get('/findlikedposts')
+	$http.get('http://localhost:8080/findlikedposts')
 		.then(function (response) {
 			var likedPosts = response.data;
 			$scope.likedPosts = likedPosts;
@@ -222,7 +222,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 			console.log(error);
 		});
 
-	$http.get('/findmyaccount')
+	$http.get('http://localhost:8080/findmyaccount')
 		.then(function (response) {
 			var myAccount = response.data;
 			$scope.myAccount = myAccount;
@@ -233,8 +233,8 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 
 	$scope.likePost = function (postId) {
 		var likedIndex = $scope.likedPosts.indexOf(postId.toString());
-		var likeEndpoint = '/likepost/' + postId;
-		var dislikeEndpoint = '/didlikepost/' + postId;
+		var likeEndpoint = 'http://localhost:8080/likepost/' + postId;
+		var dislikeEndpoint = 'http://localhost:8080/didlikepost/' + postId;
 
 		// Nếu postId chưa tồn tại trong mảng likedPosts
 		if (likedIndex === -1) {
@@ -415,7 +415,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 
 
 	$scope.getPostDetails = function (postId) {
-		$http.get('/findpostcomments/' + postId)
+		$http.get('http://localhost:8080/findpostcomments/' + postId)
 			.then(function (response) {
 				var postComments = response.data;
 				$rootScope.postComments = postComments;
@@ -426,7 +426,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 			});
 
 		$scope.isReplyEmpty = true;
-		$http.get('/postdetails/' + postId)
+		$http.get('http://localhost:8080/postdetails/' + postId)
 			.then(function (response) {
 				var postDetails = response.data;
 				$rootScope.postDetails = postDetails;
@@ -463,7 +463,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 			return;
 		}
 
-		$http.post('/addcomment/' + postId + '?myComment=' + myComment.trim())
+		$http.post('http://localhost:8080/addcomment/' + postId + '?myComment=' + myComment.trim())
 			.then(function (response) {
 				$scope.postComments.unshift(response.data);
 				var postToUpdate = $scope.Posts.find(function (post) {
@@ -484,7 +484,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 
 
 	$scope.logout = function () {
-		$http.get('/logout')
+		$http.get('http://localhost:8080/logout')
 			.then(function () {
 				window.location.href = '/login';
 			}, function (error) {
@@ -604,7 +604,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 	};
 
 	//Thay đổi URL SockJS tại đây nếu cần thiết
-	var sockJSUrl = '/chat';
+	var sockJSUrl = 'http://localhost:8080/chat';
 
 	// Tạo một đối tượng SockJS bằng cách truyền URL SockJS
 	var socket = new SockJS(sockJSUrl);
@@ -617,9 +617,9 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 	stompClient.connect({}, function (frame) {
 		// Đăng ký hàm xử lý khi nhận thông điệp từ server
 		// Lắng nghe các tin nhắn được gửi về cho người dùng
-		stompClient.subscribe('/user/' + $scope.myAccount.user.userId + '/queue/receiveMessage', function (message) {
+		stompClient.subscribe('http://localhost:8080/user/' + $scope.myAccount.user.userId + '/queue/receiveMessage', function (message) {
 			$scope.check = true;
-			$http.get('/getunseenmessage')
+			$http.get('http://localhost:8080/getunseenmessage')
 				.then(function (response) {
 					var count = response.data;
 					if (count > 0) {

@@ -50,6 +50,8 @@ public class MessageService {
 		Set<String> uniquePairs = new HashSet<>();
 		List<Object> uniqueRows = new ArrayList<>();
 
+		List<Integer> list = messageDao.getListUnseen(userId, "Đã gửi");
+		int i = 0;
 		for (Object row : result) {
 			Object[] rowData = (Object[]) row;
 			String pair1 = rowData[0] + "-" + rowData[2];
@@ -59,6 +61,7 @@ public class MessageService {
 				uniquePairs.add(pair1);
 			}
 		}
+
 		// Sau khi hoàn thành vòng lặp đầu, bạn có thể thực hiện vòng lặp thứ hai để cập
 		// nhật rowData[6]
 		for (Object row : uniqueRows) {
@@ -90,6 +93,13 @@ public class MessageService {
 			if ("Đã ẩn".equals(modifiedRowData[8])) {
 				modifiedRowData[6] = "Tin nhắn đã được thu hồi";
 			}
+			if (i < list.size()) {
+				modifiedRowData[11] = list.get(i);
+			} else {
+				modifiedRowData[11] = 0;
+			}
+			i++; // Tăng giá trị của i
+
 		}
 
 		return uniqueRows;
