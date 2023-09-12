@@ -8,6 +8,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -19,7 +20,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 
-import com.viesonet.AuthConfig;
 import com.viesonet.entity.AccountAndFollow;
 import com.viesonet.entity.Accounts;
 import com.viesonet.entity.Follow;
@@ -29,6 +29,7 @@ import com.viesonet.entity.Posts;
 import com.viesonet.entity.Users;
 import com.viesonet.entity.ViolationTypes;
 import com.viesonet.entity.Violations;
+import com.viesonet.security.AuthConfig;
 import com.viesonet.service.AccountsService;
 import com.viesonet.service.FollowService;
 import com.viesonet.service.ImagesService;
@@ -79,9 +80,9 @@ public class ProfileController {
 
 	// Lấy thông tin về follow người dùng hiện tại
 	@GetMapping("/findmyfollow")
-	public AccountAndFollow findMyAccount(Authentication authentication) {
-		Accounts account = authConfig.getLoggedInAccount(authentication);
-		return followService.getFollowingFollower(usersService.findUserById(account.getUserId()));
+	public AccountAndFollow findMyAccount() {
+		String account = SecurityContextHolder.getContext().getAuthentication().getName();
+		return followService.getFollowingFollower(usersService.findUserById(account));
 	}
 
 	// Lấy thông tin chi tiết các followers

@@ -27,11 +27,11 @@ app.config(function ($translateProvider, $routeProvider) {
 			controller: 'ProductController'
 		})
 		.when('/shopping/order/:userId', {
-			templateUrl: "/ngview/order.html",
-			controller: 'ProductController'
+			templateUrl: "ngview/order.html",
+			controller: 'ProfileController'
 		})
 		.when('/shopping/add/:userId', {
-			templateUrl: "/ngview/addorder.html",
+			templateUrl: "ngview/addorder.html",
 			controller: 'ProductController'
 		})
 		.when('/shoppingcart', {
