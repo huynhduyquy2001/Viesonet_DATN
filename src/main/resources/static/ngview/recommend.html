@@ -1,9 +1,9 @@
-<div class="col-md-8" ng-controller="RecommendController" style="z-index: 10;">
-	<label style="font-size: 25px; font: bold;">{{ 'GYTD' |
-		translate }}</label>
+<div class="col-11" ng-controller="RecommendController" style="z-index: 10;">
+	<b style="font-size: 25px; font: bold;">{{ 'GYTD' |
+		translate }}</b>
 	<br> <br>
 	<div class="row">
-		<div class=" col-md-4" style="background: transparent; padding-bottom: 2vh" ng-repeat="user in users"
+		<div class=" col-md-3" style="background: transparent; padding-bottom: 2vh" ng-repeat="user in users"
 			ng-if="followings.indexOf(user.userId.toString())===-1">
 			<div class="user-data full-width" style="margin-bottom: 5px; margin-left: 0">
 				<div class="user-profile" style="display: block;">

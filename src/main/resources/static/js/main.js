@@ -1,28 +1,25 @@
 app.config(function ($translateProvider, $routeProvider) {
 	$translateProvider.useStaticFilesLoader({
-		prefix: '/json/', // Thay đổi đường dẫn này cho phù hợp
+		prefix: 'json/', // Thay đổi đường dẫn này cho phù hợp
 		suffix: '.json'
 	});
 	$routeProvider.when('/', {
-		templateUrl: "/ngview/home.html",
+		templateUrl: "ngview/home.html",
 		controller: 'HomeController'
 	}).when('/search', {
-		templateUrl: "/ngview/search.html",
+		templateUrl: "ngview/search.html",
 		controller: 'SearchController'
-	}).when('/recommend', {
-		templateUrl: "/ngview/recommend.html",
+	}).when('recommend', {
+		templateUrl: "ngview/recommend.html",
 		controller: 'RecommendController'
 	}).when('/message', {
-		templateUrl: "/ngview/message.html",
+		templateUrl: "ngview/message.html",
 		controller: 'MessController'
 	}).when('/message/:otherId', {
-		templateUrl: "/ngview/message.html",
+		templateUrl: "ngview/message.html",
 		controller: 'MessController'
-	}).when('/shopping', {
-		templateUrl: "/ngview/shopping.html",
-		controller: 'ShoppingController'
 	}).when('/profile/:userId', {
-		templateUrl: "/ngview/profile.html",
+		templateUrl: "ngview/profile.html",
 		controller: 'ProfileController'
 	})
 		.when('/product', {

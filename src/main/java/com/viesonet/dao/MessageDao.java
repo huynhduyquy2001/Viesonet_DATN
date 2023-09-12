@@ -20,6 +20,9 @@ public interface MessageDao extends JpaRepository<Message, Integer> {
 	@Query("SELECT count(*) FROM Message list where list.receiver.userId = ?1 and list.status = ?2")
 	int getListUnseenMessage(String userId, String chuoi);
 
+	@Query("SELECT count(*) FROM Message m WHERE m.receiver.userId = ?1 AND m.status = ?2 GROUP BY m.sender.userId")
+	List<Integer> getListUnseen(String userId, String chuoi);
+
 	@Query("SELECT list FROM Message list where list.sender.userId = ?1 and list.receiver.userId = ?2  and list.status = ?3")
 	List<Message> getListMessByReceiverId(String senderId, String receiverId, String status);
 
