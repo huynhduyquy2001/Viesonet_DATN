@@ -7,6 +7,7 @@ import java.time.ZoneId;
 import java.util.*;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
@@ -28,7 +29,8 @@ import jakarta.transaction.Transactional;
 
 @Transactional
 @RestController
-public class Report {
+@CrossOrigin("*")
+public class ReportController {
 
 	@Autowired
 	UsersService usersService;
@@ -63,11 +65,11 @@ public class Report {
 	@Autowired
 	sp_SumAccountsByDayService sumAccountsByDay;
 
-	@GetMapping("/admin/report")
-	public ModelAndView getHomePage() {
-		ModelAndView modelAndView = new ModelAndView("/admin/report");
-		return modelAndView;
-	}
+	// @GetMapping("/admin/report")
+	// public ModelAndView getHomePage() {
+	// ModelAndView modelAndView = new ModelAndView("/admin/report");
+	// return modelAndView;
+	// }
 
 	@GetMapping("/admin/reportViolationsPosts")
 	public List<ViolationsPosts> violationsPosts() {

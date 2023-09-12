@@ -31,13 +31,13 @@ app.config(function ($translateProvider, $routeProvider) {
 			templateUrl: "/ngview/shoppingcart.html",
 			controller: 'ShoppingCartController'
 	}).when('/admin/report', {
-			templateUrl: "/ngview/admin/report.html",
+			templateUrl: "/ngview/report.html",
 			controller: 'ReportController'
 	}).when('/admin/usermanager', {
-			templateUrl: "/ngview/admin/usermanager.html",
+			templateUrl: "/ngview/usermanager.html",
 			controller: 'UserManagerController'
 	}).when('/admin/postsviolatin', {
-			templateUrl: "/ngview/admin/postsviolatin.html",
+			templateUrl: "/ngview/postsviolatin.html",
 			controller: 'PostsViolationController'
 	}).when('/favouriteProduct', {
 		templateUrl: "ngview/favouriteProducts.html",

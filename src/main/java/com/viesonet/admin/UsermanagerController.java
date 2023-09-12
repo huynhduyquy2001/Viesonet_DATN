@@ -3,6 +3,7 @@ package com.viesonet.admin;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -15,6 +16,7 @@ import com.viesonet.service.AccountsService;
 import com.viesonet.service.UsersService;
 
 @RestController
+@CrossOrigin("*")
 public class UsermanagerController {
 
 	@Autowired
@@ -23,11 +25,11 @@ public class UsermanagerController {
 	@Autowired
 	AccountsService accountService;
 
-	@GetMapping("/admin/usermanager")
-	public ModelAndView getHomePage() {
-		ModelAndView modelAndView = new ModelAndView("/admin/usermanager");
-		return modelAndView;
-	}
+	// @GetMapping("/admin/usermanager")
+	// public ModelAndView getHomePage() {
+	// ModelAndView modelAndView = new ModelAndView("/admin/usermanager");
+	// return modelAndView;
+	// }
 
 	@GetMapping("/admin/usermanager/load")
 	public List<Object> usermanager() {

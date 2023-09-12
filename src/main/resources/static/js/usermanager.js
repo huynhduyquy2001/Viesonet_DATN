@@ -3,21 +3,20 @@ app.controller(
 	function ($scope, $http, $translate, $rootScope, $location) {
 		$scope.listUsers = [];
 		$scope.profile = [];
-
-		$http.get('/admin/usermanager/load')
+		var host = "http://localhost:8080"
+		$http.get(host + '/admin/usermanager/load')
 			.then(function(response) {
 				$scope.listUsers = response.data;
 			});
 
-		$http.get('/admin/usermanager/profile')
+		$http.get(host + '/admin/usermanager/profile')
 			.then(function(response) {
 				$scope.profile = response.data;
 			});
 
 		$scope.detailUser = function(userId) {
-			var host = '/admin/usermanager/detailUser/' + userId;
 
-			$http.get(host)
+			$http.get(host + '/admin/usermanager/detailUser/' + userId)
 				.then(function(response) {
 					$scope.profile = response.data;
 				});
@@ -29,7 +28,7 @@ app.controller(
 				$scope.listUsers.content = originalList;
 				return;
 			}else{
-				$http.get("/admin/usermanager/search/"+ search)
+				$http.get(host + "/admin/usermanager/search/"+ search)
 				.then(function(response) {
 					$scope.listUsers = response.data;
 				});
@@ -39,7 +38,7 @@ app.controller(
 
 		$scope.searchClick = function() {
 			var search = $scope.searchValue;
-			var hostUser = '/admin/usermanager/searchId/' + search;
+			var hostUser = host + '/admin/usermanager/searchId/' + search;
 
 			$http.get(hostUser)
 				.then(function(response) {
@@ -94,7 +93,7 @@ app.controller(
 								'warning'
 							)
 						} else {
-							var url = '/admin/usermanager/userRole/' + sdt + '/' + role;
+							var url = host + '/admin/usermanager/userRole/' + sdt + '/' + role;
 							$http.put(url)
 								.then(function(response) {
 									$scope.profile = response.data;
@@ -138,7 +137,7 @@ app.controller(
 					reverseButtons: true
 				}).then((result) => {
 					if (result.isConfirmed && violationCount > 0) {
-						var url = '/admin/usermanager/userViolations/' + userId;
+						var url = host + '/admin/usermanager/userViolations/' + userId;
 							$http.put(url)
 								.then(function(response) {
 									$scope.profile = response.data;

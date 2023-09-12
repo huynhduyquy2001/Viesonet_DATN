@@ -16,6 +16,7 @@ import jakarta.transaction.Transactional;
 
 @Transactional
 @RestController
+@CrossOrigin("*")
 public class PostsViolationsController {
 
 	@Autowired
