@@ -30,11 +30,19 @@ app.config(function ($translateProvider, $routeProvider) {
 	}).when('/mystore', {
 		templateUrl: "/ngview/myStore.html",
 		controller: 'MyStoreController'
-	})
-		.when('/shoppingcart', {
+	}).when('/shoppingcart', {
 			templateUrl: "/ngview/shoppingcart.html",
 			controller: 'ShoppingCartController'
-		})
+	}).when('/admin/report', {
+			templateUrl: "/ngview/admin/report.html",
+			controller: 'ReportController'
+	}).when('/admin/usermanager', {
+			templateUrl: "/ngview/admin/usermanager.html",
+			controller: 'UserManagerController'
+	}).when('/admin/postsviolatin', {
+			templateUrl: "/ngview/admin/postsviolatin.html",
+			controller: 'PostsViolationController'
+	})
 
 		;
 	// Set the default language

@@ -1,0 +1,83 @@
+<div ng-controller="PostsViolationController">
+    <div class="row">
+        <div class="card-title fw-semibold mb-2">
+          <nav class="navbar navbar-expand-lg navbar-light">
+            <ul class="navbar-nav">
+              <input type="checkbox"  ng-click="selectAll()" ng-model="selectAllCheckbox" class="form-check-input ms-3 me-4 hover-effect"
+                style="border: 3px solid rgb(34, 31, 31);">
+              <a href="#" class="me-5" data-bs-placement="top" title="Xóa bài viết vi phạm">
+                <i class="fa-regular fa-trash-can fa-lg"></i>
+              </a>
+              <small class="mt-1" ng-if="selectedCountText > 0"> Đã chọn <b style="color: red">{{ selectedCountText }}</b> mục</small>
+            </ul>
+            <div class="navbar-collapse justify-content-end px-0">
+              <ul class="navbar-nav flex-row ms-auto align-items-center justify-content-end">
+                <small class="me-3">1 / 50 </small>
+                <a href="#" class="me-4">
+                  <i class="fa-solid fa-chevron-left fa-xs"></i>
+                </a>
+                <a href="#" class="me-4">
+                  <i class="fa-solid fa-chevron-right fa-xs"></i>
+                </a>
+                <form class="position-relative">
+                  <input type="search" class="form-control search-chat py-2 ps-5" id="text-srh"
+                    placeholder="Nhập tên người đăng" style="border: 1px solid #ccc;">
+                  <i
+                    class="fa-solid fa-magnifying-glass fa-2xs position-absolute top-50 start-0 translate-middle-y fs-6 text-dark ms-3"></i>
+                </form>
+              </ul>
+            </div>
+          </nav>
+        </div>
+        <div class="table-responsive sidebar-scrollable">
+          <table class="table text-nowrap mb-0 align-middle">
+            <thead class="text-dark fs-4">
+              <tr>
+                <th class="border-bottom-0">
+                  #
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Tiêu đề bài viết</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Người đăng</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0">Ngày đăng</h6>
+                </th>
+                <th class="border-bottom-0">
+                  <h6 class="fw-semibold mb-0 text-center">Chi tiết</h6>
+                </th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr ng-repeat="list in filterUniquePosts(listViolations)" id="row-{{list.post.postId}}" ng-if="list.isVisible">
+                <td class="border-bottom-0">
+                  <input type="checkbox" ng-click="checkboxClicked()" ng-model="list.checked" class="form-check-input hover-effect">
+                </td>
+                <td class="border-bottom-0">
+                  <span class="fw-normal mb-0"
+                    style="max-width: 250px;white-space: nowrap; text-overflow: ellipsis;  overflow: hidden;">
+                    {{list.post.content}}
+                  </span>
+                </td>
+                <td class="border-bottom-0"
+                  style="max-width: 200px;white-space: nowrap; text-overflow: ellipsis;  overflow: hidden;">
+                  <span class="fw-normal">{{list.user.username}}</span>
+                </td>
+                <td class="border-bottom-0">
+                  <p class="mb-0 fw-normal">{{list.post.postDate | date: 'dd/MM/yyyy'}}</p>
+                </td>
+                <td class="border-bottom-0 text-center">
+                  <a href="#" ng-click="detailPost(list.post.postId)" data-bs-placement="top"
+                    title="Xem chi tiết bài viết">
+                    <i class="fa-light fa-eye" style="color: #336cce;"></i>
+                  </a>
+                </td>
+              </tr>
+              
+            </tbody>
+          </table>
+        </div>
+      </div>
+</div>
