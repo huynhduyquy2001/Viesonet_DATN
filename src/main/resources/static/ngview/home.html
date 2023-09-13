@@ -1,13 +1,6 @@
 <div class="row" ng-controller="HomeController">
-
-	<div class="col-md-6 animate__animated animate__zoomIn offset-md-1" style="z-index: 10;">
-		<!-- <div class="profile-link">
-
-			<a class="btn-blue" data-bs-toggle="modal" href="#exampleModalToggle"
-				style=" border-radius: 2px; border: 1px solid #3a57e8; box-sizing: border-box; display: inline-block; font-family: Arial, sans-serif; font-size: 14px; line-height: 16.8px; margin: 0px 3px 10px; padding: 10px 14px; text-decoration-line: none; transition: all 0.2s; width: 98%; background-color: transparent; color: #3a57e8;"
-				rel="noopener noreferrer"><i class="fa-light fa-address-card"></i> {{
-				'DBV' | translate }} </a>
-		</div> -->
+	<script src="js/thoiTiet.js"></script>
+	<div class="col-md-6 animate__animated animate__fadeIn offset-md-1" style="z-index: 10;">
 		<div class="card shadow-none border ng-scope" data-bs-toggle="modal" href="#exampleModalToggle"
 			style="width: 95%; margin-bottom: 1rem; border-radius: 10px; box-shadow: rgba(6, 19, 36, 0.2) 0px 1px 4px 0px !important;">
 			<div class="card-body">
@@ -62,7 +55,7 @@
 
 		</html>
 
-		<div ng-repeat="post in Posts" style="width: 95%;">
+		<div ng-repeat="post in Posts" data-aos="zoom-in-right" data-aos-duration="1000" style="width: 95%;">
 			<div class="write-post-container   "
 				style="margin-bottom: 20px; border-radius: 8px;
 				box-shadow: rgba(6, 19, 36, 0.2) 0px 1px 4px 0px; padding: 0; padding-top: 10px; padding-bottom: 10px; width: 100%; text-align: left; background: white;">
@@ -163,7 +156,7 @@
 										</button>
 									</div>
 								</div>
-								<div ng-if="post.images.length === 1">
+								<div class="animate__animated animate__fadeIn" ng-if="post.images.length === 1">
 									<video ng-if="post.images[0].type === false" autoplay controls style="width: 100%;">
 										<source ng-src="images/{{ post.images[0].imageUrl }}" type="video/mp4">
 										Your browser does not support the video tag.
@@ -204,7 +197,7 @@
 	</div>
 
 
-	<div class="col-md-5 row menuLeft animate__animated animate__zoomIn">
+	<div class="col-md-5 row menuLeft animate__animated animate__fadeIn">
 		<div class="col-md-8 offset-md-2">
 			<div class="row">
 				<div>
@@ -756,5 +749,8 @@
 				}
 			}
 		}
+	</script>
+	<script>
+		AOS.init();
 	</script>
 </div>

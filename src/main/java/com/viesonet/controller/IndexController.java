@@ -69,6 +69,7 @@ import com.viesonet.service.ViolationTypesService;
 import com.viesonet.service.ViolationsService;
 
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 import net.coobird.thumbnailator.Thumbnails;
 
 @RestController
@@ -127,6 +128,14 @@ public class IndexController {
 	public List<Users> getFollowingInfoByUserId() {
 		String phoneNumber = SecurityContextHolder.getContext().getAuthentication().getName();
 		return followService.getFollowingInfoByUserId(phoneNumber);
+	}
+
+	@GetMapping("/myendpoint")
+	public String myEndpoint(HttpServletRequest request) {
+		String token = request.getHeader("Authorization");
+		System.out.println("dang tim:" + token);
+		// ... code xử lý JWT token và công việc khác ...
+		return token;
 	}
 
 	@GetMapping("/get-more-posts/{page}")

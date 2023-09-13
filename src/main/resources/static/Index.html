@@ -47,7 +47,11 @@
 
 	<link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/swiper@8/swiper-bundle.min.css'>
 	<link rel="stylesheet" href="css/style.css">
-
+	<link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+	<script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+	<script>
+		AOS.init();
+	</script>
 	<title>Trang chủ</title>
 	<style type="text/css">
 		body {
@@ -220,7 +224,7 @@
 		}
 	</style>
 
-	<script src="js/thoiTiet.js"></script>
+
 </head>
 
 <body style="padding-top: 70px;" ng-controller="myCtrl" ng-app="myApp">
@@ -558,7 +562,6 @@
 			</div>
 		</div>
 	</div>
-
 	<!-- Thông báo -->
 	<div ng-include="'_notification.html'"></div>
 
@@ -574,7 +577,7 @@
 	<script src="js/Index.js"></script>
 	<script src="js/main.js"></script>
 	<script src="js/home.js"></script>
-	<script src="js/addActive.js"></script>
+	<!-- <script src="js/addActive.js"></script> -->
 
 	<script src="js/search.js"></script>
 	<script src="js/recommend.js"></script>
@@ -583,6 +586,7 @@
 	<script src="js/shopping.js"></script>
 	<script src="js/product.js"></script>
 	<script src="js/myStore.js"></script>
+
 </body>
 
 </html>

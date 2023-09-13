@@ -21,42 +21,11 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 		$translate.use(langKey);
 		localStorage.setItem('myAppLangKey', langKey); // Lưu ngôn ngữ đã chọn vào localStorage
 	};
-	// Kiểm tra xem còn tin nhắn nào chưa đọc không
-	$http.get('http://localhost:8080/getunseenmessage')
-		.then(function (response) {
-			$rootScope.check = response.data > 0;
-			$rootScope.unseenmess = response.data;
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
 	// Hàm để tăng số lượng bình luận hiển thị khi nhấp vào "hiển thị thêm"
 	$scope.showMoreComments = function () {
 		$scope.numOfCommentsToShow += $scope.commentsToShowMore;
 	};
 
-	// Kiểm tra xem còn tin nhắn nào chưa đọc không
-	$http.get('http://localhost:8080/findfollowing')
-		.then(function (response) {
-			$scope.followings = response.data;
-			$scope.totalFollowing = response.data.length;
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
-
-	//kiểm tra xem còn tin nhắn nào chưa đọc không
-	$http.get('http://localhost:8080/getunseenmessage')
-		.then(function (response) {
-			var count = response.data;
-			if (count > 0) {
-				$scope.check = true;
-				$scope.unseenmess = count;
-			}
-		})
-		.catch(function (error) {
-			console.log(error);
-		});
 
 	//Lấy danh sách vi phạm
 	$http.get('http://localhost:8080/getviolations')
@@ -519,7 +488,6 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 				title: 'Bạn phải nhập nội dung phản hồi'
 			})
 			return;
-
 		}
 		var postToUpdate = $scope.Posts.find(function (post) {
 			return post.postId = $scope.postDetails.postId;
@@ -602,41 +570,6 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 			$scope.sendReplyForComment(receiverId, commentId, replyContent);
 		}
 	};
-
-	//Thay đổi URL SockJS tại đây nếu cần thiết
-	var sockJSUrl = 'http://localhost:8080/chat';
-
-	// Tạo một đối tượng SockJS bằng cách truyền URL SockJS
-	var socket = new SockJS(sockJSUrl);
-
-	// Tạo một kết nối thông qua Stomp over SockJS
-	var stompClient = Stomp.over(socket);
-
-	// Khi kết nối WebSocket thành công
-	// Khi kết nối WebSocket thành công
-	stompClient.connect({}, function (frame) {
-		// Đăng ký hàm xử lý khi nhận thông điệp từ server
-		// Lắng nghe các tin nhắn được gửi về cho người dùng
-		stompClient.subscribe('http://localhost:8080/user/' + $scope.myAccount.user.userId + '/queue/receiveMessage', function (message) {
-			$scope.check = true;
-			$http.get('http://localhost:8080/getunseenmessage')
-				.then(function (response) {
-					var count = response.data;
-					if (count > 0) {
-						$scope.playNotificationSound();
-						$scope.check = true;
-						$scope.unseenmess = count;
-
-					}
-				})
-				.catch(function (error) {
-					console.log(error);
-				});
-			$scope.$apply();
-		});
-	}, function (error) {
-		console.error('Lỗi kết nối WebSocket:', error);
-	});
 
 });
 
