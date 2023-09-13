@@ -1,330 +1,209 @@
-const selectAllCheckbox = document.getElementById('selectAll');
-const tableCheckboxes = document.querySelectorAll('.table-checkbox');
-const selectedCountElement = document.getElementById('selectedCount');
-const myHidden = document.querySelector('.my-hidden');
-selectAllCheckbox.addEventListener('click', function() {
-	const isChecked = this.checked;
-	tableCheckboxes.forEach((checkbox) => {
-		checkbox.checked = isChecked;
-	});
-	updateSelectedCount();
+app.controller(
+	"PostsViolationController",
+	function ($scope, $http, $translate, $rootScope, $location) {
+		$scope.listViolations = [];
+		$scope.post = {};
+		$scope.currentPage = 0;
+		$scope.totalPages = 0;
+		$scope.pageSize = 9;
+		$scope.selectedCountText = 0; // Số lượng mục đã chọn
 
-	// Hiển thị hoặc ẩn phần tử dựa trên trạng thái của checkbox
-	if (isChecked) {
-		myHidden.style.display = 'block'; // Hiển thị phần tử
-	} else {
-		myHidden.style.display = 'none'; // Ẩn phần tử
-	}
-});
+		var url = "http://localhost:8080";
 
-tableCheckboxes.forEach(checkbox => checkbox.addEventListener('click', function() {
-	updateSelectedCount();
-	// Hiển thị hoặc ẩn phần tử dựa trên trạng thái của checkbox
-	if (checkbox.checked) {
-		myHidden.style.display = 'block'; // Hiển thị phần tử
-	} else {
-		myHidden.style.display = 'none'; // Ẩn phần tử
-	}
-}));
-function updateSelectedCount() {
-	const selectedCount = document.querySelectorAll('.table-checkbox:checked').length;
-	selectedCountElement.textContent = selectedCount > 0 ? selectedCount : '';
-}
+		$http.get(url + '/admin/postsviolation').then(function (response) {
+			// Gán dữ liệu từ API vào biến $scope.listViolations
+			$scope.listViolations = response.data;
+		}).catch(function (error) {
+			console.error('Lỗi khi lấy dữ liệu bài viết vi phạm:', error);
+		});
 
-function detail(postId) {
-	//1
-	$.ajax({
-		url: "/admin/postsviolations/detailPost/" + postId, // Thay đổi đường dẫn tới máy chủ của bạn
-		method: 'GET', // Hoặc 'GET' tùy vào phương thức gửi dữ liệu
-		success: function(item) {
-			//Xóa trống form
-			let t2 = document.getElementById("detailContent");
-			let t3 = document.getElementById("avatar");
-			t2.innerHTML = "";
-			t3.innerHTML = "";
+		//Hàm tải dữ liệu ban đầu
+		function loadInitialData() {
+			$http.get(url + '/admin/postsviolation')
+				.then(function (response) {
+					// Lưu trữ danh sách gốc vào biến originalList
+					originalList = response.data.content;
+					// Gán danh sách cho biến $scope.listViolations để hiển thị
+					$scope.listViolations = response.data;
+				})
+				.catch(function (error) {
+					console.error('Lỗi khi tải dữ liệu:', error);
+				});
+		}
 
-			//Chuyển định dạng ngày tháng năm
-			let date = new Date(item.postDate);
-			let day = date.getUTCDate().toString().padStart(2, '0');
-			let month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-			let year = date.getUTCFullYear().toString();
-			let datePosts = `${day}/${month}/${year}`;
+		// Gọi hàm tải dữ liệu ban đầu khi trang được tải lần đầu
+		loadInitialData();
+
+		$scope.searchByAuthor = function () {
+			var username = $scope.searchText;
+			username = username.trim();
+			if (!username) {
+				// Nếu ô tìm kiếm rỗng, gán lại giá trị ban đầu cho biến $scope.listViolations.content
+				$scope.listViolations.content = originalList;
+				return;
+			}
+			$http.get(url + '/admin/searchUserViolation', { params: { username: username } })
+				.then(function (response) {
+					// Xử lý kết quả tìm kiếm ở đây
+					$scope.listViolations.content = response.data;
+				})
+				.catch(function (error) {
+					console.error('Lỗi khi tìm kiếm bài viết:', error);
+				});
+		};
 
 
-			//Thêm nội dung lại cho form
-			var avatar = `<img src="/images/${item.avatarUser}" alt="" width="55" height="55"
-							class="rounded-circle mt-3">
-							<div class="content mt-3">
-							<span class="name">${item.userPost}</span> 
-									<small>${datePosts}</small>
-							</div>`;
-			//Xét điều kiện nếu ảnh rỗng 
-			var img
-			if (item.images === null) {
-				img = `<br>`;
+		//Hàm để cập nhật dữ liệu từ API và số trang khi chuyển đến trang mới
+		function loadViolationsData(page) {
+			$http.get(url + '/admin/postsviolation', { params: { page: page, size: $scope.pageSize } })
+				.then(function (response) {
+					$scope.listViolations = response.data;
+					updatePagination();
+				})
+				.catch(function (error) {
+					console.error('Lỗi khi lấy dữ liệu bài viết vi phạm:', error);
+				});
+		}
+
+		// Hàm để cập nhật số trang dựa vào số lượng bài viết vi phạm
+		function calculateTotalPages() {
+			$scope.totalPages = $scope.listViolations.totalPages;
+		}
+
+
+		// Hàm để chuyển đến trang trước
+		$scope.prevPage = function () {
+			if ($scope.currentPage > 0) {
+				$scope.currentPage--;
+				loadViolationsData($scope.currentPage);
+			}
+		};
+
+		// Hàm để chuyển đến trang kế tiếp
+		$scope.nextPage = function () {
+			if ($scope.currentPage < $scope.totalPages - 1) {
+				$scope.currentPage++;
+				loadViolationsData($scope.currentPage);
+			}
+		};
+
+		// Hàm để cập nhật số trang khi dữ liệu thay đổi
+		function updatePagination() {
+			calculateTotalPages();
+			// Đảm bảo rằng trang hiện tại không vượt quá tổng số trang
+			$scope.currentPage = Math.min($scope.currentPage, $scope.totalPages - 1);
+		}
+
+		// Gọi hàm để cập nhật dữ liệu từ API khi controller khởi tạo
+		loadViolationsData($scope.currentPage);
+
+		// Hàm để tạo mảng các trang cụ thể
+		$scope.getPagesArray = function () {
+			return Array.from({ length: $scope.totalPages }, (_, i) => i);
+		};
+
+		//Xử lý các checkbox
+		$scope.selectAll = function () {
+			var isChecked = $scope.selectAllCheckbox;
+			angular.forEach($scope.listViolations.content, function (violation) {
+				violation.checked = !isChecked;
+			});
+			$scope.updateSelectedCount();
+		};
+
+		$scope.updateSelectedCount = function () {
+			var selectedCount = $scope.listViolations.content.filter(function (violation) {
+				return violation.checked; // Chỉ đếm các checkbox được chọn trong các dòng không ẩn
+			}).length;
+			$scope.selectedCountText = selectedCount;
+		};
+
+
+		$scope.checkboxClicked = function () {
+			var allChecked = true;
+			angular.forEach($scope.listViolations.content, function (violation) {
+				if (!violation.checked) {
+					allChecked = false;
+				}
+			});
+			$scope.selectAllCheckbox = allChecked;
+		};
+
+		// Hàm xem chi tiết bài viết
+		$scope.detailPost = function (postId) {
+			// Gọi API để lấy thông tin chi tiết bài viết dựa vào postId
+			$http.get(url + '/admin/postsviolations/detailPost/' + postId)
+				.then(function (response) {
+					$scope.post = response.data;
+					$('#exampleModal').modal('show'); // Hiển thị modal khi có dữ liệu bài viết
+				})
+				.catch(function (error) {
+					console.error('Lỗi khi lấy thông tin chi tiết bài viết:', error);
+				});
+		};
+
+		// Hàm để xóa các mục đã chọn
+		$scope.deletePostViolations = function () {
+			// Lấy danh sách các postId được chọn
+			var listPostId = $scope.listViolations.content
+				.filter(item => item.checked)
+				.map(item => item[0]);
+
+			if (listPostId.length === 0) {
+				Swal.fire({
+					position: 'top',
+					icon: 'warning',
+					text: 'Chưa chọn bài viết vi phạm để xóa!',
+					showConfirmButton: false,
+					timer: 1800
+				});
 			} else {
-				//Lấy ra từng ảnh
-				var imgs = item.images;
-				var imageUrls = imgs.split(", ");
+				Swal.fire({
+					text: 'Bạn có chắc muốn xóa bài viết vi phạm không?',
+					icon: 'warning',
+					confirmButtonText: 'Có, chắc chắn',
+					showCancelButton: true,
+					confirmButtonColor: '#159b59',
+					cancelButtonColor: '#d33'
+				}).then((result) => {
+					if (result.isConfirmed) {
+						$http({
+							method: 'POST',
+							url: url + '/admin/postsviolations/delete',
+							data: JSON.stringify(listPostId),
+							contentType: 'application/json'
+						}).then(function (response) {
+							// Cập nhật dữ liệu mới nhận được từ server
+							$scope.listViolations = response.data;
+							// Reset số lượng mục đã chọn về 0
+							$scope.selectedCountText = 0;
 
-				var img = `<div id="carouselExampleFade" class="carousel slide carousel-fade carousel-dark">
- 							 <div class="carousel-inner" style="width: 75%;">`;
+							calculateTotalPages();
 
-				imageUrls.forEach(function(imageUrl, index) {
-					var activeClass = index === 0 ? "active" : "";
-					img += `
-   					 <div class="carousel-item ${activeClass}">
-      					<img width="75%" src="/images/${imageUrl}" class="d-block w-100" alt="">
-   					 </div>`;
-				});
-				if (imageUrls.length > 1) {
-					img += `
-					  </div>
-					  <button class="carousel-control-prev" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="prev">
-					    <span class="carousel-control-prev-icon" aria-hidden="true"></span>
-					  </button>
-					  <button class="carousel-control-next" type="button" data-bs-target="#carouselExampleFade" data-bs-slide="next">
-					    <span class="carousel-control-next-icon" aria-hidden="true"></span>
-					  </button>
-					</div>`;
-				}
-			}
+							Swal.fire({
+								position: 'top',
+								icon: 'success',
+								text: 'Xóa bài viết vi phạm thành công!',
+								showConfirmButton: false,
+								timer: 1800
+							});
+						}).catch(function (error) {
+							console.error('Lỗi khi xóa các bài viết:', error);
 
-			var detailContent = `&nbsp;&nbsp; ${item.content}
-							<center style="margin-right: 20px; margin-top: 10px;">
-								${img}
-							</center> <br>
-							<div class="post-reaction">
-								<div class="activity-icons d-flex justify-content">
-									<div>
-										<i class="fa-regular fa-thumbs-up"></i> &nbsp; ${item.likeCount}
-									</div>
-									&nbsp;&nbsp;&nbsp;&nbsp;
-									<div>
-										<i class="fa-regular fa-comment"></i>&nbsp; ${item.commentCount}
-									</div>
-								</div>
-							</div>
-							<br>
-							`;
-			t2.innerHTML += detailContent;
-			t3.innerHTML += avatar;
-		},
-		error: function(xhr, status, error) {
-			// Xử lý lỗi (nếu có)
-			console.error('Lỗi khi gửi dữ liệu:', error);
-		}
-	});
-
-	//2
-	$.ajax({
-		url: "/admin/postsviolations/detailViolation/" + postId, // Thay đổi đường dẫn tới máy chủ của bạn
-		method: 'GET', // Hoặc 'GET' tùy vào phương thức gửi dữ liệu
-		success: function(data) {
-			var tr = document.getElementById("listViolation");
-			tr.innerHTML = "";
-
-			data.forEach(function(item) {
-				tr.innerHTML += `<tr>
-                          			<td>${item[0]}</td>
-                          			<td class="text-center">${item[1]}</td>
-                        		 </tr>`;
-			});
-
-			$("#exampleModal").modal("show");
-		},
-		error: function(xhr, status, error) {
-			// Xử lý lỗi (nếu có)
-			console.error('Lỗi khi gửi dữ liệu:', error);
-		}
-	});
-}
-
-const input = document.getElementById("search");
-//Sự kiện nhấn phím
-input.addEventListener("keyup", function(event) {
-	var searchText = input.value;
-	if (!searchText) {
-		location.reload();
-	}
-	$.ajax({
-		url: "/admin/postsviolations/search/" + searchText,
-		method: 'GET',
-		success: function(data) {
-			var table = document.getElementById("listTable");
-			table.innerHTML = "";
-
-			data.forEach(function(item) {
-				//Chuyển định dạng ngày tháng năm
-				let date = new Date(item[3]);
-				let day = date.getUTCDate().toString().padStart(2, '0');
-				let month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-				let year = date.getUTCFullYear().toString();
-				let dateFormat = `${day}/${month}/${year}`;
-				table.innerHTML += `<tr>
-									<td class="border-bottom-0"><input type="checkbox"
-										value="${item[0]}"
-										class="table-checkbox form-check-input hover-effect">
-									</td>
-									<td class="border-bottom-0" style="max-width: 250px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
-									<span class="fw-normal mb-0">
-									${item[1]}
-									</span>
-									</td>
-									<td class="border-bottom-0"
-										style="max-width: 200px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
-										<span class="fw-normal">${item[2]}</span>
-									</td>
-									<td class="border-bottom-0">
-										<p class="mb-0 fw-normal">${dateFormat}</p>
-									</td>
-									<td class="border-bottom-0 text-center"><a href="#"
-										data-bs-placement="top" title="Xem chi tiết bài viết"
-										th:onclick="detail('${item[0]}')"> <i
-											class="fa-light fa-eye" style="color: #336cce;"></i>
-									</a></td>
-								</tr>`;
-			});
-
-			const selectAllCheckbox = document.getElementById('selectAll');
-			const tableCheckboxes = document.querySelectorAll('.table-checkbox');
-			const selectedCountElement = document.getElementById('selectedCount');
-			const myHidden = document.querySelector('.my-hidden');
-			selectAllCheckbox.addEventListener('click', function() {
-				const isChecked = this.checked;
-				tableCheckboxes.forEach((checkbox) => {
-					checkbox.checked = isChecked;
-				});
-				updateSelectedCount();
-
-				// Hiển thị hoặc ẩn phần tử dựa trên trạng thái của checkbox
-				if (isChecked) {
-					myHidden.style.display = 'block'; // Hiển thị phần tử
-				} else {
-					myHidden.style.display = 'none'; // Ẩn phần tử
-				}
-			});
-
-			tableCheckboxes.forEach(checkbox => checkbox.addEventListener('click', function() {
-				updateSelectedCount();
-				// Hiển thị hoặc ẩn phần tử dựa trên trạng thái của checkbox
-				if (checkbox.checked) {
-					myHidden.style.display = 'block'; // Hiển thị phần tử
-				} else {
-					myHidden.style.display = 'none'; // Ẩn phần tử
-				}
-			}));
-
-			function updateSelectedCount() {
-				const selectedCount = document.querySelectorAll('.table-checkbox:checked').length;
-				selectedCountElement.textContent = selectedCount > 0 ? selectedCount : '';
-			}
-		},
-		error: function(xhr, status, error) {
-			console.error('Lỗi khi gửi dữ liệu:', error);
-		}
-	});
-});
-
-function deleteViolation() {
-
-	const tableCheckboxes = document.querySelectorAll('.table-checkbox');
-	var listPostId = [];
-	tableCheckboxes.forEach(checkbox => {
-		if (checkbox.checked) {
-			listPostId.push(`${checkbox.value}`);
-		}
-	});
-	if (listPostId == 0) {
-		Swal.fire({
-			position: 'top',
-			icon: 'warning',
-			text: 'Chưa chọn bài viết vi phạm để xóa!',
-			showConfirmButton: false,
-			timer: 1800
-		})
-	} else {
-
-		Swal.fire({
-			text: 'Bạn có chắc muốn xóa bài viết vi phạm không?',
-			icon: 'warning',
-			confirmButtonText: 'Có, chắc chắn',
-			showCancelButton: true,
-			confirmButtonColor: '#159b59',
-			cancelButtonColor: '#d33'
-		}).then((result) => {
-			if (result.isConfirmed) {
-				$.ajax({
-					url: "/admin/postsviolations/delete", // Thay đổi đường dẫn tới máy chủ của bạn
-					method: 'POST', // Hoặc 'GET' tùy vào phương thức gửi dữ liệu
-					data: JSON.stringify(listPostId),
-					contentType: "application/json",
-					success: function(data) {
-						/*	var table = document.getElementById("listTable");
-							table.innerHTML = "";
-							data.content.forEach(function(item) {
-								//Chuyển định dạng ngày tháng năm
-								let date = new Date(item[3]);
-								let day = date.getUTCDate().toString().padStart(2, '0');
-								let month = (date.getUTCMonth() + 1).toString().padStart(2, '0');
-								let year = date.getUTCFullYear().toString();
-								let dateFormat = `${day}/${month}/${year}`;
-								table.innerHTML += `<tr>
-										<td class="border-bottom-0"><input type="checkbox"
-											value="${item[0]}"
-											class="table-checkbox form-check-input hover-effect">
-										</td>
-										<td class="border-bottom-0">
-										<span class="fw-normal mb-0"
-											style="max-width: 250px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
-										${item[1]}
-										</span>
-										</td>
-										<td class="border-bottom-0"
-											style="max-width: 200px; white-space: nowrap; text-overflow: ellipsis; overflow: hidden;">
-											<span class="fw-normal">${item[2]}</span>
-										</td>
-										<td class="border-bottom-0">
-											<p class="mb-0 fw-normal">${dateFormat}</p>
-										</td>
-										<td class="border-bottom-0 text-center"><a href="#"
-											data-bs-placement="top" title="Xem chi tiết bài viết"
-											th:onclick="detail('${item[0]}')"> <i
-												class="fa-light fa-eye" style="color: #336cce;"></i>
-										</a></td>
-									</tr>`; }); */
-						Swal.fire({
-							position: 'top',
-							icon: 'success',
-							text: 'Xóa bài viết vi phạm thành công!',
-							showConfirmButton: false,
-							timer: 1800
-						})
-
-						setTimeout(reloadPage, 1800);
-
-					},
-					error: function(xhr, status, error) {
-						// Xử lý lỗi (nếu có)
-						console.error('Lỗi khi gửi dữ liệu:', error);
-						Swal.fire({
-							position: 'top',
-							icon: 'error',
-							text: 'Không xóa được bài viết vi phạm!',
-							showConfirmButton: false,
-							timer: 1800
-						})
+							Swal.fire({
+								position: 'top',
+								icon: 'error',
+								text: 'Không xóa được bài viết vi phạm!',
+								showConfirmButton: false,
+								timer: 1800
+							});
+						});
 					}
 				});
 			}
-		});
-		//
+		};
+
+	  //
 	}
-	//
-}
-
-function reloadPage() {
-	location.reload();
-}
-
-
+  );
+  

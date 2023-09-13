@@ -30,6 +30,15 @@ app.config(function ($translateProvider, $routeProvider) {
 	}).when('/shopping', {
 		templateUrl: "ngview/shopping.html",
 		controller: 'ShoppingController'
+	}).when('/admin/report', {
+		templateUrl: "ngview/report.html",
+		controller: 'ReportController'
+	}).when('/admin/usermanager', {
+		templateUrl: "ngview/usermanager.html",
+		controller: 'UserManagerController'
+	}).when('/admin/postsviolation', {
+		templateUrl: "ngview/postsviolation.html",
+		controller: 'PostsViolationController'
 	});
 	// Set the default language
 	var storedLanguage = localStorage.getItem('myAppLangKey') || 'vie';
