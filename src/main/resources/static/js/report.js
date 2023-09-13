@@ -8,9 +8,9 @@ app.controller(
     $scope.topPostsLikes = [];
     $scope.totalPosts = [];
     $scope.posts = {};
-    var host = "http://localhost:8080"
+    var url = "http://localhost:8080"
     $http
-      .get(host + "/admin/reportListYear")
+      .get(url + "/admin/reportListYear")
       .then(function (response) {
         var listYear = response.data;
         $scope.listYear = listYear;
@@ -20,7 +20,7 @@ app.controller(
       });
 
     var ViolationsPosts = $http
-      .get(host + "/admin/reportViolationsPosts")
+      .get(url + "/admin/reportViolationsPosts")
       .then(function (response) {
         $scope.violationsPosts = response.data;
       })
@@ -29,7 +29,7 @@ app.controller(
       });
 
     var NumberReport = $http
-      .get(host + "/admin/reportNumberReport")
+      .get(url + "/admin/reportNumberReport")
       .then(function (response) {
         $scope.numberReport = response.data;
       })
@@ -37,26 +37,26 @@ app.controller(
         console.log(error);
       });
 
-    var age = $http.get(host + "/admin/reportAge").then(function (response) {
+    var age = $http.get(url + "/admin/reportAge").then(function (response) {
       $scope.age = response.data;
     });
 
-    var age2 = $http.get(host + "/admin/reportAge2").then(function (response) {
+    var age2 = $http.get(url + "/admin/reportAge2").then(function (response) {
       $scope.age2 = response.data;
     });
 
-    var age3 = $http.get(host + "/admin/reportAge3").then(function (response) {
+    var age3 = $http.get(url + "/admin/reportAge3").then(function (response) {
       $scope.age3 = response.data;
     });
 
     var listAcc = $http
-      .get(host + "/admin/reportlistCountAcc")
+      .get(url + "/admin/reportlistCountAcc")
       .then(function (response) {
         $scope.listCountAcc = response.data;
       });
 
     $http
-      .get(host + "/admin/reporttopPostsLikes")
+      .get(url + "/admin/reporttopPostsLikes")
       .then(function (response) {
         var topPostsLikes = response.data;
         $scope.topPostsLikes = topPostsLikes;
@@ -66,7 +66,7 @@ app.controller(
       });
 
     $http
-      .get(host + "/admin/reportTotalPosts")
+      .get(url + "/admin/reportTotalPosts")
       .then(function (response) {
         $scope.totalPosts = response.data;
       })
@@ -76,7 +76,7 @@ app.controller(
 
       $scope.detail = function(postId){
      
-        $http.get(host + '/admin/report/detail/' + postId)
+        $http.get(url + '/admin/report/detail/' + postId)
               .then(function (response) {
                   $scope.posts = response.data;
               })
@@ -342,11 +342,11 @@ app.controller(
 
     $scope.onYear = function () {
 
-      var getData1 = $http.get(host + "/admin/report/filterYearViolationsPosts/" + $scope.selectedYear.years).then(function (response) {
+      var getData1 = $http.get(url + "/admin/report/filterYearViolationsPosts/" + $scope.selectedYear.years).then(function (response) {
         $scope.violationsPosts = response.data;
       });
 
-      var getData2 = $http.get(host + "/admin/report/filterYearReport/" + $scope.selectedYear.years).then(function (response) {
+      var getData2 = $http.get(url + "/admin/report/filterYearReport/" + $scope.selectedYear.years).then(function (response) {
         $scope.numberReport = response.data;
       });
 

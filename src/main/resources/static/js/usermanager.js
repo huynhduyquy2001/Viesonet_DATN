@@ -3,20 +3,20 @@ app.controller(
 	function ($scope, $http, $translate, $rootScope, $location) {
 		$scope.listUsers = [];
 		$scope.profile = [];
-		var host = "http://localhost:8080"
-		$http.get(host + '/admin/usermanager/load')
+		var url = "http://localhost:8080"
+		$http.get(url + '/admin/usermanager/load')
 			.then(function(response) {
 				$scope.listUsers = response.data;
 			});
 
-		$http.get(host + '/admin/usermanager/profile')
+		$http.get(url + '/admin/usermanager/profile')
 			.then(function(response) {
 				$scope.profile = response.data;
 			});
 
 		$scope.detailUser = function(userId) {
 
-			$http.get(host + '/admin/usermanager/detailUser/' + userId)
+			$http.get(url + '/admin/usermanager/detailUser/' + userId)
 				.then(function(response) {
 					$scope.profile = response.data;
 				});
@@ -28,7 +28,7 @@ app.controller(
 				$scope.listUsers.content = originalList;
 				return;
 			}else{
-				$http.get(host + "/admin/usermanager/search/"+ search)
+				$http.get(url + "/admin/usermanager/search/"+ search)
 				.then(function(response) {
 					$scope.listUsers = response.data;
 				});
@@ -38,9 +38,9 @@ app.controller(
 
 		$scope.searchClick = function() {
 			var search = $scope.searchValue;
-			var hostUser = host + '/admin/usermanager/searchId/' + search;
+			var urlUser = url + '/admin/usermanager/searchId/' + search;
 
-			$http.get(hostUser)
+			$http.get(urlUser)
 				.then(function(response) {
 					$scope.profile = response.data;
 				});
@@ -93,7 +93,7 @@ app.controller(
 								'warning'
 							)
 						} else {
-							var url = host + '/admin/usermanager/userRole/' + sdt + '/' + role;
+							var url = url + '/admin/usermanager/userRole/' + sdt + '/' + role;
 							$http.put(url)
 								.then(function(response) {
 									$scope.profile = response.data;
@@ -137,7 +137,7 @@ app.controller(
 					reverseButtons: true
 				}).then((result) => {
 					if (result.isConfirmed && violationCount > 0) {
-						var url = host + '/admin/usermanager/userViolations/' + userId;
+						var url = url + '/admin/usermanager/userViolations/' + userId;
 							$http.put(url)
 								.then(function(response) {
 									$scope.profile = response.data;

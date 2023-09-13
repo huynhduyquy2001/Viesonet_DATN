@@ -24,30 +24,22 @@ app.config(function ($translateProvider, $routeProvider) {
 	}).when('/product', {
 		templateUrl: "ngview/productDetails.html",
 		controller: 'ProductController'
-	}).when('/mystore', {
-		templateUrl: "/ngview/myStore.html",
-		controller: 'MyStoreController'
-	}).when('/shoppingcart', {
-			templateUrl: "/ngview/shoppingcart.html",
-			controller: 'ShoppingCartController'
-	}).when('/admin/report', {
-			templateUrl: "/ngview/report.html",
-			controller: 'ReportController'
-	}).when('/admin/usermanager', {
-			templateUrl: "/ngview/usermanager.html",
-			controller: 'UserManagerController'
-	}).when('/admin/postsviolatin', {
-			templateUrl: "/ngview/postsviolatin.html",
-			controller: 'PostsViolationController'
 	}).when('/favouriteProduct', {
 		templateUrl: "ngview/favouriteProducts.html",
 		controller: 'FavouriteProductsController'
 	}).when('/shopping', {
 		templateUrl: "ngview/shopping.html",
 		controller: 'ShoppingController'
+	}).when('/admin/report', {
+		templateUrl: "ngview/report.html",
+		controller: 'ReportController'
+	}).when('/admin/usermanager', {
+		templateUrl: "ngview/usermanager.html",
+		controller: 'UserManagerController'
+	}).when('/admin/postsviolation', {
+		templateUrl: "ngview/postsviolation.html",
+		controller: 'PostsViolationController'
 	});
-
-		;
 	// Set the default language
 	var storedLanguage = localStorage.getItem('myAppLangKey') || 'vie';
 	$translateProvider.preferredLanguage(storedLanguage);
