@@ -26,7 +26,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 		$scope.numOfCommentsToShow += $scope.commentsToShowMore;
 	};
 
-
+	var url = "http://localhost:8080";
 	//Lấy danh sách vi phạm
 	$http.get('http://localhost:8080/getviolations')
 		.then(function (response) {
@@ -347,7 +347,7 @@ app.controller('HomeController', function ($scope, $http, $translate, $window, $
 		}
 		formData.append('content', $scope.content.trim());
 
-		$http.post('/post', formData, {
+		$http.post(url + '/post', formData, {
 			transformRequest: angular.identity,
 			headers: {
 				'Content-Type': undefined
