@@ -24,14 +24,28 @@ public class AccessTimeInterceptor implements HandlerInterceptor {
     @Autowired
     private UsersService usersService;
 
+    @Autowired
+    private AuthConfig authConfig;
+
     @Override
     public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
             throws Exception {
         // Kiểm tra xem người dùng đã đăng nhập hay chưa
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        // Cập nhật thời gian đăng nhập
-        usersService.updateLoginTime(userId);
-        // ...
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        if (authentication != null && authentication.isAuthenticated()) {
+            
+        	Accounts account = authConfig.getLoggedInAccount(SecurityContextHolder.getContext().getAuthentication());
+        	String userId = "";
+        	if (account != null) {
+        	     userId = account.getUserId();
+        	 // Cập nhật thời gian đăng nhập
+                usersService.updateLoginTime(userId);
+        	    // ...
+        	} else {
+        	    System.out.println("Account is null.");
+        	}
+            
+        }
         return true;
     }
 }

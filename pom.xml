@@ -156,22 +156,6 @@
      <artifactId>assertj-core</artifactId>
      <version>3.13.2</version>
    </dependency>
-   <!-- https://mvnrepository.com/artifact/com.flickr4java/flickr4java -->
-<dependency>
-    <groupId>com.flickr4java</groupId>
-    <artifactId>flickr4java</artifactId>
-    <version>3.0.8</version>
-</dependency>
-   <!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-<!-- https://mvnrepository.com/artifact/com.google.code.gson/gson -->
-<dependency>
-    <groupId>com.google.code.gson</groupId>
-    <artifactId>gson</artifactId>
-    <version>2.10.1</version>
-</dependency>
-
-
-
  </dependencies>
 
 	<build>
