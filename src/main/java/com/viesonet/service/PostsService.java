@@ -29,12 +29,11 @@ public class PostsService {
 
 	@Autowired
 	PostsDao postsDao;
-	
-	
-	public List<Posts> findPostsByListUserId(List<String> userId) {
-		return postsDao.findPostsByListUserId(userId, Sort.by(Sort.Direction.DESC, "postDate"));
-	}
 
+	public Page<Posts> findPostsByListUserId(List<String> userIds, int page, int size) {
+		Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "postDate"));
+		return postsDao.findPostsByListUserId(userIds, pageable);
+	}
 
 	public Posts findPostById(int postId) {
 		Optional<Posts> optionalPost = postsDao.findById(postId);
@@ -65,29 +64,26 @@ public class PostsService {
 	public int countPost(String userId) {
 		return postsDao.countMyPosts(userId);
 	}
-	
 
-    public List<Posts> findByUserId(String userId) {
-        return postsDao.findByUserId(userId);
-    }
+	public List<Posts> findByUserId(String userId) {
+		return postsDao.findByUserId(userId);
+	}
 
+	public Posts getPostById(int postId) {
+		Optional<Posts> postOptional = postsDao.findById(postId);
+		return postOptional.orElse(null);
+	}
 
-    public Posts getPostById(int postId) {
-        Optional<Posts> postOptional = postsDao.findById(postId);
-        return postOptional.orElse(null);
-    }
+	public void savePost(Posts post) {
+		postsDao.save(post);
+	}
 
-    public void savePost(Posts post) {
-    	postsDao.save(post);
-    }
-    
-    public void hidePost(int postId) {
-        Posts existingPost = postsDao.findById(postId).orElse(null);
-        if (existingPost != null) {
-            existingPost.setIsActive(false);
-            postsDao.save(existingPost);
-        }
-    }
+	public void hidePost(int postId) {
+		Posts existingPost = postsDao.findById(postId).orElse(null);
+		if (existingPost != null) {
+			existingPost.setIsActive(false);
+			postsDao.save(existingPost);
+		}
+	}
 
-	
 }
