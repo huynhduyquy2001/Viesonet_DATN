@@ -86,7 +86,7 @@ public class AuthConfig { // extends WebSecurityConfigurerAdapter {
                 .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests()
-                .requestMatchers("/api/**", "/images/**", "/js/**", "/css/**", "/chat/**")
+                .requestMatchers("/**", "/chat/**")
                 // .permitAll().requestMatchers("/staff/**").hasAnyRole("2",
                 // "1").requestMatchers("/admin/**").hasRole("1")
                 // .requestMatchers("/**").hasAnyRole("1", "2", "3")
