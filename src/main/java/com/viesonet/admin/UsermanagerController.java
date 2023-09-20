@@ -10,9 +10,6 @@ import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.viesonet.security.AuthConfig;
-import com.viesonet.dao.AccountsDao;
-import com.viesonet.dao.UsersDao;
 import com.viesonet.entity.Accounts;
 import com.viesonet.entity.Users;
 import com.viesonet.service.AccountsService;
