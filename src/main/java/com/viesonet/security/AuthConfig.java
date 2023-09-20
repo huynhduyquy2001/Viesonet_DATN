@@ -85,15 +85,16 @@ public class AuthConfig { // extends WebSecurityConfigurerAdapter {
                 .and()
                 .csrf().disable()
                 .authorizeRequests()
-                .requestMatchers("/**")
+                .requestMatchers("/api/**", "/images/**", "/js/**", "/css/**", "/chat/**")
+                // .permitAll().requestMatchers("/staff/**").hasAnyRole("2",
+                // "1").requestMatchers("/admin/**").hasRole("1")
+                // .requestMatchers("/**").hasAnyRole("1", "2", "3")
+                // .anyRequest()
                 .permitAll()
-                .anyRequest()
-                .authenticated()
                 .and()
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement()
                 .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
-
         return http.build();
     }
 

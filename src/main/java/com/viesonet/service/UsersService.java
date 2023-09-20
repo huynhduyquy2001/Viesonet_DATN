@@ -25,20 +25,19 @@ import com.viesonet.entity.Users;
 public class UsersService {
 	@Autowired
 	UsersDao usersDao;
-	
+
 	@Transactional
-    public void updateLoginTime(String userId) {
-        Users user = usersDao.getById(userId);
-        if (user != null) {
-        	// Lấy ngày và giờ hiện tại
-            LocalDateTime ngayGioDang = LocalDateTime.now();
-            // Chuyển đổi sang kiểu Timestamp
-            Timestamp timestamp = Timestamp.valueOf(ngayGioDang);
-            user.setAccessTime(timestamp);
-            usersDao.saveAndFlush(user);
-        }
-    }
-	
+	public void updateLoginTime(String userId) {
+		Users user = usersDao.getById(userId);
+		if (user != null) {
+			// Lấy ngày và giờ hiện tại
+			LocalDateTime ngayGioDang = LocalDateTime.now();
+			// Chuyển đổi sang kiểu Timestamp
+			Timestamp timestamp = Timestamp.valueOf(ngayGioDang);
+			user.setAccessTime(timestamp);
+			usersDao.saveAndFlush(user);
+		}
+	}
 
 	public Users findUserById(String userId) {
 		Optional<Users> user = usersDao.findById(userId);
@@ -57,60 +56,61 @@ public class UsersService {
 		return usersDao.getById(userId);
 	}
 
-	public List<Users> findByUserAndStaff(String userId) {
-		return usersDao.findByUserAndStaff(userId);
+	public List<Object> findByAll() {
+		return usersDao.findByAll();
 	}
 
 	public List<Object> findByUserSearch(String userId) {
 		return usersDao.findByUserSearch(userId);
 	}
-	
-	public List<Object> findByUserSearchAll(){
+
+	public List<Object> findByUserSearchAll() {
 		return usersDao.findByUserSearchAll();
 	}
-	
+
 	public Object findByDetailUser(String userId) {
 		return usersDao.findByDetailUser(userId);
 	}
-	
-	public List<Users> findAll(){
+
+	public List<Users> findAll() {
 		return usersDao.findAll();
 	}
-	
+
 	public Users setViolationCount(String userId) {
 		Users user = usersDao.findByuserId(userId);
 		user.setViolationCount(0);
 		return usersDao.saveAndFlush(user);
 	}
-	
+
 	public void updateUserInfo(Users user) {
 		Users currentUser = usersDao.findByuserId(user.getUserId());
 		currentUser.setUsername(user.getUsername());
-        currentUser.setBirthday(user.getBirthday());
-        currentUser.setGender(user.isGender());
-        currentUser.setAddress(user.getAddress());
-        currentUser.setRelationship(user.getRelationship());
-        currentUser.setIntroduction(user.getIntroduction());
-        currentUser.setAccount(user.getAccount());
+		currentUser.setBirthday(user.getBirthday());
+		currentUser.setGender(user.isGender());
+		currentUser.setAddress(user.getAddress());
+		currentUser.setRelationship(user.getRelationship());
+		currentUser.setIntroduction(user.getIntroduction());
+		currentUser.setAccount(user.getAccount());
 		usersDao.saveAndFlush(user);
-    }
-	 public Users getUserById(String userId) {
-	        return usersDao.findById(userId).orElse(null);
 	}
-	 
-	 public void updateBackground(String userId, String newBackgroundImageUrl) {
-		    Users user = usersDao.findById(userId).orElse(null);
-		    if (user != null) {
-		        user.setBackground(newBackgroundImageUrl);
-		        usersDao.save(user);
-		    }
+
+	public Users getUserById(String userId) {
+		return usersDao.findById(userId).orElse(null);
 	}
-	 
-	 public void updateAvatar(String userId, String newAvatarImageUrl) {
-		    Users user = usersDao.findById(userId).orElse(null);
-		    if (user != null) {
-		        user.setAvatar(newAvatarImageUrl);
-		        usersDao.save(user);
-		    }
+
+	public void updateBackground(String userId, String newBackgroundImageUrl) {
+		Users user = usersDao.findById(userId).orElse(null);
+		if (user != null) {
+			user.setBackground(newBackgroundImageUrl);
+			usersDao.save(user);
+		}
+	}
+
+	public void updateAvatar(String userId, String newAvatarImageUrl) {
+		Users user = usersDao.findById(userId).orElse(null);
+		if (user != null) {
+			user.setAvatar(newAvatarImageUrl);
+			usersDao.save(user);
+		}
 	}
 }

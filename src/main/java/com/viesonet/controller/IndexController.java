@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -69,6 +70,7 @@ import com.viesonet.service.ViolationTypesService;
 import com.viesonet.service.ViolationsService;
 
 import jakarta.servlet.ServletContext;
+import jakarta.servlet.http.HttpServletRequest;
 import net.coobird.thumbnailator.Thumbnails;
 
 @RestController
@@ -129,11 +131,16 @@ public class IndexController {
 		return followService.getFollowingInfoByUserId(phoneNumber);
 	}
 
+	@GetMapping("/myendpoint")
+	public String myEndpoint(HttpServletRequest request) {
+		String token = request.getHeader("Authorization");
+		System.out.println("dang tim:" + token);
+		// ... code xử lý JWT token và công việc khác ...
+		return token;
+	}
+
 	@GetMapping("/get-more-posts/{page}")
-	public List<Posts> getMoreFollowedPosts(@PathVariable("page") int page) {
-		int postsPerPage = 10;
-		int startIndex = (page - 1) * postsPerPage;
-		int endIndex = startIndex + postsPerPage;
+	public Page<Posts> getMoreFollowedPosts(@PathVariable("page") int page) {
 
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<Follow> followList = followService.getFollowing(userId);
@@ -141,15 +148,9 @@ public class IndexController {
 				.map(follow -> follow.getFollowing().getUserId())
 				.collect(Collectors.toList());
 
-		List<Posts> allFollowedPosts = postsService.findPostsByListUserId(followedUserIds); // Thay vì lấy toàn bộ bài
-																							// viết, chỉ lấy bài viết
-																							// của người được theo dõi
+		Page<Posts> allFollowedPosts = postsService.findPostsByListUserId(followedUserIds, page, 10);
 
-		if (startIndex >= allFollowedPosts.size()) {
-			return Collections.emptyList();
-		}
-
-		return allFollowedPosts.subList(startIndex, Math.min(endIndex, allFollowedPosts.size()));
+		return allFollowedPosts;
 	}
 
 	@ResponseBody
@@ -249,67 +250,13 @@ public class IndexController {
 	@PostMapping("/post")
 	public String dangBai(@RequestParam("photoFiles") MultipartFile[] photoFiles,
 			@RequestParam("content") String content) {
-		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-		List<String> hinhAnhList = new ArrayList<>();
-		// Lưu bài đăng vào cơ sở dữ liệu
-		Posts myPost = postsService.post(usersService.findUserById(userId), content);
 
-		// Thêm thông báo
-		List<Follow> fl = followService.getFollowing(userId);
-		List<Interaction> itn = interactionService.findListInteraction(userId);
-		if (itn.size() == 0) {
-			for (Follow list : fl) {
-				Notifications notifications = notificationsService.createNotifications(
-						usersService.findUserById(userId), 0, list.getFollower(), myPost, 1);
-				messagingTemplate.convertAndSend("/private-user", notifications);
-			}
-		} else {
-			for (Interaction it : itn) {
-				Notifications notifications = notificationsService.createNotifications(
-						usersService.findUserById(userId), 0, it.getInteractingPerson(), myPost, 1);
-				messagingTemplate.convertAndSend("/private-user", notifications);
-			}
-		}
-
-		// Lưu hình ảnh vào thư mục static/images
-		if (photoFiles != null && photoFiles.length > 0) {
-			for (MultipartFile photoFile : photoFiles) {
-				if (!photoFile.isEmpty()) {
-					String originalFileName = photoFile.getOriginalFilename();
-					String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-					String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-					String newFileName = originalFileName + "-" + timestamp + extension;
-
-					String rootPath = servletContext.getRealPath("/");
-					String parentPath = new File(rootPath).getParent();
-					String pathUpload = parentPath + "/resources/static/images/" + newFileName;
-
-					try {
-						photoFile.transferTo(new File(pathUpload));
-						String contentType = photoFile.getContentType();
-						boolean type = true;
-						if (contentType.startsWith("image")) {
-
-						} else if (contentType.startsWith("video")) {
-							type = false;
-						}
-						if (type == true) {
-							long fileSize = photoFile.getSize();
-							if (fileSize > 1 * 1024 * 1024) {
-								double quality = 0.6;
-								String outputPath = pathUpload;
-								Thumbnails.of(pathUpload).scale(1.0).outputQuality(quality).toFile(outputPath);
-							}
-						}
-						imagesService.saveImage(myPost, newFileName, type);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-
-				}
-			}
-		}
-
+		String rootPath = servletContext.getRealPath("/");
+		System.out.println("rootPath+" + rootPath);
+		String parentPath = new File(rootPath).getParent();
+		String pathUpload = parentPath + "/resources/static/images/";
+		System.out.println("parentPath" + parentPath);
+		System.out.println("pathUpload" + pathUpload);
 		// Xử lý và lưu thông tin bài viết kèm ảnh vào cơ sở dữ liệu
 		return "success";
 	}

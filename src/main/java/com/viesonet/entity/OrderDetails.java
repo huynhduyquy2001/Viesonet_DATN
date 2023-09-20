@@ -1,5 +1,7 @@
 package com.viesonet.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,6 +27,7 @@ public class OrderDetails {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderDetailId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "orderId")
     private Orders order;

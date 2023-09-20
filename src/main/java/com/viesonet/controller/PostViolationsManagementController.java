@@ -31,16 +31,15 @@ public class PostViolationsManagementController {
 	private ViolationsService violationsService;
 	@Autowired
 	private PostsService postsService;
-	
+
 	@Autowired
 	private UsersService usersService;
-	
+
 	@Autowired
 	NotificationsService notificationsService;
-	
+
 	@Autowired
 	private SimpMessagingTemplate messagingTemplate;
-
 
 	@GetMapping("/staff/post_violations_management")
 	public ModelAndView getPage() {
@@ -58,7 +57,6 @@ public class PostViolationsManagementController {
 	@GetMapping("/staff/postsviolations/detailPost/{postId}")
 	public Posts getViolationsByPostId(@PathVariable int postId) {
 		return postsService.findPostById(postId);
-
 	}
 
 	@GetMapping("/staff/postsviolations/detailViolation/{postId}")
@@ -80,13 +78,13 @@ public class PostViolationsManagementController {
 		violationsService.acceptByPostViolations(listPostId);
 		for (int i = 0; i < listPostId.size(); i++) {
 			Posts post = postsService.findPostById(Integer.parseInt(listPostId.get(i)));
-			
-			//Thêm thông báo
+
+			// Thêm thông báo
 			Notifications notifications = notificationsService.createNotifications(
 					post.getUser(), post.getLikeCount(), post.getUser(), post, 5);
 
 			messagingTemplate.convertAndSend("/private-user", notifications);
-			
+
 		}
 		Page<Object> page = violationsService.findViolationsWithStatusTrue(0, 9);
 		return ResponseEntity.ok(page);

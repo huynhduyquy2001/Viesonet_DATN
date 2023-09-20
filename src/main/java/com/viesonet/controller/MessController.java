@@ -1,6 +1,7 @@
 package com.viesonet.controller;
 
 import java.io.File;
+import java.security.Principal;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Collections;
@@ -15,6 +16,7 @@ import org.springframework.messaging.handler.annotation.SendTo;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.messaging.simp.annotation.SendToUser;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -72,11 +74,12 @@ public class MessController {
 
 	@MessageMapping("/sendnewmess")
 	@SendToUser("/queue/receiveMessage")
-	public void addMess(Message newMessage, Authentication auth) {
-		String myId = authConfig.getLoggedInAccount(auth).getUserId();
-		messagingTemplate.convertAndSendToUser(newMessage.getReceiver().getUserId(), "/queue/receiveMessage",
+	public void addMess(Message newMessage) {
+		System.out.println("aloNe " + newMessage.getSender().getUserId());
+		System.out.println("aloNe " + newMessage.getReceiver().getUserId());
+		messagingTemplate.convertAndSendToUser(newMessage.getSender().getUserId(), "/queue/receiveMessage",
 				newMessage);
-		messagingTemplate.convertAndSendToUser(myId, "/queue/receiveMessage",
+		messagingTemplate.convertAndSendToUser(newMessage.getReceiver().getUserId(), "/queue/receiveMessage",
 				newMessage);
 	}
 
@@ -90,8 +93,8 @@ public class MessController {
 
 	@PostMapping("/sendimage/{receiverId}")
 	public List<Message> sendImage(@RequestParam("photoFiles") MultipartFile[] photoFiles,
-			@PathVariable("receiverId") String receiverId, Authentication authentication) {
-		String myId = authConfig.getLoggedInAccount(authentication).getUserId();
+			@PathVariable("receiverId") String receiverId) {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<Message> list = new ArrayList<>();
 		if (photoFiles != null && photoFiles.length > 0) {
 			for (MultipartFile photoFile : photoFiles) {
@@ -123,7 +126,7 @@ public class MessController {
 								Thumbnails.of(pathUpload).scale(1.0).outputQuality(quality).toFile(outputPath);
 							}
 						}
-						newMessage = messageService.addMess(usersService.findUserById(myId),
+						newMessage = messageService.addMess(usersService.findUserById(userId),
 								usersService.findUserById(receiverId), "", newFileName);
 						list.add(newMessage);
 					} catch (Exception e) {
@@ -138,14 +141,14 @@ public class MessController {
 	}
 
 	@GetMapping("/getmess2/{userId}")
-	public List<Message> getListMess2(@PathVariable("userId") String userId, Authentication authentication) {
-		String myId = authConfig.getLoggedInAccount(authentication).getUserId();
+	public List<Message> getListMess2(@PathVariable("userId") String userId) {
+		String myId = SecurityContextHolder.getContext().getAuthentication().getName();
 		return messageService.getListMess(myId, userId);
 	}
 
 	@GetMapping("/chatlistwithothers")
-	public List<Object> getUsersMess(Authentication authentication) {
-		String myId = authConfig.getLoggedInAccount(authentication).getUserId();
+	public List<Object> getUsersMess() {
+		String myId = SecurityContextHolder.getContext().getAuthentication().getName();
 		return messageService.getListUsersMess(myId);
 	}
 
@@ -155,14 +158,14 @@ public class MessController {
 	}
 
 	@GetMapping("/getunseenmessage")
-	public int getListUnseenMessage(Authentication authentication) {
-		String myId = authConfig.getLoggedInAccount(authentication).getUserId();
+	public int getListUnseenMessage() {
+		String myId = SecurityContextHolder.getContext().getAuthentication().getName();
 		return messageService.getListUnseenMessage(myId);
 	}
 
 	@PostMapping("/seen/{userId}")
-	public List<Message> seen(@PathVariable("userId") String senderId, Authentication authentication) {
-		String myId = authConfig.getLoggedInAccount(authentication).getUserId();
+	public List<Message> seen(@PathVariable("userId") String senderId) {
+		String myId = SecurityContextHolder.getContext().getAuthentication().getName();
 		return messageService.seen(senderId, myId);
 	}
 
