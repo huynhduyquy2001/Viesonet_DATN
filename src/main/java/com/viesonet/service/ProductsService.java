@@ -2,6 +2,7 @@ package com.viesonet.service;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
@@ -17,6 +18,11 @@ import com.viesonet.entity.Products;
 public class ProductsService {
     @Autowired
     ProductsDao productsDao;
+
+    public Products getProduct(int id) {
+        Optional<Products> obj = productsDao.findById(id);
+        return obj.orElse(null);
+    }
 
     public List<Products> getShopping(List<String> list) {
         List<Products> shoppingList = productsDao.getShopping(list);
