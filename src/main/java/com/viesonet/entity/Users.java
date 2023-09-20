@@ -113,4 +113,8 @@ public class Users {
 	@OneToMany(mappedBy = "user")
 	private List<Ratings> ratings;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<Products> products;
+
 }

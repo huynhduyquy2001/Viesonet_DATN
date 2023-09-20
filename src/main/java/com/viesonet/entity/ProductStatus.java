@@ -1,13 +1,14 @@
 package com.viesonet.entity;
 
+import java.util.List;
+
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.OneToMany;
 import jakarta.persistence.Table;
 import lombok.AllArgsConstructor;
 import lombok.Data;
@@ -16,28 +17,19 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Table(name = "OrderDetails")
+@Table(name = "ProductStatus")
 @Data
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class OrderDetails {
+public class ProductStatus {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int orderDetailId;
+    private int statusId;
+    private String statusName;
 
     @JsonIgnore
-    @ManyToOne
-    @JoinColumn(name = "orderId")
-    private Orders order;
-
-    @ManyToOne
-    @JoinColumn(name = "productId")
-    private Products product;
-    private int quantity;
-    private float originalPrice;
-    private float salePrice;
-    private float shippingFee;
-
+    @OneToMany(mappedBy = "productStatus")
+    private List<Products> listProduct;
 }

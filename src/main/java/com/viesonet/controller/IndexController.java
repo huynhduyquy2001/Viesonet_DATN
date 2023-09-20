@@ -11,6 +11,7 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -139,10 +140,7 @@ public class IndexController {
 	}
 
 	@GetMapping("/get-more-posts/{page}")
-	public List<Posts> getMoreFollowedPosts(@PathVariable("page") int page) {
-		int postsPerPage = 10;
-		int startIndex = (page - 1) * postsPerPage;
-		int endIndex = startIndex + postsPerPage;
+	public Page<Posts> getMoreFollowedPosts(@PathVariable("page") int page) {
 
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<Follow> followList = followService.getFollowing(userId);
@@ -150,15 +148,9 @@ public class IndexController {
 				.map(follow -> follow.getFollowing().getUserId())
 				.collect(Collectors.toList());
 
-		List<Posts> allFollowedPosts = postsService.findPostsByListUserId(followedUserIds); // Thay vì lấy toàn bộ bài
-																							// viết, chỉ lấy bài viết
-																							// của người được theo dõi
+		Page<Posts> allFollowedPosts = postsService.findPostsByListUserId(followedUserIds, page, 10);
 
-		if (startIndex >= allFollowedPosts.size()) {
-			return Collections.emptyList();
-		}
-
-		return allFollowedPosts.subList(startIndex, Math.min(endIndex, allFollowedPosts.size()));
+		return allFollowedPosts;
 	}
 
 	@ResponseBody
