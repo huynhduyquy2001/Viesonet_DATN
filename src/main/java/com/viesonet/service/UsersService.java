@@ -56,8 +56,8 @@ public class UsersService {
 		return usersDao.getById(userId);
 	}
 
-	public List<Users> findByUserAndStaff(String userId) {
-		return usersDao.findByUserAndStaff(userId);
+	public List<Object> findByAll() {
+		return usersDao.findByAll();
 	}
 
 	public List<Object> findByUserSearch(String userId) {
@@ -113,5 +113,4 @@ public class UsersService {
 			usersDao.save(user);
 		}
 	}
-
 }

@@ -2,6 +2,8 @@ package com.viesonet.entity;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -29,6 +31,7 @@ public class Ratings {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int ratingId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "productId")
     private Products product;

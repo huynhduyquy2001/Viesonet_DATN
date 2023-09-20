@@ -8,6 +8,8 @@ import org.apache.catalina.User;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,6 +36,7 @@ import com.viesonet.entity.FollowDTO;
 import com.viesonet.entity.Users;
 
 @RestController
+@CrossOrigin("*")
 public class ListFollowController {
 	@Autowired
 	private SearchService SearchService;
@@ -48,35 +51,29 @@ public class ListFollowController {
 	@Autowired
 	private AuthConfig authConfig;
 
-//	@GetMapping("/listFollow")
-//	public ModelAndView getHomePage() {
-//		ModelAndView modelAndView = new ModelAndView("ListFollow");
-//		return modelAndView;
-//	}
+	// @GetMapping("/listFollow")
+	// public ModelAndView getHomePage() {
+	// ModelAndView modelAndView = new ModelAndView("ListFollow");
+	// return modelAndView;
+	// }
 
 	// Lấy thông tin chi tiết các followers
 	@GetMapping("/ListFollower")
-	public List<Users> getFollowersInfoByUserId(Authentication authentication) {
-		Accounts account = authConfig.getLoggedInAccount(authentication);
-
-		String userId = account.getUserId();
+	public List<Users> getFollowersInfoByUserId() {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		return followService.getFollowersInfoByUserId(userId);
 	}
 
 	// Lấy thông tin chi tiết các followers
 	@GetMapping("/ListFollowing1")
-	public List<Users> getFollowingInfoByUserId1(Authentication authentication) {
-		Accounts account = authConfig.getLoggedInAccount(authentication);
-
-		String userId = account.getUserId();
+	public List<Users> getFollowingInfoByUserId1() {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		return followService.getFollowingInfoByUserId(userId);
 	}
 
 	@GetMapping("/ListFollowing")
-	public List<String> getFollowingInfoByUserId(Authentication authentication) {
-		Accounts account = authConfig.getLoggedInAccount(authentication);
-
-		String userId = account.getUserId();
+	public List<String> getFollowingInfoByUserId() {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		return followService.findUserIdsOfFollowing(userId);
 	}
 
@@ -112,22 +109,23 @@ public class ListFollowController {
 		// Xóa dữ liệu follow từ cơ sở dữ liệu
 		followService.deleteFollowByFollowerAndFollowing(follower, following);
 	}
-	//Lấy danh sách follow
-		@GetMapping("/getfollow")
-		public List<FollowDTO> getFollow() {
-		    List<Follow> listFollow = followService.findAllFollow();
-		    List<FollowDTO> listFollowDTO = new ArrayList<>();
 
-		    for (Follow follow : listFollow) {
-		        FollowDTO followDTO = new FollowDTO();
-		        followDTO.setFollowId(follow.getFollowId());
-		        followDTO.setFollowerId(follow.getFollower().getUserId());
-		        followDTO.setFollowingId(follow.getFollowing().getUserId());
-		        followDTO.setFollowDate(follow.getFollowDate());
+	// Lấy danh sách follow
+	@GetMapping("/getfollow")
+	public List<FollowDTO> getFollow() {
+		List<Follow> listFollow = followService.findAllFollow();
+		List<FollowDTO> listFollowDTO = new ArrayList<>();
 
-		        listFollowDTO.add(followDTO);
-		    }
+		for (Follow follow : listFollow) {
+			FollowDTO followDTO = new FollowDTO();
+			followDTO.setFollowId(follow.getFollowId());
+			followDTO.setFollowerId(follow.getFollower().getUserId());
+			followDTO.setFollowingId(follow.getFollowing().getUserId());
+			followDTO.setFollowDate(follow.getFollowDate());
 
-		    return listFollowDTO;	
+			listFollowDTO.add(followDTO);
 		}
+
+		return listFollowDTO;
+	}
 }

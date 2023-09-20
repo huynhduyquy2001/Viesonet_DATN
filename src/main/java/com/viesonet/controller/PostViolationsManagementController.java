@@ -6,6 +6,7 @@ import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -26,21 +27,21 @@ import com.viesonet.service.ViolationsService;
 import jakarta.transaction.Transactional;
 
 @RestController
+@CrossOrigin("*")
 public class PostViolationsManagementController {
 	@Autowired
 	private ViolationsService violationsService;
 	@Autowired
 	private PostsService postsService;
-	
+
 	@Autowired
 	private UsersService usersService;
-	
+
 	@Autowired
 	NotificationsService notificationsService;
-	
+
 	@Autowired
 	private SimpMessagingTemplate messagingTemplate;
-
 
 	@GetMapping("/staff/post_violations_management")
 	public ModelAndView getPage() {
@@ -58,7 +59,6 @@ public class PostViolationsManagementController {
 	@GetMapping("/staff/postsviolations/detailPost/{postId}")
 	public Posts getViolationsByPostId(@PathVariable int postId) {
 		return postsService.findPostById(postId);
-
 	}
 
 	@GetMapping("/staff/postsviolations/detailViolation/{postId}")
@@ -80,13 +80,13 @@ public class PostViolationsManagementController {
 		violationsService.acceptByPostViolations(listPostId);
 		for (int i = 0; i < listPostId.size(); i++) {
 			Posts post = postsService.findPostById(Integer.parseInt(listPostId.get(i)));
-			
-			//Thêm thông báo
+
+			// Thêm thông báo
 			Notifications notifications = notificationsService.createNotifications(
 					post.getUser(), post.getLikeCount(), post.getUser(), post, 5);
 
 			messagingTemplate.convertAndSend("/private-user", notifications);
-			
+
 		}
 		Page<Object> page = violationsService.findViolationsWithStatusTrue(0, 9);
 		return ResponseEntity.ok(page);
