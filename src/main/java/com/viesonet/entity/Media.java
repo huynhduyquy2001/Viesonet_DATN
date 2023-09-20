@@ -1,5 +1,7 @@
 package com.viesonet.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -25,9 +27,11 @@ public class Media {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int MediaId;
 
+    @JsonIgnore
     @ManyToOne
     @JoinColumn(name = "productId")
     private Products product;
+
     private String mediaUrl;
 
     boolean type;

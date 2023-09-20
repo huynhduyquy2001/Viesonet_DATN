@@ -9,7 +9,7 @@ app.config(function ($translateProvider, $routeProvider) {
 	}).when('/search', {
 		templateUrl: "ngview/search.html",
 		controller: 'SearchController'
-	}).when('/recommend', {
+	}).when('recommend', {
 		templateUrl: "ngview/recommend.html",
 		controller: 'RecommendController'
 	}).when('/message', {

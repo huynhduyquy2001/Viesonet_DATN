@@ -33,9 +33,6 @@ public class Returns {
     private String reason;
 
     @ManyToOne
-    @JoinColumn(name = "returnTypeId")
-    private ReturnTypes returnType;
-    @ManyToOne
     @JoinColumn(name = "orderId")
     private Orders order;
 }

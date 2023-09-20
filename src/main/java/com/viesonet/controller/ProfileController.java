@@ -7,8 +7,8 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +43,7 @@ import jakarta.servlet.ServletContext;
 import net.coobird.thumbnailator.Thumbnails;
 
 @RestController
+@CrossOrigin("*")
 public class ProfileController {
 
 	@Autowired
@@ -74,9 +75,6 @@ public class ProfileController {
 
 	@Autowired
 	private ViolationsService violationService;
-
-	@Autowired
-	private AuthConfig authConfig;
 
 	// Lấy thông tin về follow người dùng hiện tại
 	@GetMapping("/findmyfollow")

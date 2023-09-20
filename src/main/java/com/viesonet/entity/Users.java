@@ -106,6 +106,10 @@ public class Users {
 	private List<ViolationProducts> violationProducts;
 
 	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<Products> products;
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "customer")
 	private List<Orders> orders;
 
