@@ -53,7 +53,7 @@ public class ShoppingController {
     // }
 
     @GetMapping("/get-shopping-by-page/{page}")
-    public Page<Products> getShoppingByPage(@PathVariable("page") int page) {
+    public Page<Products> getShoppingByPage(@PathVariable int page) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         List<Follow> followList = followService.getFollowing(userId);
         List<String> followedUserIds = followList.stream()
@@ -66,7 +66,7 @@ public class ShoppingController {
     }
 
     @GetMapping("/get-trending/{page}")
-    public Page<Products> getTrending(@PathVariable("page") int page) {
+    public Page<Products> getTrending(@PathVariable int page) {
         // lấy danh sách đơn hàng trong 7 ngày gần đây
         List<Integer> ordersId = ordersService.getShoppingWithinLast7Days();
         // lấy danh sách những sản phẩm có trong đơn hàng đó

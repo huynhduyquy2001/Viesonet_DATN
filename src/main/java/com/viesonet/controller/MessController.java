@@ -24,8 +24,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -92,8 +90,8 @@ public class MessController {
 	}
 
 	@PostMapping("/sendimage/{receiverId}")
-	public List<Message> sendImage(@RequestParam("photoFiles") MultipartFile[] photoFiles,
-			@PathVariable("receiverId") String receiverId) {
+	public List<Message> sendImage(@RequestParam MultipartFile[] photoFiles,
+			@PathVariable String receiverId) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<Message> list = new ArrayList<>();
 		if (photoFiles != null && photoFiles.length > 0) {
@@ -141,7 +139,7 @@ public class MessController {
 	}
 
 	@GetMapping("/getmess2/{userId}")
-	public List<Message> getListMess2(@PathVariable("userId") String userId) {
+	public List<Message> getListMess2(@PathVariable String userId) {
 		String myId = SecurityContextHolder.getContext().getAuthentication().getName();
 		return messageService.getListMess(myId, userId);
 	}
@@ -153,7 +151,7 @@ public class MessController {
 	}
 
 	@GetMapping("/getUser/{userId}")
-	public Users findUserById(@PathVariable("userId") String userId, Model model) {
+	public Users findUserById(@PathVariable String userId, Model model) {
 		return usersService.findUserById(userId);
 	}
 
@@ -170,11 +168,11 @@ public class MessController {
 	}
 
 	@PostMapping("/removemess/{messId}")
-	public Message reMoveMess(@PathVariable("messId") int messId) {
+	public Message reMoveMess(@PathVariable int messId) {
 		return messageService.removeMess(messageService.getMessById(messId));
 	}
 
-	@RequestMapping(value = "/mess/{otherId}", method = RequestMethod.GET)
+	@GetMapping("/mess/{otherId}")
 	public ModelAndView loadUserPage(@PathVariable("otherId") String id) {
 		ModelAndView modelAndView = new ModelAndView("Message.html");
 		modelAndView.addObject("otherId", id);

@@ -24,6 +24,8 @@ import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import com.viesonet.entity.Accounts;
+
+import static org.springframework.security.config.Customizer.withDefaults;
 import com.viesonet.service.AccountsService;
 import com.viesonet.service.UserDetailsServiceImpl;
 
@@ -81,10 +83,9 @@ public class AuthConfig { // extends WebSecurityConfigurerAdapter {
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
-                .cors()
-                .and()
-                .csrf().disable()
-                .authorizeRequests()
+                .cors(withDefaults())
+                .csrf(csrf -> csrf.disable())
+                .authorizeHttpRequests()
                 .requestMatchers("/api/**", "/images/**", "/js/**", "/css/**", "/chat/**")
                 // .permitAll().requestMatchers("/staff/**").hasAnyRole("2",
                 // "1").requestMatchers("/admin/**").hasRole("1")
@@ -93,8 +94,8 @@ public class AuthConfig { // extends WebSecurityConfigurerAdapter {
                 .permitAll()
                 .and()
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
-                .sessionManagement()
-                .sessionCreationPolicy(SessionCreationPolicy.STATELESS);
+                .sessionManagement(management -> management
+                        .sessionCreationPolicy(SessionCreationPolicy.STATELESS));
         return http.build();
     }
 

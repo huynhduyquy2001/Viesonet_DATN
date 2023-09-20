@@ -30,7 +30,7 @@ public class SearchController {
 
 	@GetMapping("/user/search/{username}")
 
-	public ResponseEntity<List<Users>> searchUsersByUsername(@RequestParam("username") String username) {
+	public ResponseEntity<List<Users>> searchUsersByUsername(@RequestParam String username) {
 		List<Users> users = SearchService.searchUsersByUsername(username);
 		return ResponseEntity.ok(users);
 	}
