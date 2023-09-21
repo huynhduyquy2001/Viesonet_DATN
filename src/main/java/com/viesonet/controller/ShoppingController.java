@@ -10,6 +10,7 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.viesonet.entity.Follow;
@@ -21,6 +22,7 @@ import com.viesonet.service.FollowService;
 import com.viesonet.service.OrderDetailsService;
 import com.viesonet.service.OrdersService;
 import com.viesonet.service.ProductsService;
+import com.viesonet.service.RatingsService;
 
 @RestController
 @CrossOrigin("*")
@@ -36,6 +38,9 @@ public class ShoppingController {
 
     @Autowired
     OrderDetailsService orderDetailsService;
+
+    @Autowired
+    RatingsService ratingsService;
 
     // @GetMapping("/getshopping")
     // private List<Products> getShopping() {
@@ -59,10 +64,14 @@ public class ShoppingController {
         List<String> followedUserIds = followList.stream()
                 .map(follow -> follow.getFollowing().getUserId())
                 .collect(Collectors.toList());
-        System.out.println(followedUserIds);
         Page<Products> list = productsService.getShoppingByPage(followedUserIds, page, 10);
         System.out.println(list);
         return list;
+    }
+
+    @GetMapping("/get-average-rating/{productId}")
+    public Double getAverageRating(@PathVariable int productId) {
+        return ratingsService.getAverageRating(productId);
     }
 
     @GetMapping("/get-trending/{page}")
@@ -73,6 +82,11 @@ public class ShoppingController {
         List<Integer> ProductIdList = orderDetailsService.getProductIdList(ordersId);
         Page<Products> productList = productsService.getTrendingProducts(ProductIdList, page, 10);
         return productList;
+    }
+
+    @PostMapping("/add-to-cart/{productId}")
+    public String addShoppingCart(@PathVariable int productId) {
+        return "Success";
     }
 
 }

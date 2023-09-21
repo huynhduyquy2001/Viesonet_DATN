@@ -14,6 +14,7 @@ public interface ProductsDao extends JpaRepository<Products, Integer> {
     @Query("SELECT p FROM Products p WHERE p.user.userId IN :userId AND p.productStatus.statusId=1")
     List<Products> getShopping(List<String> userId);
 
+    // lấy danh sách sản phẩm người đang theo dõi trong khu mua sắm
     @Query("SELECT p FROM Products p WHERE p.user.userId IN :userId AND p.productStatus.statusId=1")
     Page<Products> getShoppingByPage(List<String> userId, Pageable pageable);
 
