@@ -40,4 +40,9 @@ public class ProductsService {
         Page<Products> shoppingList = productsDao.getTrending(list, pageable);
         return shoppingList;
     }
+
+    public Page<Object> findPostsProductWithProcessing(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productsDao.findPostsProductWithProcessing(pageable);
+    }
 }

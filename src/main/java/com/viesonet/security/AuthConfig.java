@@ -108,5 +108,4 @@ public class AuthConfig { // extends WebSecurityConfigurerAdapter {
         }
         return null;
     }
-
 }
