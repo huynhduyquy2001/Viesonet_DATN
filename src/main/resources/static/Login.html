@@ -5,7 +5,6 @@
 	<!-- Required meta tags -->
 	<meta charset="utf-8">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
-
 	<!-- Bootstrap CSS -->
 	<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/css/bootstrap.min.css" rel="stylesheet"
 		integrity="sha384-EVSTQN3/azprG1Anm3QDgpJLIm9Nao0Yz1ztcQTwFspd3yD65VohhpuuCOmLASjC" crossorigin="anonymous">
@@ -15,7 +14,7 @@
 	<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.2/dist/umd/popper.min.js"
 		integrity="sha384-IQsoLXl5PILFhosVNubq5LC7Qb9DXgDA9i+tQ8Zj3iwWAwPtgFTxbJ8NT4GN1R8p"
 		crossorigin="anonymous"></script>
-	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.min.js"
+	<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/disC t/js/bootstrap.min.js"
 		integrity="sha384-cVKIPhGWiC2Al4u+LWgxfKTRIcfu0JTxR+EQDz/bgldoEyl4H0zUF0QKbrJ0EcQF"
 		crossorigin="anonymous"></script>
 	<!-- Bootstrap CSS end -->
@@ -95,7 +94,7 @@
 	</style>
 </head>
 
-<body ng-app="myApp" ng-controller="loginController">
+<body ng-app="myApp" ng-controller="loginController" style="background: #ffffff !important;">
 	<header class="header" style="background: transparent;">
 		<nav class="navbar navbar-expand-sm navbar-light" style="border: none; padding-top: 0; padding-bottom: 0;">
 			<div class="container">
@@ -165,51 +164,7 @@
 		src="https://cdn.jsdelivr.net/npm/angular-translate-loader-static-files@2.19.0/angular-translate-loader-static-files.min.js"></script>
 	<script src="js/translate.js"></script>
 	<link rel="stylesheet" href="css/style.css">
-	<script>
-		angular.module('myApp', [])
-			.config(function ($httpProvider) {
-				$httpProvider.interceptors.push('AuthInterceptor');
-			})
-			.factory('AuthInterceptor', function ($q, $window) {
-				return {
-					responseError: function (rejection) {
-						if (rejection.status === 403) {
-							// Redirect to the login page
-							$window.location.href = 'login.html';
-						}
-						return $q.reject(rejection);
-					}
-				}
-			})
-			.factory('apiService', function ($http) {
-				console.log("apiService called");
-				// Function to get the JWT token from local storage
-				function getJwtToken() {
-					// Replace 'YOUR_JWT_TOKEN_KEY' with the key you used to store the token in local storage
-					return localStorage.getItem('jwtToken');
-				}
-
-				// Function to set the JWT token in the HTTP headers of the API request
-				function setAuthorizationHeader() {
-					var jwtToken = getJwtToken();
-					if (jwtToken) {
-						$http.defaults.headers.common['Authorization'] = 'Bearer ' + jwtToken;
-					}
-				}
-
-				// Function to remove the JWT token from the HTTP headers
-				function removeAuthorizationHeader() {
-					delete $http.defaults.headers.common['Authorization'];
-				}
-
-				// Expose the public methods of the factory
-				return {
-					setAuthorizationHeader: setAuthorizationHeader,
-					removeAuthorizationHeader: removeAuthorizationHeader
-				};
-			});
-
-	</script>
+	<script src="js/app.js"></script>
 	<script src="js/login.js"></script>
 </body>
 

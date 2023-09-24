@@ -32,4 +32,5 @@ public class ShoppingCart {
     @JoinColumn(name = "productId")
     private Products product;
     private int quantity;
+    private String color;
 }

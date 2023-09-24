@@ -16,8 +16,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
@@ -114,7 +112,7 @@ public class IndexController {
 	}
 
 	@GetMapping("/get-more-posts/{page}")
-	public Page<Posts> getMoreFollowedPosts(@PathVariable("page") int page) {
+	public Page<Posts> getMoreFollowedPosts(@PathVariable int page) {
 
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<Follow> followList = followService.getFollowing(userId);
@@ -142,7 +140,7 @@ public class IndexController {
 
 	@ResponseBody
 	@PostMapping("/likepost/{postId}")
-	public void likePost(@PathVariable("postId") int postId) {
+	public void likePost(@PathVariable int postId) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		// thêm tương tác
 		Posts post = postsService.findPostById(postId);
@@ -162,7 +160,7 @@ public class IndexController {
 
 	@ResponseBody
 	@PostMapping("/didlikepost/{postId}")
-	public void didlikePost(@PathVariable("postId") int postId) {
+	public void didlikePost(@PathVariable int postId) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		Posts post = postsService.findPostById(postId);
 		interactionService.minusInteraction(userId, post.getUser().getUserId());
@@ -170,12 +168,12 @@ public class IndexController {
 	}
 
 	@GetMapping("/postdetails/{postId}")
-	public Posts postDetails(@PathVariable("postId") int postId) {
+	public Posts postDetails(@PathVariable int postId) {
 		return postsService.findPostById(postId);
 	}
 
 	@PostMapping("/addcomment/{postId}")
-	public Comments addComment(@PathVariable("postId") int postId, @RequestParam("myComment") String content) {
+	public Comments addComment(@PathVariable int postId, @RequestParam("myComment") String content) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		// thêm tương tác
 		Posts post = postsService.findPostById(postId);
@@ -216,14 +214,14 @@ public class IndexController {
 	}
 
 	@GetMapping("/findpostcomments/{postId}")
-	public List<Comments> findPostComments(@PathVariable("postId") int postId) {
+	public List<Comments> findPostComments(@PathVariable int postId) {
 		return commentsService.findCommentsByPostId(postId);
 	}
 
 	@ResponseBody
 	@PostMapping("/post")
-	public String dangBai(@RequestParam("photoFiles") MultipartFile[] photoFiles,
-			@RequestParam("content") String content) {
+	public String dangBai(@RequestParam MultipartFile[] photoFiles,
+			@RequestParam String content) {
 
 		String rootPath = servletContext.getRealPath("/");
 		System.out.println("rootPath+" + rootPath);
@@ -264,7 +262,7 @@ public class IndexController {
 		notificationsService.deleteNotification(notificationId);
 	}
 
-	@RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
+	@GetMapping({ "/", "/index" })
 	public ModelAndView getHomePage() {
 		ModelAndView modelAndView = new ModelAndView("Index");
 		return modelAndView;
@@ -276,7 +274,7 @@ public class IndexController {
 	}
 
 	@PostMapping("/report/{postId}/{violationTypeId}")
-	public Violations report(@PathVariable("postId") int postId, @PathVariable("violationTypeId") int violationTypeId) {
+	public Violations report(@PathVariable int postId, @PathVariable int violationTypeId) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		return violationService.report(usersService.getUserById(userId), postsService.findPostById(postId),
 				violationTypesService.getById(violationTypeId));
