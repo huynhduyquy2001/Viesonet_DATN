@@ -24,6 +24,15 @@ app.config(function ($translateProvider, $routeProvider) {
 	}).when('/productdetails/:productId', {
 		templateUrl: "ngview/productDetails.html",
 		controller: 'ProductDetailsController'
+	}).when('/order/:userId', {
+		templateUrl: "ngview/order.html",
+		controller: 'OrdersController'
+	}).when('/order/add-order/:userId', {
+		templateUrl: "ngview/addOrder.html",
+		controller: 'OrdersController'
+	}).when('/order/update-order/:productId', {
+		templateUrl: "ngview/updateOrder.html",
+		controller: 'OrdersController'
 	}).when('/favouriteProduct', {
 		templateUrl: "ngview/favouriteProducts.html",
 		controller: 'FavouriteProductsController'
