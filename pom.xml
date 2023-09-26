@@ -39,20 +39,20 @@
 			<version>0.11.5</version>
 			<scope>runtime</scope>
 		</dependency>
-        <dependency>
-            <groupId>io.jsonwebtoken</groupId>
-            <artifactId>jjwt</artifactId>
-            <version>0.9.1</version>
-        </dependency>
+		<dependency>
+			<groupId>io.jsonwebtoken</groupId>
+			<artifactId>jjwt</artifactId>
+			<version>0.9.1</version>
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-actuator</artifactId>
 		</dependency>
 		<dependency> 
-         <groupId>io.jsonwebtoken</groupId> 
-         <artifactId>jjwt</artifactId> 
-         <version>0.9.1</version> 
-      </dependency>
+			<groupId>io.jsonwebtoken</groupId> 
+			<artifactId>jjwt</artifactId> 
+			<version>0.9.1</version> 
+		</dependency>
 		<dependency>
 			<groupId>org.springframework.security</groupId>
 			<artifactId>spring-security-test</artifactId>
@@ -118,6 +118,11 @@
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-websocket</artifactId>
 		</dependency>
+		<dependency>
+			<groupId>org.glassfish.jaxb</groupId>
+			<artifactId>jaxb-runtime</artifactId>
+			<scope>provided</scope>
+		</dependency>
 		<!-- https://mvnrepository.com/artifact/org.springframework/spring-websocket -->
 <dependency>
     <groupId>org.springframework</groupId>
@@ -149,7 +154,11 @@
     <artifactId>javacv</artifactId>
     <version>1.5.6</version>
 </dependency>
-
+<dependency>
+	<groupId>com.google.firebase</groupId>
+	<artifactId>firebase-admin</artifactId>
+	<version>9.2.0</version>
+</dependency>
 	
    <dependency>
      <groupId>org.assertj</groupId>
@@ -157,6 +166,7 @@
      <version>3.13.2</version>
    </dependency>
  </dependencies>
+ 
 
 	<build>
 		<plugins>

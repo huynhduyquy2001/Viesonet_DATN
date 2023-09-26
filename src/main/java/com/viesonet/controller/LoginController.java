@@ -58,18 +58,19 @@ public class LoginController {
 	@PostMapping("/api/createToken")
 	public ResponseEntity<?> authenticateUser(@Validated @RequestBody JwtRequestModel request) {
 		try {
-			System.out.println("sdt" + request.getPhoneNumber());
 			Authentication authentication = authenticationManager.authenticate(
-					new UsernamePasswordAuthenticationToken(request.getPhoneNumber(), request.getPassword()));
+					new UsernamePasswordAuthenticationToken(request.getPhoneNumber(),
+							request.getPassword()));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			String jwt = jwtUtils.generateJwtToken(authentication);
 			System.out.println("jwt: " + jwt);
-
+			if (authentication.isAuthenticated()) {
+				System.out.println("Xac thuc thanh cong");
+			} else {
+				System.out.println("Xac thuc khong thanh cong");
+			}
 			UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-			System.out.println("userDetails:" + userDetails.getId());
-			String phoneNumber = SecurityContextHolder.getContext().getAuthentication().getName();
-			System.out.println("phonenumber: " + phoneNumber);
 			List<String> roles = userDetails.getAuthorities().stream()
 					.map(item -> item.getAuthority())
 					.collect(Collectors.toList());

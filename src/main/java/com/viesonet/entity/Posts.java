@@ -33,14 +33,14 @@ public class Posts {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private int postId;
-	
+
 	@Temporal(TemporalType.TIMESTAMP)
-	private Date postDate ;
+	private Date postDate;
 
 	private String content;
-	
+
 	private Boolean isActive;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "userId")
 	private Users user;
@@ -48,21 +48,23 @@ public class Posts {
 	private Integer likeCount;
 
 	private Integer commentCount;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "post")
 	List<Comments> comments;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "post")
 	List<Favorites> favorites;
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "post")
 	List<Notifications> notifications;
-	
+
 	@JsonIgnore
 	@OneToMany(mappedBy = "post")
 	private List<Violations> violations;
-	
+
 	@OneToMany(mappedBy = "post", fetch = FetchType.EAGER)
 	private List<Images> images;
 }

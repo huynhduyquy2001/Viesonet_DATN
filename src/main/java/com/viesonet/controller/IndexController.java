@@ -1,52 +1,30 @@
 package com.viesonet.controller;
 
 import java.io.File;
-import java.sql.Timestamp;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Collections;
-import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
-import org.springframework.scheduling.annotation.EnableScheduling;
-import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
-import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.viesonet.security.AuthConfig;
-import com.viesonet.dao.UsersDao;
 import com.viesonet.entity.AccountAndFollow;
-import com.viesonet.entity.Accounts;
 import com.viesonet.entity.Comments;
-import com.viesonet.entity.Favorites;
 import com.viesonet.entity.Follow;
-import com.viesonet.entity.Images;
-import com.viesonet.entity.Interaction;
 import com.viesonet.entity.Notifications;
 import com.viesonet.entity.Posts;
 import com.viesonet.entity.Reply;
@@ -57,21 +35,18 @@ import com.viesonet.entity.Violations;
 import com.viesonet.service.CommentsService;
 import com.viesonet.service.CookieService;
 import com.viesonet.service.FavoritesService;
-import com.viesonet.service.FileChecker;
 import com.viesonet.service.FollowService;
 import com.viesonet.service.ImagesService;
 import com.viesonet.service.InteractionService;
 import com.viesonet.service.NotificationsService;
 import com.viesonet.service.PostsService;
 import com.viesonet.service.ReplyService;
-import com.viesonet.service.SessionService;
 import com.viesonet.service.UsersService;
 import com.viesonet.service.ViolationTypesService;
 import com.viesonet.service.ViolationsService;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
-import net.coobird.thumbnailator.Thumbnails;
 
 @RestController
 @CrossOrigin("*")
@@ -122,9 +97,6 @@ public class IndexController {
 	@Autowired
 	private ViolationsService violationService;
 
-	@Autowired
-	private AuthConfig authConfig;
-
 	@GetMapping("/findfollowing")
 	public List<Users> getFollowingInfoByUserId() {
 		String phoneNumber = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -140,7 +112,7 @@ public class IndexController {
 	}
 
 	@GetMapping("/get-more-posts/{page}")
-	public Page<Posts> getMoreFollowedPosts(@PathVariable("page") int page) {
+	public Page<Posts> getMoreFollowedPosts(@PathVariable int page) {
 
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<Follow> followList = followService.getFollowing(userId);
@@ -168,7 +140,7 @@ public class IndexController {
 
 	@ResponseBody
 	@PostMapping("/likepost/{postId}")
-	public void likePost(@PathVariable("postId") int postId) {
+	public void likePost(@PathVariable int postId) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		// thêm tương tác
 		Posts post = postsService.findPostById(postId);
@@ -188,7 +160,7 @@ public class IndexController {
 
 	@ResponseBody
 	@PostMapping("/didlikepost/{postId}")
-	public void didlikePost(@PathVariable("postId") int postId) {
+	public void didlikePost(@PathVariable int postId) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		Posts post = postsService.findPostById(postId);
 		interactionService.minusInteraction(userId, post.getUser().getUserId());
@@ -196,12 +168,12 @@ public class IndexController {
 	}
 
 	@GetMapping("/postdetails/{postId}")
-	public Posts postDetails(@PathVariable("postId") int postId) {
+	public Posts postDetails(@PathVariable int postId) {
 		return postsService.findPostById(postId);
 	}
 
 	@PostMapping("/addcomment/{postId}")
-	public Comments addComment(@PathVariable("postId") int postId, @RequestParam("myComment") String content) {
+	public Comments addComment(@PathVariable int postId, @RequestParam("myComment") String content) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		// thêm tương tác
 		Posts post = postsService.findPostById(postId);
@@ -242,14 +214,14 @@ public class IndexController {
 	}
 
 	@GetMapping("/findpostcomments/{postId}")
-	public List<Comments> findPostComments(@PathVariable("postId") int postId) {
+	public List<Comments> findPostComments(@PathVariable int postId) {
 		return commentsService.findCommentsByPostId(postId);
 	}
 
 	@ResponseBody
 	@PostMapping("/post")
-	public String dangBai(@RequestParam("photoFiles") MultipartFile[] photoFiles,
-			@RequestParam("content") String content) {
+	public String dangBai(@RequestParam MultipartFile[] photoFiles,
+			@RequestParam String content) {
 
 		String rootPath = servletContext.getRealPath("/");
 		System.out.println("rootPath+" + rootPath);
@@ -290,7 +262,7 @@ public class IndexController {
 		notificationsService.deleteNotification(notificationId);
 	}
 
-	@RequestMapping(value = { "/", "/index" }, method = RequestMethod.GET)
+	@GetMapping({ "/", "/index" })
 	public ModelAndView getHomePage() {
 		ModelAndView modelAndView = new ModelAndView("Index");
 		return modelAndView;
@@ -302,7 +274,7 @@ public class IndexController {
 	}
 
 	@PostMapping("/report/{postId}/{violationTypeId}")
-	public Violations report(@PathVariable("postId") int postId, @PathVariable("violationTypeId") int violationTypeId) {
+	public Violations report(@PathVariable int postId, @PathVariable int violationTypeId) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		return violationService.report(usersService.getUserById(userId), postsService.findPostById(postId),
 				violationTypesService.getById(violationTypeId));
