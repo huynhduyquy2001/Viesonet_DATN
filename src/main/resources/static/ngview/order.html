@@ -72,17 +72,17 @@
                 <div class="tab-pane fade show active" id="tab-tat-ca">
                     <h2>Tất cả</h2>
                     <p>Danh sách tất cả đơn hàng</p>
-                    <div class="history">
+                    <div class="history" ng-repeat="o in orders">
                         <div class="col">
                             <div class="mb-0 card">
                                 <div class="card-header">
-                                    <img class="img-fluid" src="images/avatar.jpg" style="
+                                    <img class="img-fluid" ng-src="{{o[3].avatar}}" style="
                                     width: 6vh;
                                     height: 6vh;
                                     object-fit: cover;
                                     border-radius: 30px;">
-                                    <span style="margin-left: 12px; font-weight: bold; color: #393e41;">Shop Meow
-                                        II</span>
+                                    <span
+                                        style="margin-left: 12px; font-weight: bold; color: #393e41;">{{o[1].product.productName}}</span>
                                     <span style="margin-left: 12px;"><button class="btn btn-danger" type="button"
                                             style="background-color: #ff3f40;"> <i class="fa-regular fa-message"></i>
                                             Nhắn
@@ -91,37 +91,22 @@
                                             class="btn btn-outline-danger" style="outline-color: #ff3f40;"><i
                                                 class="fa-sharp fa-regular fa-store"></i>
                                             Shop</button></span>
-                                    <span style="float: right; font-size: 3vh;color: #ff3f40; margin: 1vh;">Đã giao
-                                        hàng</span>
+                                    <span
+                                        style="float: right; font-size: 3vh;color: #ff3f40; margin: 1vh;">{{o[0].orderStatus.statusName}}</span>
                                 </div>
                                 <hr style="margin: 17px;">
                                 <div class="row box-item" style=" margin: 1vh;">
                                     <div class="col-2">
-                                        <img src="product_images/Day_chuyen.jpg"
+                                        <img ng-src="{{o[2].media[0].mediaUrl}}"
                                             style="width: 17vh;height: 17vh;border-radius: 10px; object-fit: cover;">
                                     </div>
                                     <div class="col-6 card-body">
-                                        <h5 class="card-title">Dây chuyền chữ thập Banshee</h5>
+                                        <h5 class="card-title">{{o[2].productName}}</h5>
                                         <p class="card-text">Phân loại hàng: nhựa, xanh</p>
-                                        <span class="card-text">x1</span>
+                                        <span class="card-text">x{{0[1].quantity}}</span>
                                     </div>
                                     <div class="col-4 justify-content-center" style="text-align: center;">
-                                        <p style="margin: 30px;">123.000 VND</p>
-                                    </div>
-                                </div>
-                                <hr style="margin: 17px;">
-                                <div class="row box-item" style=" margin: 1vh;">
-                                    <div class="col-2">
-                                        <img src="product_images/Vong_tay.jpg" alt=""
-                                            style="width: 17vh; height: 17vh; border-radius: 10px; object-fit: cover;">
-                                    </div>
-                                    <div class="col-6 card-body">
-                                        <h5 class="card-title">Vòng tay Targon</h5>
-                                        <p class="card-text">Phân loại hàng: nhựa, xanh</p>
-                                        <p>x1</p>
-                                    </div>
-                                    <div class=" col-4 justify-content-center" style="text-align: center;">
-                                        <p style="margin: 30px;">111.000 VND</p>
+                                        <p style="margin: 30px;">{{o[1].originalPrice}} VND</p>
                                     </div>
                                 </div>
 
@@ -135,7 +120,7 @@
                                         <i class="fa-regular fa-hand-holding-dollar fa-2xl"
                                             style="margin-right: 1vh; color: #393e41;"></i>
                                         Thành tiền: <span
-                                            style="font-weight: bold;color: #ff3f40;font-size: 4vh;">234.000
+                                            style="font-weight: bold;color: #ff3f40;font-size: 4vh;">{{o[0].totalAmount}}
                                             VND</span>
                                     </div>
                                 </span>
@@ -163,7 +148,7 @@
                     <h2>Vận chuyển</h2>
                     <p>Danh sách đơn hàng đang chờ vận chuyển.</p>
                     <div>
-                        <img src="images/basket-order.png" alt=""
+                        <img ng-src="images/basket-order.png" alt=""
                             style="height: 30vh; margin: 0 auto; display: flex; justify-content: center;">
                         <p style="display: flex; justify-content: center;">Chưa có đơn hàng nào!</p>
                     </div>
@@ -192,7 +177,9 @@
         integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p"
         crossorigin="anonymous"></script>
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.8.2/angular.min.js"></script>
-
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-app.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-auth.js"></script>
+    <script src="https://www.gstatic.com/firebasejs/8.10.0/firebase-database.js"></script>
     <script src="js/order.js"></script>
     <script>
         var myTab = new bootstrap.Tab(document.getElementById('home-tab'));

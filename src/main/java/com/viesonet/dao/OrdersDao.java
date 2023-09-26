@@ -17,7 +17,11 @@ public interface OrdersDao extends JpaRepository<Orders, Integer> {
     @Query(value = "SELECT p.order.orderId FROM OrderDetails p WHERE p.order.orderId IN :orderId GROUP BY p.order.orderId ORDER BY SUM(p.quantity) DESC LIMIT 100")
     List<Integer> getTrending(List<Integer> orderId);
 
-    @Query("SELECT o FROM Orders o JOIN o.orderDetails od WHERE o.customer.userId = :customerId")
-    List<Orders> findOrdersByCustomerId(String customerId);
+    @Query("SELECT o, od, p ,u FROM Orders o " +
+            "JOIN o.orderDetails od " +
+            "JOIN od.product p " +
+            "JOIN p.user u " +
+            "WHERE o.customer.userId = :customerId")
+    List<Object[]> findOrdersByCustomerId(@Param("customerId") String customerId);
 
 }

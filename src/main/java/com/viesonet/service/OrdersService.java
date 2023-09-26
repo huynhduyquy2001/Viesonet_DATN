@@ -29,8 +29,7 @@ public class OrdersService {
         return list;
     }
 
-    public List<Orders> getMyOrders(String customerId) {
-        List<Orders> list = ordersDao.findOrdersByCustomerId(customerId);
-        return list;
+    public List<Object[]> findOrdersByCustomerId(String customerId) {
+        return ordersDao.findOrdersByCustomerId(customerId);
     }
 }
