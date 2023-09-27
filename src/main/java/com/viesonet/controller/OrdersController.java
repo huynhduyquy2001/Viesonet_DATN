@@ -33,7 +33,7 @@ public class OrdersController {
     @Autowired
     AccountsService accountsService;
 
-    @GetMapping("/orders")
+    @GetMapping("/myOrders")
     public List<Object[]> getOrdersWithProducts() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         System.out.println("USERID: " + userId);

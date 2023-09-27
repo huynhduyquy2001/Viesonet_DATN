@@ -39,5 +39,5 @@ public class OrderDetails {
     private float originalPrice;
     private Float salePrice;
     private float shippingFee;
-
+    private String color;
 }

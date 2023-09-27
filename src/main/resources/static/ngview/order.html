@@ -102,8 +102,8 @@
                                     </div>
                                     <div class="col-6 card-body">
                                         <h5 class="card-title">{{o[2].productName}}</h5>
-                                        <p class="card-text">Phân loại hàng: nhựa, xanh</p>
-                                        <span class="card-text">x{{0[1].quantity}}</span>
+                                        <p class="card-text">Phân loại hàng: {{o[2].material}}, {{o[1].color}}</p>
+                                        <span class="card-text">x{{o[1].quantity}}</span>
                                     </div>
                                     <div class="col-4 justify-content-center" style="text-align: center;">
                                         <p style="margin: 30px;">{{o[1].originalPrice}} VND</p>
@@ -121,7 +121,8 @@
                                             style="margin-right: 1vh; color: #393e41;"></i>
                                         Thành tiền: <span
                                             style="font-weight: bold;color: #ff3f40;font-size: 4vh;">{{o[0].totalAmount}}
-                                            VND</span>
+                                            VND
+                                        </span>
                                     </div>
                                 </span>
                                 <div style="margin: 1vh;">
@@ -137,7 +138,7 @@
 
                                 </div>
                                 <div class="card-footer text-muted">
-                                    2 ngày trước
+                                    {{getFormattedTimeAgo(o[0].orderDate)}}
                                 </div>
                             </div>
                         </div>
@@ -148,8 +149,8 @@
                     <h2>Vận chuyển</h2>
                     <p>Danh sách đơn hàng đang chờ vận chuyển.</p>
                     <div>
-                        <img ng-src="images/basket-order.png" alt=""
-                            style="height: 30vh; margin: 0 auto; display: flex; justify-content: center;">
+                        <img ng-src="https://firebasestorage.googleapis.com/v0/b/viesonet-datn.appspot.com/o/products%2Fz4732505064881_4a39a24020abfd318d9071b6aa40439b.jpg?alt=media&token=0dbb3a63-b79d-456d-84b2-54fd873f056c"
+                            alt="" style="height: 30vh; margin: 0 auto; display: flex; justify-content: center;">
                         <p style="display: flex; justify-content: center;">Chưa có đơn hàng nào!</p>
                     </div>
 

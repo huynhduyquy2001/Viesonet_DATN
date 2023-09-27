@@ -1,6 +1,6 @@
 app.controller('OrdersController', function ($scope, $http, $translate, $rootScope, $location, $routeParams) {
     var Url = "http://localhost:8080";
-    var orderUrl = "http://localhost:8080/orders";
+    var orderUrl = "http://localhost:8080/myOrders";
     var orders = {};
     $http.get(orderUrl)
         .then(function (response) {
