@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import com.viesonet.dao.ShoppingCartDao;
 import com.viesonet.entity.Products;
 import com.viesonet.entity.ShoppingCart;
@@ -37,6 +37,10 @@ public class ShoppingCartService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi khi thêm sản phẩm vào giỏ hàng: " + e.getMessage());
         }
+    }
+
+    public List<ShoppingCart> findShoppingCartByUserId(String userId) {
+        return shoppingCartDao.findCartByUserId(userId);
     }
 
 }
