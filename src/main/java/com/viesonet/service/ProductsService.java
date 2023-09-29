@@ -45,4 +45,8 @@ public class ProductsService {
         Pageable pageable = PageRequest.of(page, size);
         return productsDao.findPostsProductWithProcessing(pageable);
     }
+
+    public List<Products> getRelatedProducts(String userId) {
+        return productsDao.getRelatedProducts(userId);
+    }
 }

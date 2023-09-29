@@ -30,4 +30,6 @@ public interface ProductsDao extends JpaRepository<Products, Integer> {
     @Query("SELECT p FROM Products p WHERE p.productStatus.statusId = 3")
     Page<Object> findPostsProductWithProcessing(Pageable pageable);
 
+    @Query("SELECT p FROM Products p WHERE p.user.userId = :userId ORDER BY p.datePost DESC LIMIT 4")
+    List<Products> getRelatedProducts(String userId);
 }

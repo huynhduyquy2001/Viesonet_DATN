@@ -17,7 +17,6 @@ public class ShoppingCartService {
 
     public ResponseEntity<String> addToCart(Users user, Products product, int quantity, String color) {
         try {
-
             ShoppingCart o = shoppingCartDao.findCartByProductId(user.getUserId(), product.getProductId(), color);
             if (o != null) {
                 System.out.println("san pham da co trong gio hang");
