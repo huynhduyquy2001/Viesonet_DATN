@@ -39,6 +39,32 @@ public class ShoppingCartService {
         }
     }
 
+    public ResponseEntity<String> setQuantityToCart(Users user, Products product, int quantity, String color) {
+        try {
+
+            ShoppingCart o = shoppingCartDao.findCartByProductId(user.getUserId(), product.getProductId(), color);
+            o.setQuantity(quantity);
+            shoppingCartDao.saveAndFlush(o);
+            return ResponseEntity.ok("Sản phẩm đã được tăng số lượng.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi tăng số lượng sản phẩm vào giỏ hàng: " + e.getMessage());
+        }
+    }
+
+    public ResponseEntity<String> minusQuantityToCart(Users user, Products product, int quantity, String color) {
+        try {
+
+            ShoppingCart o = shoppingCartDao.findCartByProductId(user.getUserId(), product.getProductId(), color);
+            o.setQuantity(o.getQuantity() - quantity);
+            shoppingCartDao.saveAndFlush(o);
+            return ResponseEntity.ok("Sản phẩm đã được giảm số lượng.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi giảm số lượng sản phẩm vào giỏ hàng: " + e.getMessage());
+        }
+    }
+
     public List<ShoppingCart> findShoppingCartByUserId(String userId) {
         return shoppingCartDao.findCartByUserId(userId);
     }
