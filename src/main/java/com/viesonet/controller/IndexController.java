@@ -218,19 +218,24 @@ public class IndexController {
 		return commentsService.findCommentsByPostId(postId);
 	}
 
-	@ResponseBody
 	@PostMapping("/post")
-	public String dangBai(@RequestParam MultipartFile[] photoFiles,
-			@RequestParam String content) {
-
-		String rootPath = servletContext.getRealPath("/");
-		System.out.println("rootPath+" + rootPath);
-		String parentPath = new File(rootPath).getParent();
-		String pathUpload = parentPath + "/resources/static/images/";
-		System.out.println("parentPath" + parentPath);
-		System.out.println("pathUpload" + pathUpload);
-		// Xử lý và lưu thông tin bài viết kèm ảnh vào cơ sở dữ liệu
+	public String dangBai(@RequestParam List<String> imagesUrl, @RequestParam String content) {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		Posts post = postsService.post(usersService.findUserById(userId), content);
+		for (String fileUrl : imagesUrl) {
+			boolean isImage = isImageUrl(fileUrl);
+			imagesService.saveImage(post, fileUrl, isImage);
+		}
 		return "success";
+	}
+
+	private boolean isImageUrl(String fileUrl) {
+		// Kiểm tra phần mở rộng của URL để xác định loại tệp tin
+		String extension = fileUrl.substring(fileUrl.lastIndexOf(".") + 1).toLowerCase();
+		if (extension.contains("mp4")) {
+			return false;
+		}
+		return true;
 	}
 
 	@GetMapping("/loadnotification")
