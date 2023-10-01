@@ -4,7 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
-
+import java.util.List;
 import com.viesonet.dao.ShoppingCartDao;
 import com.viesonet.entity.Products;
 import com.viesonet.entity.ShoppingCart;
@@ -17,7 +17,6 @@ public class ShoppingCartService {
 
     public ResponseEntity<String> addToCart(Users user, Products product, int quantity, String color) {
         try {
-
             ShoppingCart o = shoppingCartDao.findCartByProductId(user.getUserId(), product.getProductId(), color);
             if (o != null) {
                 System.out.println("san pham da co trong gio hang");
@@ -37,6 +36,36 @@ public class ShoppingCartService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi khi thêm sản phẩm vào giỏ hàng: " + e.getMessage());
         }
+    }
+
+    public ResponseEntity<String> setQuantityToCart(Users user, Products product, int quantity, String color) {
+        try {
+
+            ShoppingCart o = shoppingCartDao.findCartByProductId(user.getUserId(), product.getProductId(), color);
+            o.setQuantity(quantity);
+            shoppingCartDao.saveAndFlush(o);
+            return ResponseEntity.ok("Sản phẩm đã được tăng số lượng.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi tăng số lượng sản phẩm vào giỏ hàng: " + e.getMessage());
+        }
+    }
+
+    public ResponseEntity<String> minusQuantityToCart(Users user, Products product, int quantity, String color) {
+        try {
+
+            ShoppingCart o = shoppingCartDao.findCartByProductId(user.getUserId(), product.getProductId(), color);
+            o.setQuantity(o.getQuantity() - quantity);
+            shoppingCartDao.saveAndFlush(o);
+            return ResponseEntity.ok("Sản phẩm đã được giảm số lượng.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi giảm số lượng sản phẩm vào giỏ hàng: " + e.getMessage());
+        }
+    }
+
+    public List<ShoppingCart> findShoppingCartByUserId(String userId) {
+        return shoppingCartDao.findCartByUserId(userId);
     }
 
 }

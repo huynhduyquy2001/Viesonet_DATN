@@ -15,6 +15,7 @@ public interface ProductsDao extends JpaRepository<Products, Integer> {
     @Query("SELECT p FROM Products p " +
             "INNER JOIN p.favoriteProducts f " +
             "WHERE f.user.userId = :userId")
+
     List<Products> findFavoriteProductsByUserId(String userId);
 
     @Query("SELECT p FROM Products p WHERE p.user.userId IN :userId AND p.productStatus.statusId=1")
@@ -30,4 +31,6 @@ public interface ProductsDao extends JpaRepository<Products, Integer> {
     @Query("SELECT p FROM Products p WHERE p.productStatus.statusId = 3")
     Page<Object> findPostsProductWithProcessing(Pageable pageable);
 
+    @Query("SELECT p FROM Products p WHERE p.user.userId = :userId ORDER BY p.datePost DESC LIMIT 4")
+    List<Products> getRelatedProducts(String userId);
 }
