@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.viesonet.entity.AccountAndFollow;
 import com.viesonet.entity.Comments;
 import com.viesonet.entity.Follow;
+import com.viesonet.entity.Images;
 import com.viesonet.entity.Notifications;
 import com.viesonet.entity.Posts;
 import com.viesonet.entity.Reply;
@@ -219,14 +221,20 @@ public class IndexController {
 	}
 
 	@PostMapping("/post")
-	public String dangBai(@RequestParam List<String> imagesUrl, @RequestParam String content) {
+	public ResponseEntity<Posts> dangBai(@RequestParam String content) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		Posts post = postsService.post(usersService.findUserById(userId), content);
+		return new ResponseEntity<>(post, HttpStatus.OK);
+	}
+
+	@PostMapping("/postimage/{postId}")
+	public Images postimages(@RequestParam List<String> imagesUrl, @PathVariable int postId) {
+		Images obj = new Images();
 		for (String fileUrl : imagesUrl) {
 			boolean isImage = isImageUrl(fileUrl);
-			imagesService.saveImage(post, fileUrl, isImage);
+			obj = imagesService.saveImage(postsService.getPostById(postId), fileUrl, isImage);
 		}
-		return "success";
+		return obj;
 	}
 
 	private boolean isImageUrl(String fileUrl) {
