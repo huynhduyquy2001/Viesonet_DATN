@@ -49,4 +49,5 @@ public class ProductsService {
     public List<Products> getRelatedProducts(String userId) {
         return productsDao.getRelatedProducts(userId);
     }
+
 }
