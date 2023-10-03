@@ -44,7 +44,6 @@ public class PostsService {
 		// Lấy ngày và giờ hiện tại
 		Calendar cal = Calendar.getInstance();
 		Date ngayGioDang = cal.getTime();
-
 		// Chuyển đổi sang kiểu Timestamp
 		Timestamp timestamp = new Timestamp(ngayGioDang.getTime());
 		Posts post = new Posts();

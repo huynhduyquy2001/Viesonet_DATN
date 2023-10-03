@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.Authentication;
@@ -25,6 +26,7 @@ import org.springframework.web.servlet.ModelAndView;
 import com.viesonet.entity.AccountAndFollow;
 import com.viesonet.entity.Comments;
 import com.viesonet.entity.Follow;
+import com.viesonet.entity.Images;
 import com.viesonet.entity.Notifications;
 import com.viesonet.entity.Posts;
 import com.viesonet.entity.Reply;
@@ -218,19 +220,30 @@ public class IndexController {
 		return commentsService.findCommentsByPostId(postId);
 	}
 
-	@ResponseBody
 	@PostMapping("/post")
-	public String dangBai(@RequestParam MultipartFile[] photoFiles,
-			@RequestParam String content) {
+	public ResponseEntity<Posts> dangBai(@RequestParam String content) {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		Posts post = postsService.post(usersService.findUserById(userId), content);
+		return new ResponseEntity<>(post, HttpStatus.OK);
+	}
 
-		String rootPath = servletContext.getRealPath("/");
-		System.out.println("rootPath+" + rootPath);
-		String parentPath = new File(rootPath).getParent();
-		String pathUpload = parentPath + "/resources/static/images/";
-		System.out.println("parentPath" + parentPath);
-		System.out.println("pathUpload" + pathUpload);
-		// Xử lý và lưu thông tin bài viết kèm ảnh vào cơ sở dữ liệu
-		return "success";
+	@PostMapping("/postimage/{postId}")
+	public Images postimages(@RequestParam List<String> imagesUrl, @PathVariable int postId) {
+		Images obj = new Images();
+		for (String fileUrl : imagesUrl) {
+			boolean isImage = isImageUrl(fileUrl);
+			obj = imagesService.saveImage(postsService.getPostById(postId), fileUrl, isImage);
+		}
+		return obj;
+	}
+
+	private boolean isImageUrl(String fileUrl) {
+		// Kiểm tra phần mở rộng của URL để xác định loại tệp tin
+		String extension = fileUrl.substring(fileUrl.lastIndexOf(".") + 1).toLowerCase();
+		if (extension.contains("mp4")) {
+			return false;
+		}
+		return true;
 	}
 
 	@GetMapping("/loadnotification")
