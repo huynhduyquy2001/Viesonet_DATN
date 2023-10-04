@@ -15,9 +15,11 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.viesonet.entity.FavoriteProducts;
 import com.viesonet.entity.Products;
 import com.viesonet.entity.Ratings;
 import com.viesonet.entity.Users;
+import com.viesonet.service.FavoriteProductService;
 import com.viesonet.service.ProductsService;
 import com.viesonet.service.RatingsService;
 import com.viesonet.service.UsersService;
@@ -33,6 +35,9 @@ public class ProductDetailsController {
 
     @Autowired
     UsersService usersService;
+
+    @Autowired
+    FavoriteProductService favoriteProductService;
 
     @GetMapping("/get-product/{productId}")
     public Products getProduct(@PathVariable int productId) {
@@ -60,6 +65,19 @@ public class ProductDetailsController {
     @GetMapping("/get-related-products/{userId}")
     public List<Products> getRelatedProducts(@PathVariable String userId) {
         return productsService.getRelatedProducts(userId);
+    }
+
+    @GetMapping("/get-favorite-product/{productId}")
+    public boolean getFavotiteProducts(@PathVariable int productId) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return favoriteProductService.getFavoriteProducts(userId, productId);
+    }
+
+    @PostMapping("/add-favorite-product/{productId}")
+    public FavoriteProducts addFavoriteProduct(@PathVariable int productId) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return favoriteProductService.addFavoriteProduct(usersService.findUserById(userId),
+                productsService.getProduct(productId));
     }
 
 }
