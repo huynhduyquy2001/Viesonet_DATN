@@ -11,13 +11,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.viesonet.dao.ProductStatusDao;
 import com.viesonet.dao.ProductsDao;
+import com.viesonet.dao.ProductsTempDao;
+import com.viesonet.entity.Posts;
 import com.viesonet.entity.Products;
+import com.viesonet.entity.ProductsTemp;
+import com.viesonet.entity.Violations;
 
 @Service
 public class ProductsService {
     @Autowired
     ProductsDao productsDao;
+
+    @Autowired
+    ProductStatusDao productStatusDao;
+
+    @Autowired
+    ProductsTempDao productsTempDao;
 
     public Products getProduct(int id) {
         Optional<Products> obj = productsDao.findById(id);
@@ -44,5 +55,31 @@ public class ProductsService {
     public Page<Object> findPostsProductWithProcessing(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return productsDao.findPostsProductWithProcessing(pageable);
+    }
+
+    public Page<Object> findPostsProductWithDecline(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productsDao.findPostsProductWithDecline(pageable);
+    }
+
+    public List<Object> findSearchProducts(String name) {
+        return productsDao.findSearchProducts(name);
+    }
+
+    public Products findProductById(int productId) {
+        Optional<Products> optionalProduct = productsDao.findById(productId);
+        return optionalProduct.orElse(null);
+    }
+
+    public void acceptByProductId(int productId) {
+        Products products = productsDao.findById(productId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm bên bảng sản phẩm"));
+        ProductsTemp product = (ProductsTemp) productsTempDao.findByProductId(productId)
+                .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm bên bảng tạm"));
+
+        products.setProductStatus(productStatusDao.findById(1).orElse(null));
+        
+        productsDao.saveAndFlush(products);
+        productsTempDao.delete(product);
     }
 }
