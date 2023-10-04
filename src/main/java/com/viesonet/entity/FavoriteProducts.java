@@ -3,6 +3,8 @@ package com.viesonet.entity;
 import java.util.Date;
 
 import jakarta.persistence.Entity;
+import jakarta.persistence.GeneratedValue;
+import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
@@ -24,10 +26,13 @@ import lombok.Setter;
 @Table(name = "FavoriteProducts")
 public class FavoriteProducts {
     @Id
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    private int id;
+
     @ManyToOne
     @JoinColumn(name = "productId")
     private Products product;
-    @Id
+
     @ManyToOne
     @JoinColumn(name = "userId")
     private Users user;
