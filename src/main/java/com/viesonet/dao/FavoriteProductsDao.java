@@ -13,4 +13,7 @@ import com.viesonet.entity.Favorites;
 public interface FavoriteProductsDao extends JpaRepository<FavoriteProducts, Integer> {
     @Query("SELECT obj from FavoriteProducts obj where obj.user.userId=?1 and obj.product.productId=?2")
     FavoriteProducts findFavoriteProduct(String userId, int productId);
+
+    @Query("SELECT f FROM FavoriteProducts f WHERE f.user.userId =:userId and f.product.productId =:productId")
+    FavoriteProducts findByUserIdAndProductId(String userId, int productId);
 }
