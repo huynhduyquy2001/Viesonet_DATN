@@ -89,6 +89,7 @@ public class ShoppingController {
     public Page<Products> getTrending(@PathVariable int page) {
         // lấy danh sách đơn hàng trong 7 ngày gần đây
         List<Integer> ordersId = ordersService.getShoppingWithinLast7Days();
+        System.out.println(ordersId.size());
         // lấy danh sách những sản phẩm có trong đơn hàng đó
         List<Integer> ProductIdList = orderDetailsService.getProductIdList(ordersId);
         Page<Products> productList = productsService.getTrendingProducts(ProductIdList, page, 10);
