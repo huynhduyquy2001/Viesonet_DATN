@@ -120,6 +120,7 @@ app.controller('ProfileController', function ($scope, $http, $translate, $locati
 				var sumPost = response.data;
 				$scope.sumPost = sumPost;
 			})
+
 	}
 
 	//Đa ngôn ngữ	

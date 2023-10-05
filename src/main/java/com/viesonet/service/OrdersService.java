@@ -28,4 +28,8 @@ public class OrdersService {
         List<Integer> list = ordersDao.getTrending(orderId);
         return list;
     }
+
+    public List<Object[]> findOrdersByCustomerId(String customerId) {
+        return ordersDao.findOrdersByCustomerId(customerId);
+    }
 }
