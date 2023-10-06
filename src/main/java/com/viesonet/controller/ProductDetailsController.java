@@ -20,9 +20,11 @@ import com.viesonet.entity.Products;
 import com.viesonet.entity.Ratings;
 import com.viesonet.entity.Users;
 import com.viesonet.service.FavoriteProductService;
+import com.viesonet.service.OrdersService;
 import com.viesonet.service.ProductsService;
 import com.viesonet.service.RatingsService;
 import com.viesonet.service.UsersService;
+import com.viesonet.service.WordBannedService;
 
 @RestController
 @CrossOrigin("*")
@@ -39,6 +41,12 @@ public class ProductDetailsController {
     @Autowired
     FavoriteProductService favoriteProductService;
 
+    @Autowired
+    WordBannedService wordBannedService;
+
+    @Autowired
+    OrdersService ordersService;
+
     @GetMapping("/get-product/{productId}")
     public Products getProduct(@PathVariable int productId) {
         return productsService.getProduct(productId);
@@ -48,6 +56,7 @@ public class ProductDetailsController {
     public ResponseEntity<Ratings> rateProduct(@RequestBody Ratings ratingRequest, @PathVariable int productId) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         ratingRequest.setUser(usersService.getUserById(userId));
+        ratingRequest.setRatingContent(wordBannedService.wordBanned(ratingRequest.getRatingContent()));
         try {
             Ratings savedRating = ratingsService.rateProduct(ratingRequest, productsService.getProduct(productId));
             if (savedRating != null) {
@@ -60,6 +69,12 @@ public class ProductDetailsController {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body(null);
         }
+    }
+
+    @PostMapping("/check-bought/{productId}")
+    public boolean checkBought(@PathVariable int productId) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ordersService.checkBought(userId, productId);
     }
 
     @GetMapping("/get-related-products/{userId}")

@@ -7,13 +7,18 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.viesonet.dao.OrderDetailsDao;
 import com.viesonet.dao.OrdersDao;
+import com.viesonet.entity.OrderDetails;
 import com.viesonet.entity.Orders;
 
 @Service
 public class OrdersService {
     @Autowired
     OrdersDao ordersDao;
+
+    @Autowired
+    OrderDetailsDao orderDetailsDao;
 
     public List<Integer> getShoppingWithinLast7Days() {
         Calendar calendar = Calendar.getInstance();
@@ -31,5 +36,13 @@ public class OrdersService {
 
     public List<Object[]> findOrdersByCustomerId(String customerId) {
         return ordersDao.findOrdersByCustomerId(customerId);
+    }
+
+    public boolean checkBought(String userId, int productId) {
+        List<OrderDetails> obj = orderDetailsDao.checkBought(userId, productId);
+        if (obj.size() > 0) {
+            return true;
+        }
+        return false;
     }
 }

@@ -104,7 +104,7 @@ public class ShoppingController {
         try {
             shoppingCartService.addToCart(usersService.getById(userId), productsService.getProduct(productId),
                     quantity, color);
-            return ResponseEntity.ok("Sản phẩm đã được thêm vào giỏ hàng.");
+            return ResponseEntity.ok("{\"message\": \"Sản phẩm đã được thêm vào giỏ hàng.\"}");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi khi thêm sản phẩm vào giỏ hàng: " + e.getMessage());
