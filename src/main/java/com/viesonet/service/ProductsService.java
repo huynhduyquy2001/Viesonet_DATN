@@ -1,6 +1,7 @@
 package com.viesonet.service;
 
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -11,13 +12,24 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 
+import com.viesonet.dao.ColorsDao;
 import com.viesonet.dao.ProductsDao;
+import com.viesonet.dao.UsersDao;
+import com.viesonet.entity.Colors;
+import com.viesonet.entity.ProductStatus;
 import com.viesonet.entity.Products;
+import com.viesonet.entity.Users;
 
 @Service
 public class ProductsService {
     @Autowired
     ProductsDao productsDao;
+
+    @Autowired
+    ColorsDao colorsDao;
+
+    @Autowired
+    UsersService usersService;
 
     public Products getProduct(int id) {
         Optional<Products> obj = productsDao.findById(id);
@@ -48,6 +60,19 @@ public class ProductsService {
 
     public List<Products> getRelatedProducts(String userId) {
         return productsDao.getRelatedProducts(userId);
+    }
+
+    public List<Products> getAllProducts() {
+        return productsDao.findAll();
+    }
+
+    public Products addProduct(Products product, Users userId) {
+        ProductStatus p = new ProductStatus();
+        product.setUser(userId);
+        product.setDatePost(new Date());
+        p.setStatusId(3);
+        product.setProductStatus(p);
+        return productsDao.save(product);
     }
 
 }
