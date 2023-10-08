@@ -28,11 +28,9 @@ public class FavoriteProducts {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int id;
-
     @ManyToOne
     @JoinColumn(name = "productId")
     private Products product;
-
     @ManyToOne
     @JoinColumn(name = "userId")
     private Users user;

@@ -1,8 +1,8 @@
 package com.viesonet.service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
+import java.util.HashMap;
 import java.util.Map;
 
 import org.springframework.http.HttpStatus;
@@ -10,7 +10,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
-import com.viesonet.dao.FavoriteProductDao;
+import com.viesonet.dao.FavoriteProductsDao;
 import com.viesonet.dao.ProductsDao;
 import com.viesonet.entity.FavoriteProducts;
 import com.viesonet.entity.Products;
@@ -22,10 +22,32 @@ public class FavoriteProductService {
     ProductsDao ProductDAO;
 
     @Autowired
-    FavoriteProductDao favoriteProductDao;
+    FavoriteProductsDao favoriteProductsDao;
 
     public List<Products> findFavoriteProductsByUserId(String userId) {
         return ProductDAO.findFavoriteProductsByUserId(userId);
+    }
+
+    public boolean getFavoriteProducts(String userId, int productId) {
+        FavoriteProducts obj = favoriteProductsDao.findFavoriteProduct(userId, productId);
+        if (obj != null) {
+            return true;
+        }
+        return false;
+    }
+
+    public FavoriteProducts addFavoriteProduct(Users user, Products product) {
+        FavoriteProducts obj = favoriteProductsDao.findFavoriteProduct(user.getUserId(), product.getProductId());
+        if (obj == null) {
+            obj = new FavoriteProducts(); // Tạo đối tượng mới nếu không tìm thấy
+            obj.setFavoriteDate(new Date());
+            obj.setProduct(product);
+            obj.setUser(user);
+            return favoriteProductsDao.saveAndFlush(obj);
+        } else {
+            favoriteProductsDao.delete(obj);
+        }
+        return obj;
     }
 
     public ResponseEntity<Map<String, Object>> addListFavoriteProduct(List<String> productIds, String userId) {
@@ -34,7 +56,7 @@ public class FavoriteProductService {
 
             for (String id : productIds) {
                 int productId = Integer.parseInt(id);
-                FavoriteProducts fp = favoriteProductDao.findByUserIdAndProductId(userId, productId);
+                FavoriteProducts fp = favoriteProductsDao.findByUserIdAndProductId(userId, productId);
 
                 if (fp != null) {
                     String productName = fp.getProduct().getProductName();
@@ -53,7 +75,7 @@ public class FavoriteProductService {
                     favoriteProduct.setProduct(product);
                     favoriteProduct.setFavoriteDate(new Date());
 
-                    favoriteProductDao.saveAndFlush(favoriteProduct);
+                    favoriteProductsDao.saveAndFlush(favoriteProduct);
                 }
             }
 

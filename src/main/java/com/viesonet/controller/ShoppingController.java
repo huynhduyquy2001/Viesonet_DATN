@@ -89,6 +89,7 @@ public class ShoppingController {
     public Page<Products> getTrending(@PathVariable int page) {
         // lấy danh sách đơn hàng trong 7 ngày gần đây
         List<Integer> ordersId = ordersService.getShoppingWithinLast7Days();
+        System.out.println(ordersId.size());
         // lấy danh sách những sản phẩm có trong đơn hàng đó
         List<Integer> ProductIdList = orderDetailsService.getProductIdList(ordersId);
         Page<Products> productList = productsService.getTrendingProducts(ProductIdList, page, 10);
@@ -103,7 +104,7 @@ public class ShoppingController {
         try {
             shoppingCartService.addToCart(usersService.getById(userId), productsService.getProduct(productId),
                     quantity, color);
-            return ResponseEntity.ok("Sản phẩm đã được thêm vào giỏ hàng.");
+            return ResponseEntity.ok("{\"message\": \"Sản phẩm đã được thêm vào giỏ hàng.\"}");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi khi thêm sản phẩm vào giỏ hàng: " + e.getMessage());

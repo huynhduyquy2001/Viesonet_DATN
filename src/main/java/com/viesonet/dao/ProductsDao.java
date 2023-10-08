@@ -2,6 +2,7 @@ package com.viesonet.dao;
 
 import com.viesonet.entity.Posts;
 import com.viesonet.entity.Products;
+import com.viesonet.entity.Violations;
 
 import java.util.List;
 
@@ -36,4 +37,11 @@ public interface ProductsDao extends JpaRepository<Products, Integer> {
 
     @Query("SELECT p FROM Products p WHERE p.user.userId =:userId")
     Page<Products> findPostsProductMyStore(Pageable pageable, String userId);
+
+    @Query("SELECT p FROM Products p WHERE p.productStatus.statusId = 5")
+    Page<Object> findPostsProductWithDecline(Pageable pageable);
+
+    @Query("SELECT p FROM Products p WHERE p.productStatus.statusId = 3 and p.productName LIKE %:name%")
+    List<Object> findSearchProducts(@Param("name") String name);
+
 }

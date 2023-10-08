@@ -15,12 +15,16 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.viesonet.entity.FavoriteProducts;
 import com.viesonet.entity.Products;
 import com.viesonet.entity.Ratings;
 import com.viesonet.entity.Users;
+import com.viesonet.service.FavoriteProductService;
+import com.viesonet.service.OrdersService;
 import com.viesonet.service.ProductsService;
 import com.viesonet.service.RatingsService;
 import com.viesonet.service.UsersService;
+import com.viesonet.service.WordBannedService;
 
 @RestController
 @CrossOrigin("*")
@@ -34,6 +38,15 @@ public class ProductDetailsController {
     @Autowired
     UsersService usersService;
 
+    @Autowired
+    FavoriteProductService favoriteProductService;
+
+    @Autowired
+    WordBannedService wordBannedService;
+
+    @Autowired
+    OrdersService ordersService;
+
     @GetMapping("/get-product/{productId}")
     public Products getProduct(@PathVariable int productId) {
         return productsService.getProduct(productId);
@@ -43,6 +56,7 @@ public class ProductDetailsController {
     public ResponseEntity<Ratings> rateProduct(@RequestBody Ratings ratingRequest, @PathVariable int productId) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         ratingRequest.setUser(usersService.getUserById(userId));
+        ratingRequest.setRatingContent(wordBannedService.wordBanned(ratingRequest.getRatingContent()));
         try {
             Ratings savedRating = ratingsService.rateProduct(ratingRequest, productsService.getProduct(productId));
             if (savedRating != null) {
@@ -57,9 +71,28 @@ public class ProductDetailsController {
         }
     }
 
+    @PostMapping("/check-bought/{productId}")
+    public boolean checkBought(@PathVariable int productId) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ordersService.checkBought(userId, productId);
+    }
+
     @GetMapping("/get-related-products/{userId}")
     public List<Products> getRelatedProducts(@PathVariable String userId) {
         return productsService.getRelatedProducts(userId);
+    }
+
+    @GetMapping("/get-favorite-product/{productId}")
+    public boolean getFavotiteProducts(@PathVariable int productId) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return favoriteProductService.getFavoriteProducts(userId, productId);
+    }
+
+    @PostMapping("/add-favorite-product/{productId}")
+    public FavoriteProducts addFavoriteProduct(@PathVariable int productId) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return favoriteProductService.addFavoriteProduct(usersService.findUserById(userId),
+                productsService.getProduct(productId));
     }
 
 }
