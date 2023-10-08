@@ -22,15 +22,12 @@ public class FavoriteProductsController {
     FavoriteProductService favoriteProductService;
 
     @GetMapping("/get-favoriteProducts")
-    // public ResponseEntity<List<Products>> getFavoriteProductsByUserId() {
-    // // Lấy userId từ SecurityContextHolder
-    // String userId =
-    // SecurityContextHolder.getContext().getAuthentication().getName();
-    // System.out.println(userId + "USERIDDĐ");
-    // List<Products> favoriteProducts =
-    // favoriteProductService.findFavoriteProductsByUserId(userId);
-    // return ResponseEntity.ok(favoriteProducts);
-    // }
+    public ResponseEntity<List<Products>> getFavoriteProductsByUserId() {
+        // Lấy userId từ SecurityContextHolder
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<Products> favoriteProducts = favoriteProductService.findFavoriteProductsByUserId(userId);
+        return ResponseEntity.ok(favoriteProducts);
+    }
 
     public List<Products> getFollowingInfoByUserId1() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();

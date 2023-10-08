@@ -41,4 +41,7 @@ public interface ProductsDao extends JpaRepository<Products, Integer> {
     @Query("SELECT p FROM Products p WHERE p.productStatus.statusId = 3 and p.productName LIKE %:name%")
     List<Object> findSearchProducts(@Param("name") String name);
 
+    @Query("SELECT p FROM Products p WHERE p.productStatus.statusId = 1 and p.productName LIKE %:name%")
+    Page<Products> findProductByName(Pageable pageable, String name);
+
 }
