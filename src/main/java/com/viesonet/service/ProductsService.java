@@ -2,6 +2,7 @@ package com.viesonet.service;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Date;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
@@ -21,6 +22,13 @@ import com.viesonet.entity.Posts;
 import com.viesonet.entity.Products;
 import com.viesonet.entity.ProductsTemp;
 import com.viesonet.entity.Violations;
+import com.viesonet.dao.ColorsDao;
+import com.viesonet.dao.ProductsDao;
+import com.viesonet.dao.UsersDao;
+import com.viesonet.entity.Colors;
+import com.viesonet.entity.ProductStatus;
+import com.viesonet.entity.Products;
+import com.viesonet.entity.Users;
 
 @Service
 public class ProductsService {
@@ -65,6 +73,12 @@ public class ProductsService {
         return list;
     }
 
+    @Autowired
+    ColorsDao colorsDao;
+
+    @Autowired
+    UsersService usersService;
+
     public Products getProduct(int id) {
         Optional<Products> obj = productsDao.findById(id);
         return obj.orElse(null);
@@ -90,6 +104,11 @@ public class ProductsService {
     public Page<Object> findPostsProductWithProcessing(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return productsDao.findPostsProductWithProcessing(pageable);
+    }
+
+    public Page<Products> findPostsProductMyStore(int page, int size, String userId) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productsDao.findPostsProductMyStore(pageable, userId);
     }
 
     public List<Products> getRelatedProducts(String userId) {
@@ -121,4 +140,18 @@ public class ProductsService {
         productsDao.saveAndFlush(products);
         productsTempDao.delete(product);
     }
+
+    public List<Products> getAllProducts() {
+        return productsDao.findAll();
+    }
+
+    public Products addProduct(Products product, Users userId) {
+        ProductStatus p = new ProductStatus();
+        product.setUser(userId);
+        product.setDatePost(new Date());
+        p.setStatusId(3);
+        product.setProductStatus(p);
+        return productsDao.save(product);
+    }
+
 }

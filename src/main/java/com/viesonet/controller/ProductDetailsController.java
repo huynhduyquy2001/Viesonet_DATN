@@ -21,6 +21,12 @@ import com.viesonet.entity.Ratings;
 import com.viesonet.entity.Users;
 import com.viesonet.service.FavoriteProductService;
 import com.viesonet.service.OrdersService;
+import com.google.cloud.storage.Acl.User;
+import com.viesonet.entity.Colors;
+import com.viesonet.entity.Products;
+import com.viesonet.entity.Ratings;
+import com.viesonet.entity.Users;
+import com.viesonet.service.ColorsService;
 import com.viesonet.service.ProductsService;
 import com.viesonet.service.RatingsService;
 import com.viesonet.service.UsersService;
@@ -47,7 +53,11 @@ public class ProductDetailsController {
     @Autowired
     OrdersService ordersService;
 
+    @Autowired
+    ColorsService colorsService;
+
     @GetMapping("/get-product/{productId}")
+
     public Products getProduct(@PathVariable int productId) {
         return productsService.getProduct(productId);
     }
@@ -93,6 +103,35 @@ public class ProductDetailsController {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return favoriteProductService.addFavoriteProduct(usersService.findUserById(userId),
                 productsService.getProduct(productId));
+    }
+    // @PostMapping("/api/products/add/{userId}")
+    // public ResponseEntity<String> addProduct(@RequestBody Products product,
+    // @PathVariable String userId) {
+    // try {
+    // // Sử dụng userId ở đây nếu cần
+    // productsService.addProduct(product, userId);
+    // return ResponseEntity.ok("Sản phẩm đã được thêm bởi " + userId);
+    // } catch (Exception e) {
+    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+    // .body("Lỗi khi thêm sản phẩm: " + e.getMessage());
+    // }
+    // }
+
+    @GetMapping
+    public List<Products> getAllProducts() {
+        return productsService.getAllProducts();
+    }
+
+    @PostMapping("/products/add")
+    public Products addProduct(@RequestBody Products product) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        productsService.addProduct(product, usersService.findUserById(userId));
+        return null;
+    }
+
+    @GetMapping("/products/color")
+    public List<Colors> getAllColors() {
+        return colorsService.getAllColors();
     }
 
 }
