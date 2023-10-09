@@ -1,5 +1,6 @@
 package com.viesonet.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,11 +17,16 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.viesonet.entity.FavoriteProducts;
+import com.viesonet.entity.Media;
+import com.viesonet.entity.Message;
+import com.viesonet.entity.ProductColors;
 import com.viesonet.entity.Products;
 import com.viesonet.entity.Ratings;
 import com.viesonet.entity.Users;
 import com.viesonet.service.FavoriteProductService;
+import com.viesonet.service.MediaService;
 import com.viesonet.service.OrdersService;
+import com.viesonet.service.ProductColorsService;
 import com.google.cloud.storage.Acl.User;
 import com.viesonet.entity.Colors;
 import com.viesonet.entity.Products;
@@ -55,6 +61,12 @@ public class ProductDetailsController {
 
     @Autowired
     ColorsService colorsService;
+
+    @Autowired
+    MediaService mediaService;
+
+    @Autowired
+    ProductColorsService productColorsService;
 
     @GetMapping("/get-product/{productId}")
 
@@ -104,18 +116,6 @@ public class ProductDetailsController {
         return favoriteProductService.addFavoriteProduct(usersService.findUserById(userId),
                 productsService.getProduct(productId));
     }
-    // @PostMapping("/api/products/add/{userId}")
-    // public ResponseEntity<String> addProduct(@RequestBody Products product,
-    // @PathVariable String userId) {
-    // try {
-    // // Sử dụng userId ở đây nếu cần
-    // productsService.addProduct(product, userId);
-    // return ResponseEntity.ok("Sản phẩm đã được thêm bởi " + userId);
-    // } catch (Exception e) {
-    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-    // .body("Lỗi khi thêm sản phẩm: " + e.getMessage());
-    // }
-    // }
 
     @GetMapping
     public List<Products> getAllProducts() {
@@ -125,8 +125,34 @@ public class ProductDetailsController {
     @PostMapping("/products/add")
     public Products addProduct(@RequestBody Products product) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        productsService.addProduct(product, usersService.findUserById(userId));
-        return null;
+        return productsService.addProduct(product, usersService.findUserById(userId));
+    }
+
+    @PostMapping("/send-media/{productId}")
+    public Media sendMedia(@RequestParam List<String> mediaUrl,
+            @PathVariable int productId) {
+        Media obj = new Media();
+        for (String fileUrl : mediaUrl) {
+            boolean isImage = isImageUrl(fileUrl);
+            obj = mediaService.addMedia(fileUrl, productsService.findProductById(productId), isImage);
+        }
+        return obj;
+    }
+
+    @PostMapping("/save-productcolor/{productId}")
+    public ProductColors saveProductColor(@RequestParam int colorId, @RequestParam int quantity,
+            @PathVariable int productId) {
+        return productColorsService.saveProductColor(colorsService.findColorById(colorId),
+                productsService.findProductById(productId), quantity);
+    }
+
+    private boolean isImageUrl(String fileUrl) {
+        // Kiểm tra phần mở rộng của URL để xác định loại tệp tin
+        String extension = fileUrl.substring(fileUrl.lastIndexOf(".") + 1).toLowerCase();
+        if (extension.contains("mp4")) {
+            return false;
+        }
+        return true;
     }
 
     @GetMapping("/products/color")

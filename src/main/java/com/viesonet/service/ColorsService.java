@@ -16,4 +16,8 @@ public class ColorsService {
     public List<Colors> getAllColors() {
         return colorsDao.getAllColors();
     }
+
+    public Colors findColorById(int colorId) {
+        return colorsDao.findById(colorId).orElse(null);
+    }
 }
