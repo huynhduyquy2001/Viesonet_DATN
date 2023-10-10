@@ -20,6 +20,6 @@ public class MyStoreController {
     @GetMapping("/get-product-mystore/{page}")
     public Page<Products> getShoppingByPage(@PathVariable int page) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return productsService.findPostsProductMyStore(page, 10, userId);
+        return productsService.findPostsProductMyStore(page, 9, userId);
     }
 }

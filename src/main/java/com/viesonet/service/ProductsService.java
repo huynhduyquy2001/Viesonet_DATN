@@ -76,6 +76,13 @@ public class ProductsService {
         return productsDao.findPostsProductMyStore(pageable, userId);
     }
 
+    public Page<Products> filterPostsProductMyStore(int page, int size, String userId, String sortDirection,
+            String sortName) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortName);
+        Pageable pageable = PageRequest.of(page, size, sort);
+        return productsDao.findPostsProductMyStore(pageable, userId);
+    }
+
     public List<Products> getRelatedProducts(String userId) {
         return productsDao.getRelatedProducts(userId);
     }
