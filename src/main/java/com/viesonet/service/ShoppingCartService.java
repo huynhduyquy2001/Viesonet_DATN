@@ -73,4 +73,8 @@ public class ShoppingCartService {
         shoppingCartDao.delete(spc);
     }
 
+    public List<ShoppingCart> getListProductToCart(String userId, List<Integer> productId, List<String> color) {
+        return shoppingCartDao.findListProduct(userId, productId, color);
+    }
+
 }

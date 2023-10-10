@@ -1,5 +1,6 @@
 package com.viesonet.controller;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -90,6 +91,30 @@ public class ShoppingCartController {
             errorResult.put("status", "error");
             errorResult.put("message", "Lỗi: " + e.getMessage());
             return ResponseEntity.badRequest().body(errorResult);
+        }
+    }
+
+    @PostMapping("/orderShoppingCart")
+    public List<ShoppingCart> orderToCart(@RequestBody List<Map<String, String>> requestData) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        List<Integer> productIdList = new ArrayList<>();
+        List<String> colorList = new ArrayList<>();
+        try {
+            for (Map<String, String> data : requestData) {
+                String productId = data.get("productId");
+                String color = data.get("color");
+                try {
+                    int productIdInt = Integer.parseInt(productId);
+                    productIdList.add(productIdInt);
+                    colorList.add(color);
+                } catch (NumberFormatException e) {
+                    // Xử lý nếu productId không phải là số
+                }
+            }
+            return shoppingCartService.getListProductToCart(userId, productIdList, colorList);
+        } catch (Exception e) {
+            e.printStackTrace(); // log lỗi
+            return new ArrayList<>(); // trả về giá trị mặc định khác
         }
     }
 
