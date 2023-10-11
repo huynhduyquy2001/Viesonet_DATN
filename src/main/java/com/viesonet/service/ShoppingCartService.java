@@ -68,4 +68,13 @@ public class ShoppingCartService {
         return shoppingCartDao.findCartByUserId(userId);
     }
 
+    public void deleteToCart(String productId, String userId, String color) {
+        ShoppingCart spc = shoppingCartDao.findCartByProductId(userId, Integer.parseInt(productId), color);
+        shoppingCartDao.delete(spc);
+    }
+
+    public List<ShoppingCart> getListProductToCart(String userId, List<Integer> productId, List<String> color) {
+        return shoppingCartDao.findListProduct(userId, productId, color);
+    }
+
 }

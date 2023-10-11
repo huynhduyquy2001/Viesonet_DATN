@@ -6,4 +6,5 @@ import com.viesonet.entity.ProductStatus;
 import com.viesonet.entity.Products;
 
 public interface ProductStatusDao extends JpaRepository<ProductStatus, Integer> {
+
 }

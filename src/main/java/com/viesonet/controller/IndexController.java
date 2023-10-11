@@ -46,9 +46,13 @@ import com.viesonet.service.ReplyService;
 import com.viesonet.service.UsersService;
 import com.viesonet.service.ViolationTypesService;
 import com.viesonet.service.ViolationsService;
+import com.viesonet.service.WordBannedService;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
+import org.json.simple.JSONArray;
+import org.json.simple.JSONObject;
+import org.json.simple.parser.JSONParser;
 
 @RestController
 @CrossOrigin("*")
@@ -98,6 +102,9 @@ public class IndexController {
 
 	@Autowired
 	private ViolationsService violationService;
+
+	@Autowired
+	private WordBannedService wordBannedService;
 
 	@GetMapping("/findfollowing")
 	public List<Users> getFollowingInfoByUserId() {
@@ -187,7 +194,7 @@ public class IndexController {
 				usersService.findUserById(userId), post.getCommentCount(), post.getUser(), post, 4);
 
 		messagingTemplate.convertAndSend("/private-user", notifications);
-
+		content = wordBannedService.wordBanned(content);
 		return commentsService.addComment(postsService.findPostById(postId), usersService.findUserById(userId),
 				content);
 	}

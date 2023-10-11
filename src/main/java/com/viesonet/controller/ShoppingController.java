@@ -53,21 +53,6 @@ public class ShoppingController {
     @Autowired
     UsersService usersService;
 
-    // @GetMapping("/getshopping")
-    // private List<Products> getShopping() {
-
-    // String userId =
-    // SecurityContextHolder.getContext().getAuthentication().getName();
-    // List<Follow> followList = followService.getFollowing(userId);
-    // List<String> followedUserIds = followList.stream()
-    // .map(follow -> follow.getFollowing().getUserId())
-    // .collect(Collectors.toList());
-    // Page<Posts> allFollowedPosts =
-    // productsService.findPostsByListUserId(followedUserIds);
-    // System.out.println("Do dai: " + list.size());
-    // return list;
-    // }
-
     @GetMapping("/get-shopping-by-page/{page}")
     public Page<Products> getShoppingByPage(@PathVariable int page) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -76,7 +61,6 @@ public class ShoppingController {
                 .map(follow -> follow.getFollowing().getUserId())
                 .collect(Collectors.toList());
         Page<Products> list = productsService.getShoppingByPage(followedUserIds, page, 10);
-        System.out.println(list);
         return list;
     }
 
@@ -96,6 +80,11 @@ public class ShoppingController {
         return productList;
     }
 
+    @GetMapping("/find-product-by-name/{page}")
+    public Page<Products> findProductByName(@PathVariable int page, @RequestParam String key) {
+        return productsService.findProductByName(page, key);
+    }
+
     @PostMapping("/add-to-cart")
     public ResponseEntity<String> addToCart(@RequestParam("productId") int productId,
             @RequestParam("quantity") int quantity, @RequestParam("color") String color) {
@@ -104,7 +93,7 @@ public class ShoppingController {
         try {
             shoppingCartService.addToCart(usersService.getById(userId), productsService.getProduct(productId),
                     quantity, color);
-            return ResponseEntity.ok("Sản phẩm đã được thêm vào giỏ hàng.");
+            return ResponseEntity.ok("{\"message\": \"Sản phẩm đã được thêm vào giỏ hàng.\"}");
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi khi thêm sản phẩm vào giỏ hàng: " + e.getMessage());

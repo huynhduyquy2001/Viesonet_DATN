@@ -2,6 +2,7 @@ package com.viesonet.entity;
 
 import java.util.Date;
 
+import jakarta.annotation.Generated;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -31,6 +32,7 @@ public class FavoriteProducts {
     @ManyToOne
     @JoinColumn(name = "productId")
     private Products product;
+
     @ManyToOne
     @JoinColumn(name = "userId")
     private Users user;

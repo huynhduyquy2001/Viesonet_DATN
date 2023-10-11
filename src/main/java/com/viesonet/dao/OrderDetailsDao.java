@@ -7,6 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.viesonet.entity.Notifications;
 import com.viesonet.entity.OrderDetails;
+import com.viesonet.entity.Orders;
 import com.viesonet.entity.Products;
 
 public interface OrderDetailsDao extends JpaRepository<OrderDetails, Integer> {
@@ -14,4 +15,6 @@ public interface OrderDetailsDao extends JpaRepository<OrderDetails, Integer> {
     @Query("SELECT p.product.productId FROM OrderDetails p WHERE p.order.orderId IN :orderId GROUP BY p.product.productId ORDER BY SUM(p.quantity) DESC")
     List<Integer> getProductIdList(List<Integer> orderId);
 
+    @Query("SELECT p FROM OrderDetails p WHERE p.order.customer.userId =:userId and p.product.productId=:productId")
+    List<OrderDetails> checkBought(String userId, int productId);
 }
