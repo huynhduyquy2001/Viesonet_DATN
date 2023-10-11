@@ -1,5 +1,6 @@
 package com.viesonet.dao;
 
+import com.viesonet.entity.FavoriteProducts;
 import com.viesonet.entity.Posts;
 import com.viesonet.entity.Products;
 
