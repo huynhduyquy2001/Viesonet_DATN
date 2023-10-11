@@ -138,6 +138,7 @@ public class ShoppingCartController {
 
     @PostMapping("/add-to-DeliveryAddress")
     public List<DeliveryAddress> addToDeliveryAddress(@RequestParam("provinceID") int provinceID,
+            @RequestParam("deliveryPhone") String deliveryPhone,
             @RequestParam("provinceName") String provinceName, @RequestParam("districtID") int districtID,
             @RequestParam("districtName") String districtName, @RequestParam("wardCode") String wardCode,
             @RequestParam("wardName") String wardName, @RequestParam("detailAddress") String detailAddress) {
@@ -146,7 +147,7 @@ public class ShoppingCartController {
 
         // thêm địa chỉ
         deliveryAddressService.addDeliveryAddress(districtID, provinceID, wardCode, districtName, provinceName,
-                wardName, detailAddress, usersService.getUserById(userId));
+                wardName, detailAddress, usersService.getUserById(userId), deliveryPhone);
 
         return deliveryAddressService.getAddress(userId);
     }

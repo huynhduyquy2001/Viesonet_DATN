@@ -26,7 +26,8 @@ public class DeliveryAddressService {
     }
 
     public ResponseEntity<String> addDeliveryAddress(int districtID, int provinceID, String wardCode,
-            String districtName, String provinceName, String wardName, String detailAddress, Users user) {
+            String districtName, String provinceName, String wardName, String detailAddress, Users user,
+            String deliveryPhone) {
 
         try {
             DeliveryAddress d = new DeliveryAddress();
@@ -37,6 +38,7 @@ public class DeliveryAddressService {
             d.setWardCode(wardCode);
             d.setWardName(wardName);
             d.setDetailAddress(detailAddress);
+            d.setDeliveryPhone(deliveryPhone);
             d.setUser(user);
             deliveryAddressDao.saveAndFlush(d);
             return ResponseEntity.ok("Thêm địa chỉ thành công");
