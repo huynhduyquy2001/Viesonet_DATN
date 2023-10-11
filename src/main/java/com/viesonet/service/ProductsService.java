@@ -10,6 +10,8 @@ import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
 import com.viesonet.dao.ProductStatusDao;
@@ -66,6 +68,12 @@ public class ProductsService {
         return shoppingList;
     }
 
+    public Page<Products> getTrendingMyStore(List<Integer> list, int page, int size, String userId) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "datePost"));
+        Page<Products> shoppingList = productsDao.getTrendingMyStore(list, pageable, userId);
+        return shoppingList;
+    }
+
     public Page<Object> findPostsProductWithProcessing(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return productsDao.findPostsProductWithProcessing(pageable);
@@ -73,6 +81,13 @@ public class ProductsService {
 
     public Page<Products> findPostsProductMyStore(int page, int size, String userId) {
         Pageable pageable = PageRequest.of(page, size);
+        return productsDao.findPostsProductMyStore(pageable, userId);
+    }
+
+    public Page<Products> filterPostsProductMyStore(int page, int size, String userId, String sortDirection,
+            String sortName) {
+        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortName);
+        Pageable pageable = PageRequest.of(page, size, sort);
         return productsDao.findPostsProductMyStore(pageable, userId);
     }
 
@@ -87,6 +102,11 @@ public class ProductsService {
 
     public List<Object> findSearchProducts(String name) {
         return productsDao.findSearchProducts(name);
+    }
+
+    public Page<Products> findSearchProductMyStore(String name, String userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productsDao.findSearchProductMyStore(name, userId, pageable);
     }
 
     public Products findProductById(int productId) {
@@ -117,6 +137,20 @@ public class ProductsService {
         p.setStatusId(3);
         product.setProductStatus(p);
         return productsDao.save(product);
+    }
+
+    public ResponseEntity<String> hideProductMyStore(int productId) {
+        try {
+            Products products = productsDao.findByProductId(productId);
+
+            ProductStatus p = new ProductStatus();
+            p.setStatusId(2);
+            products.setProductStatus(p);
+            productsDao.saveAndFlush(products);
+            return ResponseEntity.ok("Đã ẩn sản phẩm.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Có lỗi xảy ra: " + e.getMessage());
+        }
     }
 
 }
