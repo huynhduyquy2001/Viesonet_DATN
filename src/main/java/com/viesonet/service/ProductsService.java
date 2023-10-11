@@ -78,8 +78,12 @@ public class ProductsService {
                 .orElseThrow(() -> new RuntimeException("Không tìm thấy sản phẩm bên bảng tạm"));
 
         products.setProductStatus(productStatusDao.findById(1).orElse(null));
-        
+
         productsDao.saveAndFlush(products);
         productsTempDao.delete(product);
+    }
+
+    public List<Products> getRelatedProducts(String userId) {
+        return productsDao.getRelatedProducts(userId);
     }
 }

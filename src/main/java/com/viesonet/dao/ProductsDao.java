@@ -13,6 +13,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
 public interface ProductsDao extends JpaRepository<Products, Integer> {
+    @Query("SELECT p FROM Products p " +
+            "INNER JOIN p.favoriteProducts f " +
+            "WHERE f.user.userId = :userId")
+
+    List<Products> findFavoriteProductsByUserId(String userId);
+
     @Query("SELECT p FROM Products p WHERE p.user.userId IN :userId AND p.productStatus.statusId=1")
     List<Products> getShopping(List<String> userId);
 
@@ -32,4 +38,6 @@ public interface ProductsDao extends JpaRepository<Products, Integer> {
     @Query("SELECT p FROM Products p WHERE p.productStatus.statusId = 3 and p.productName LIKE %:name%")
     List<Object> findSearchProducts(@Param("name") String name);
 
+    @Query("SELECT p FROM Products p WHERE p.user.userId = :userId ORDER BY p.datePost DESC LIMIT 4")
+    List<Products> getRelatedProducts(String userId);
 }

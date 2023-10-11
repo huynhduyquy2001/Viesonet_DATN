@@ -28,8 +28,11 @@ public class ShoppingCart {
     @ManyToOne
     @JoinColumn(name = "userId")
     private Users user;
+
     @ManyToOne
     @JoinColumn(name = "productId")
     private Products product;
+
     private int quantity;
+    private String color;
 }

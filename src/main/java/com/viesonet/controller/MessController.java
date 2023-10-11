@@ -73,8 +73,6 @@ public class MessController {
 	@MessageMapping("/sendnewmess")
 	@SendToUser("/queue/receiveMessage")
 	public void addMess(Message newMessage) {
-		System.out.println("aloNe " + newMessage.getSender().getUserId());
-		System.out.println("aloNe " + newMessage.getReceiver().getUserId());
 		messagingTemplate.convertAndSendToUser(newMessage.getSender().getUserId(), "/queue/receiveMessage",
 				newMessage);
 		messagingTemplate.convertAndSendToUser(newMessage.getReceiver().getUserId(), "/queue/receiveMessage",
@@ -90,51 +88,18 @@ public class MessController {
 	}
 
 	@PostMapping("/sendimage/{receiverId}")
-	public List<Message> sendImage(@RequestParam MultipartFile[] photoFiles,
+	public List<Message> sendImage(@RequestParam List<String> mediaUrl,
 			@PathVariable String receiverId) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<Message> list = new ArrayList<>();
-		if (photoFiles != null && photoFiles.length > 0) {
-			for (MultipartFile photoFile : photoFiles) {
+		if (mediaUrl != null && mediaUrl.size() > 0) {
+			for (String photoFile : mediaUrl) {
 				Message newMessage = new Message();
-				if (!photoFile.isEmpty()) {
-					String originalFileName = photoFile.getOriginalFilename();
-					String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-					String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-					String newFileName = originalFileName + "-" + timestamp + extension;
-
-					String rootPath = servletContext.getRealPath("/");
-					String parentPath = new File(rootPath).getParent();
-					String pathUpload = parentPath + "/resources/static/images/" + newFileName;
-
-					try {
-						photoFile.transferTo(new File(pathUpload));
-						String contentType = photoFile.getContentType();
-						boolean type = true;
-						if (contentType.startsWith("image")) {
-
-						} else if (contentType.startsWith("video")) {
-							type = false;
-						}
-						if (type == true) {
-							long fileSize = photoFile.getSize();
-							if (fileSize > 1 * 1024 * 1024) {
-								double quality = 0.6;
-								String outputPath = pathUpload;
-								Thumbnails.of(pathUpload).scale(1.0).outputQuality(quality).toFile(outputPath);
-							}
-						}
-						newMessage = messageService.addMess(usersService.findUserById(userId),
-								usersService.findUserById(receiverId), "", newFileName);
-						list.add(newMessage);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-
-				}
+				newMessage = messageService.addMess(usersService.findUserById(userId),
+						usersService.findUserById(receiverId), "", photoFile);
+				list.add(newMessage);
 			}
 		}
-
 		return list;
 	}
 
