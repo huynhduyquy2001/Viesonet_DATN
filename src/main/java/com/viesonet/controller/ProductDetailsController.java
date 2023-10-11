@@ -1,6 +1,7 @@
 package com.viesonet.controller;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -16,6 +17,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.viesonet.entity.FavoriteProducts;
+import com.viesonet.entity.ProductColors;
 import com.viesonet.entity.Products;
 import com.viesonet.entity.Ratings;
 import com.viesonet.entity.Users;
@@ -104,18 +106,6 @@ public class ProductDetailsController {
         return favoriteProductService.addFavoriteProduct(usersService.findUserById(userId),
                 productsService.getProduct(productId));
     }
-    // @PostMapping("/api/products/add/{userId}")
-    // public ResponseEntity<String> addProduct(@RequestBody Products product,
-    // @PathVariable String userId) {
-    // try {
-    // // Sử dụng userId ở đây nếu cần
-    // productsService.addProduct(product, userId);
-    // return ResponseEntity.ok("Sản phẩm đã được thêm bởi " + userId);
-    // } catch (Exception e) {
-    // return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
-    // .body("Lỗi khi thêm sản phẩm: " + e.getMessage());
-    // }
-    // }
 
     @GetMapping
     public List<Products> getAllProducts() {
@@ -123,9 +113,9 @@ public class ProductDetailsController {
     }
 
     @PostMapping("/products/add")
-    public Products addProduct(@RequestBody Products product) {
+    public Products addProduct(@RequestBody Products products) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        productsService.addProduct(product, usersService.findUserById(userId));
+        productsService.addProduct(products, usersService.findUserById(userId));
         return null;
     }
 
