@@ -156,9 +156,16 @@ public class ProductsService {
         ProductStatus p = new ProductStatus();
         product.setUser(userId);
         product.setDatePost(new Date());
-        p.setStatusId(3);
+
+        // Kiểm tra nếu product.getProductStatus() != null và getStatusId() == 1
+        if (product.getProductStatus() != null) {
+            p.setStatusId(1);
+        } else {
+            p.setStatusId(3);
+        }
+
         product.setProductStatus(p);
-        return productsDao.save(product);
+        return productsDao.saveAndFlush(product);
     }
 
 }
