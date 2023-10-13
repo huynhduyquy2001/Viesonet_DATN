@@ -4,6 +4,8 @@ import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.JoinColumn;
+import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
 import jakarta.persistence.Temporal;
 import jakarta.persistence.TemporalType;
@@ -13,27 +15,28 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.math.BigDecimal;
-import java.util.Date;
-
 @Entity
+@Data
 @Getter
 @Setter
-@Data
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "ProductsTemp")
-public class ProductsTemp {
+@Table(name = "DeliveryAddress")
+public class DeliveryAddress {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int tempId;
-    private int productId;
-    private String productName;
-    private float originalPrice;
+    private int Id;
+    private int ProvinceId;
+    private String ProvinceName;
+    private int DistrictId;
+    private String DistrictName;
+    private String WardCode;
+    private String WardName;
+    private String deliveryPhone;
 
-    @Temporal(TemporalType.TIMESTAMP)
-    private Date datePost;
+    @ManyToOne
+    @JoinColumn(name = "userId")
+    private Users user;
 
-    private String userName;
-
+    private String DetailAddress;
 }
