@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.google.firestore.v1.StructuredQuery.Order;
 import com.viesonet.dao.OrderDetailsDao;
 import com.viesonet.dao.OrdersDao;
 import com.viesonet.entity.OrderDetails;
@@ -44,5 +45,9 @@ public class OrdersService {
             return true;
         }
         return false;
+    }
+
+    public List<Object[]> getPendingConfirmationOrdersForSeller(String sellerId) {
+        return ordersDao.getPendingConfirmationOrdersForSeller(sellerId);
     }
 }

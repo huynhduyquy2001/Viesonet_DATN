@@ -1,7 +1,5 @@
 package com.viesonet.entity;
 
-
-
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -32,9 +30,10 @@ public class ProductsTemp {
     private int productId;
     private String productName;
     private float originalPrice;
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date datePost;
+
     private String userName;
 
 }
-
