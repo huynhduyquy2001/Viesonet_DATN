@@ -2,6 +2,7 @@ package com.viesonet.controller;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -123,9 +124,9 @@ public class ProductDetailsController {
     }
 
     @PostMapping("/products/add")
-    public Products addProduct(@RequestBody Products product) {
+    public Products addProduct(@RequestBody Products products) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return productsService.addProduct(product, usersService.findUserById(userId));
+        return productsService.addProduct(products, usersService.findUserById(userId));
     }
 
     @PostMapping("/delete-media/{mediaId}")

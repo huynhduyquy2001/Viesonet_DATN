@@ -8,7 +8,6 @@ import com.viesonet.entity.Violations;
 import java.util.List;
 
 import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Page;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
@@ -31,13 +30,16 @@ public interface ProductsDao extends JpaRepository<Products, Integer> {
     @Query("SELECT p FROM Products p WHERE p.productId IN :productId AND p.productStatus.statusId = 1")
     Page<Products> getTrending(List<Integer> productId, Pageable pageable);
 
+    @Query("SELECT p FROM Products p WHERE p.productId IN :productId AND p.productStatus.statusId = 1 AND p.user.userId =:userId")
+    Page<Products> getTrendingMyStore(List<Integer> productId, Pageable pageable, String userId);
+
     @Query("SELECT p FROM Products p WHERE p.productStatus.statusId = 3")
     Page<Object> findPostsProductWithProcessing(Pageable pageable);
 
     @Query("SELECT p FROM Products p WHERE p.user.userId = :userId ORDER BY p.datePost DESC LIMIT 4")
     List<Products> getRelatedProducts(String userId);
 
-    @Query("SELECT p FROM Products p WHERE p.user.userId =:userId")
+    @Query("SELECT p FROM Products p WHERE p.user.userId =:userId AND p.productStatus.statusId = 1")
     Page<Products> findPostsProductMyStore(Pageable pageable, String userId);
 
     @Query("SELECT p FROM Products p WHERE p.productStatus.statusId = 5")
@@ -49,4 +51,8 @@ public interface ProductsDao extends JpaRepository<Products, Integer> {
     @Query("SELECT p FROM Products p WHERE p.productStatus.statusId = 1 and p.productName LIKE %:name%")
     Page<Products> findProductByName(Pageable pageable, String name);
 
+    @Query("SELECT p FROM Products p WHERE p.productStatus.statusId = 1 AND p.user.userId =:userId AND p.productName LIKE %:name%")
+    Page<Products> findSearchProductMyStore(String name, String userId, Pageable pageable);
+
+    Products findByProductId(int productId);
 }
