@@ -1,6 +1,7 @@
 package com.viesonet.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -70,9 +71,15 @@ public class ProductDetailsController {
     ProductColorsService productColorsService;
 
     @GetMapping("/get-product/{productId}")
-
-    public Products getProduct(@PathVariable int productId) {
-        return productsService.getProduct(productId);
+    public ResponseEntity<?> getProduct(@PathVariable int productId) {
+        Products product = productsService.getProduct(productId);
+        if (product != null) {
+            return ResponseEntity.ok(product); // Trả về sản phẩm với trạng thái OK (200)
+        } else {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Product not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
     }
 
     @PostMapping("/rate-product/{productId}")
