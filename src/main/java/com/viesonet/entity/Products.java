@@ -63,7 +63,7 @@ public class Products {
 
     @JsonIgnore
     @OneToMany(mappedBy = "product")
-    private List<ViolationProducts> violationProducts;
+    private List<ViolationProducts> violationProduct;
 
     @JsonIgnore
     @OneToMany(mappedBy = "product")

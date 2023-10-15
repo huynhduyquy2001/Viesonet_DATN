@@ -11,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -20,24 +19,21 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.viesonet.entity.FavoriteProducts;
 import com.viesonet.entity.Media;
-import com.viesonet.entity.Message;
 import com.viesonet.entity.ProductColors;
 import com.viesonet.entity.Products;
 import com.viesonet.entity.Ratings;
-import com.viesonet.entity.Users;
+import com.viesonet.entity.ViolationProducts;
 import com.viesonet.service.FavoriteProductService;
 import com.viesonet.service.MediaService;
 import com.viesonet.service.OrdersService;
 import com.viesonet.service.ProductColorsService;
-import com.google.cloud.storage.Acl.User;
 import com.viesonet.entity.Colors;
-import com.viesonet.entity.Products;
-import com.viesonet.entity.Ratings;
-import com.viesonet.entity.Users;
 import com.viesonet.service.ColorsService;
 import com.viesonet.service.ProductsService;
 import com.viesonet.service.RatingsService;
 import com.viesonet.service.UsersService;
+import com.viesonet.service.ViolationProductsService;
+import com.viesonet.service.ViolationsService;
 import com.viesonet.service.WordBannedService;
 
 @RestController
@@ -69,6 +65,17 @@ public class ProductDetailsController {
 
     @Autowired
     ProductColorsService productColorsService;
+
+    @Autowired
+    ViolationProductsService violationProductsService;
+
+    @PostMapping("/report-product/{productId}")
+    public ViolationProducts reportProduct(@PathVariable int productId, @RequestParam String reportContent) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return violationProductsService.reportProduct(usersService.findUserById(userId),
+                productsService.findProductById(productId),
+                reportContent);
+    }
 
     @GetMapping("/get-product/{productId}")
     public ResponseEntity<?> getProduct(@PathVariable int productId) {
