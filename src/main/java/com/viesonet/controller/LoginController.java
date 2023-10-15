@@ -1,6 +1,8 @@
 package com.viesonet.controller;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import javax.naming.AuthenticationException;
@@ -41,19 +43,10 @@ public class LoginController {
 	AuthConfig authConfig;
 
 	@Autowired
-	JwtTokenUtil jwtTokenUtil;
-
-	@Autowired
 	private AuthenticationManager authenticationManager;
 
 	@Autowired
 	JwtTokenUtil jwtUtils;
-
-	@GetMapping("/api/login")
-	public ModelAndView getLoginPage() {
-		ModelAndView modelAndView = new ModelAndView("Login");
-		return modelAndView;
-	}
 
 	@PostMapping("/api/createToken")
 	public ResponseEntity<?> authenticateUser(@Validated @RequestBody JwtRequestModel request) {
@@ -64,7 +57,6 @@ public class LoginController {
 			SecurityContextHolder.getContext().setAuthentication(authentication);
 
 			String jwt = jwtUtils.generateJwtToken(authentication);
-			System.out.println("jwt: " + jwt);
 			if (authentication.isAuthenticated()) {
 				System.out.println("Xac thuc thanh cong");
 			} else {
@@ -84,4 +76,27 @@ public class LoginController {
 		}
 
 	}
+
+	@PostMapping("/api/refreshToken")
+	public ResponseEntity<?> refreshToken(@RequestBody Map<String, Object> payload) {
+		String token = (String) payload.get("token"); // Lấy token từ dữ liệu gửi từ phía frontend
+
+		if (jwtUtils.validateJwtToken(token)) {
+			// Token hợp lệ
+			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+			String newToken = jwtUtils.generateJwtToken(authentication);
+			UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
+			List<String> roles = userDetails.getAuthorities().stream()
+					.map(item -> item.getAuthority())
+					.collect(Collectors.toList());
+			return ResponseEntity.ok(new JwtResponse(newToken, userDetails.getId(),
+					userDetails.getUsername(),
+					userDetails.getEmail(),
+					roles));
+		} else {
+			// Token không hợp lệ
+			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
+		}
+	}
+
 }
