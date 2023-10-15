@@ -113,6 +113,11 @@ public class ProductsService {
         return productsDao.findPostsProductMyStore(pageable, userId);
     }
 
+    public Page<Products> findPostsProductPending(int page, int size, String userId) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productsDao.findPostsProductPending(pageable, userId);
+    }
+
     public List<Products> getRelatedProducts(String userId) {
         return productsDao.getRelatedProducts(userId);
     }
