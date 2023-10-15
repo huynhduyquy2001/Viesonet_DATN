@@ -28,19 +28,22 @@ public class MyStoreController {
     @Autowired
     OrderDetailsService orderDetailsService;
 
-    @GetMapping("/get-product-mystore/{page}")
-    public Page<Products> getShoppingByPage(@PathVariable int page) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+    @GetMapping("/mystore/{userId}/{page}")
+    public Page<Products> getShoppingByPage(@PathVariable int page, @PathVariable String userId) {
         return productsService.findPostsProductMyStore(page, 9, userId);
     }
 
-    @GetMapping("/searchProductMyStore/{search}")
-    public Page<Products> searchProductMyStore(@PathVariable String search) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+    @GetMapping("/mystore-pending/{userId}/{page}")
+    public Page<Products> getShoppingByPagePending(@PathVariable int page, @PathVariable String userId) {
+        return productsService.findPostsProductPending(page, 9, userId);
+    }
+
+    @GetMapping("/searchProductMyStore/{userId}/{search}")
+    public Page<Products> searchProductMyStore(@PathVariable String search, @PathVariable String userId) {
         return productsService.findSearchProductMyStore(search, userId, 0, 9);
     }
 
-    @PostMapping("/hideProductMyStore/{productId}/{page}")
+    @PostMapping("/hideProductMyStore/{userId}/{productId}/{page}")
     public Page<Products> searchProductMyStore(@PathVariable int productId, @PathVariable int page) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         try {
