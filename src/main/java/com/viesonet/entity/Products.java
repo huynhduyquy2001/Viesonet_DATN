@@ -42,8 +42,8 @@ public class Products {
     private int soldQuantity;
     private float height;
     private float width;
-    private float length;
     private float weight;
+    private float length;
     private String material;
 
     @ManyToOne

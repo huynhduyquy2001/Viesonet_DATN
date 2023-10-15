@@ -41,4 +41,10 @@ public class OrdersController {
         return ordersService.findOrdersByCustomerId(userId);
     }
 
+    @GetMapping("/pending-confirmation")
+    public List<Object[]> getOrdersPendingConfirmation() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ordersService.getPendingConfirmationOrdersForSeller(userId);
+    }
+
 }

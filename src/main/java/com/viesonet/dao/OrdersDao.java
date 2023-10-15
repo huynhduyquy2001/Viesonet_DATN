@@ -24,4 +24,14 @@ public interface OrdersDao extends JpaRepository<Orders, Integer> {
             "WHERE o.customer.userId = :customerId")
     List<Object[]> findOrdersByCustomerId(@Param("customerId") String customerId);
 
+    @Query("SELECT o, p, od, os, u FROM Orders o " +
+            "JOIN o.customer u " +
+            "JOIN o.orderStatus os " +
+            "JOIN o.orderDetails od " +
+            "JOIN od.product p " +
+            "WHERE u.userId = :sellerId " +
+            "AND od.product.productId = p.productId " +
+            "AND os.statusId = 1")
+    List<Object[]> getPendingConfirmationOrdersForSeller(@Param("sellerId") String sellerId);
+
 }

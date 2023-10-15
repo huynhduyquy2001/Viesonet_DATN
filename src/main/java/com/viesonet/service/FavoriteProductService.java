@@ -20,7 +20,6 @@ import com.viesonet.entity.Users;
 public class FavoriteProductService {
     @Autowired
     ProductsDao ProductDAO;
-
     @Autowired
     FavoriteProductsDao favoriteProductsDao;
 

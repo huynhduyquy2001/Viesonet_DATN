@@ -53,21 +53,6 @@ public class ShoppingController {
     @Autowired
     UsersService usersService;
 
-    // @GetMapping("/getshopping")
-    // private List<Products> getShopping() {
-
-    // String userId =
-    // SecurityContextHolder.getContext().getAuthentication().getName();
-    // List<Follow> followList = followService.getFollowing(userId);
-    // List<String> followedUserIds = followList.stream()
-    // .map(follow -> follow.getFollowing().getUserId())
-    // .collect(Collectors.toList());
-    // Page<Posts> allFollowedPosts =
-    // productsService.findPostsByListUserId(followedUserIds);
-    // System.out.println("Do dai: " + list.size());
-    // return list;
-    // }
-
     @GetMapping("/get-shopping-by-page/{page}")
     public Page<Products> getShoppingByPage(@PathVariable int page) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -76,7 +61,6 @@ public class ShoppingController {
                 .map(follow -> follow.getFollowing().getUserId())
                 .collect(Collectors.toList());
         Page<Products> list = productsService.getShoppingByPage(followedUserIds, page, 10);
-        System.out.println(list);
         return list;
     }
 
@@ -94,6 +78,11 @@ public class ShoppingController {
         List<Integer> ProductIdList = orderDetailsService.getProductIdList(ordersId);
         Page<Products> productList = productsService.getTrendingProducts(ProductIdList, page, 10);
         return productList;
+    }
+
+    @GetMapping("/find-product-by-name/{page}")
+    public Page<Products> findProductByName(@PathVariable int page, @RequestParam String key) {
+        return productsService.findProductByName(page, key);
     }
 
     @PostMapping("/add-to-cart")

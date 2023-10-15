@@ -141,13 +141,14 @@ public class ShoppingCartController {
             @RequestParam("deliveryPhone") String deliveryPhone,
             @RequestParam("provinceName") String provinceName, @RequestParam("districtID") int districtID,
             @RequestParam("districtName") String districtName, @RequestParam("wardCode") String wardCode,
-            @RequestParam("wardName") String wardName, @RequestParam("detailAddress") String detailAddress) {
+            @RequestParam("wardName") String wardName, @RequestParam("detailAddress") String detailAddress,
+            @RequestParam("addressStore") boolean addressStore) {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
         // thêm địa chỉ
         deliveryAddressService.addDeliveryAddress(districtID, provinceID, wardCode, districtName, provinceName,
-                wardName, detailAddress, usersService.getUserById(userId), deliveryPhone);
+                wardName, detailAddress, usersService.getUserById(userId), deliveryPhone, addressStore);
 
         return deliveryAddressService.getAddress(userId);
     }
@@ -161,8 +162,13 @@ public class ShoppingCartController {
     }
 
     @GetMapping("/get-oneAddress/{id}")
-    public DeliveryAddress getOndAddress(@PathVariable int id) {
+    public DeliveryAddress getOneAddress(@PathVariable int id) {
         return deliveryAddressService.getOneAddress(id);
+    }
+
+    @GetMapping("/get-listAddress")
+    public List<DeliveryAddress> getListAddress(@RequestParam List<String> userIds) {
+        return deliveryAddressService.getListAddress(userIds);
     }
 
 }
