@@ -28,38 +28,22 @@ public class MyStoreController {
     @Autowired
     OrderDetailsService orderDetailsService;
 
-    @GetMapping("/get-product-mystore/{page}")
-    public Page<Products> getShoppingByPage(@PathVariable int page) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+    @GetMapping("/mystore/{userId}/{page}")
+    public Page<Products> getShoppingByPage(@PathVariable int page, @PathVariable String userId) {
         return productsService.findPostsProductMyStore(page, 9, userId);
     }
 
-    @GetMapping("/filter-product-mystore/{page}/{sortDirection}/{sortName}")
-    public Page<Products> filterShoppingByPage(@PathVariable int page, @PathVariable String sortDirection,
-            @PathVariable String sortName) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return productsService.filterPostsProductMyStore(page, 9, userId, sortDirection, sortName);
+    @GetMapping("/mystore-pending/{userId}/{page}")
+    public Page<Products> getShoppingByPagePending(@PathVariable int page, @PathVariable String userId) {
+        return productsService.findPostsProductPending(page, 9, userId);
     }
 
-    @GetMapping("/get-trending-myStore/{page}")
-    public Page<Products> getTrending(@PathVariable int page) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        // lấy danh sách đơn hàng trong 7 ngày gần đây
-        List<Integer> ordersId = ordersService.getShoppingWithinLast7Days();
-        System.out.println(ordersId.size());
-        // lấy danh sách những sản phẩm có trong đơn hàng đó
-        List<Integer> ProductIdList = orderDetailsService.getProductIdList(ordersId);
-        Page<Products> productList = productsService.getTrendingMyStore(ProductIdList, page, 9, userId);
-        return productList;
-    }
-
-    @GetMapping("/searchProductMyStore/{search}")
-    public Page<Products> searchProductMyStore(@PathVariable String search) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+    @GetMapping("/searchProductMyStore/{userId}/{search}")
+    public Page<Products> searchProductMyStore(@PathVariable String search, @PathVariable String userId) {
         return productsService.findSearchProductMyStore(search, userId, 0, 9);
     }
 
-    @PostMapping("/hideProductMyStore/{productId}/{page}")
+    @PostMapping("/hideProductMyStore/{userId}/{productId}/{page}")
     public Page<Products> searchProductMyStore(@PathVariable int productId, @PathVariable int page) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         try {

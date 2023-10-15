@@ -30,9 +30,6 @@ public interface ProductsDao extends JpaRepository<Products, Integer> {
     @Query("SELECT p FROM Products p WHERE p.productId IN :productId AND p.productStatus.statusId = 1")
     Page<Products> getTrending(List<Integer> productId, Pageable pageable);
 
-    @Query("SELECT p FROM Products p WHERE p.productId IN :productId AND p.productStatus.statusId = 1 AND p.user.userId =:userId")
-    Page<Products> getTrendingMyStore(List<Integer> productId, Pageable pageable, String userId);
-
     @Query("SELECT p FROM Products p WHERE p.productStatus.statusId = 3")
     Page<Object> findPostsProductWithProcessing(Pageable pageable);
 
@@ -41,6 +38,9 @@ public interface ProductsDao extends JpaRepository<Products, Integer> {
 
     @Query("SELECT p FROM Products p WHERE p.user.userId =:userId AND p.productStatus.statusId = 1")
     Page<Products> findPostsProductMyStore(Pageable pageable, String userId);
+
+    @Query("SELECT p FROM Products p WHERE p.user.userId =:userId AND p.productStatus.statusId = 3")
+    Page<Products> findPostsProductPending(Pageable pageable, String userId);
 
     @Query("SELECT p FROM Products p WHERE p.productStatus.statusId = 5")
     Page<Object> findPostsProductWithDecline(Pageable pageable);

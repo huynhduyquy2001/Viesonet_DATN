@@ -103,12 +103,6 @@ public class ProductsService {
         return shoppingList;
     }
 
-    public Page<Products> getTrendingMyStore(List<Integer> list, int page, int size, String userId) {
-        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "datePost"));
-        Page<Products> shoppingList = productsDao.getTrendingMyStore(list, pageable, userId);
-        return shoppingList;
-    }
-
     public Page<Object> findPostsProductWithProcessing(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
         return productsDao.findPostsProductWithProcessing(pageable);
@@ -119,11 +113,9 @@ public class ProductsService {
         return productsDao.findPostsProductMyStore(pageable, userId);
     }
 
-    public Page<Products> filterPostsProductMyStore(int page, int size, String userId, String sortDirection,
-            String sortName) {
-        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortName);
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return productsDao.findPostsProductMyStore(pageable, userId);
+    public Page<Products> findPostsProductPending(int page, int size, String userId) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productsDao.findPostsProductPending(pageable, userId);
     }
 
     public List<Products> getRelatedProducts(String userId) {
