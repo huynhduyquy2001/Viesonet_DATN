@@ -38,11 +38,41 @@ public class WordBannedService {
                 "rẻ rách",
                 "rác rưởi");
 
-        // Thực hiện xử lý với danh sách 'swearing' ở đây
+        List<String> swearingEnglish = Arrays.asList(
+                "fuck",
+                "fuck you",
+                "shit",
+                "piss off",
+                "dick head",
+                "asshole",
+                "son of a bitch",
+                "bastard",
+                "bitch",
+                "damn",
+                "cunt",
+                "blood",
+                "hell",
+                "piss",
+                "suck",
+                "freakin",
+                "holy shit",
+                "motherfucker",
+                "nigga",
+                "pussy",
+                "slut",
+                "cock",
+                "crap",
+                "bull shit",
+                "jesus fuck",
+                "shit ass",
+                "shite");
 
         // Duyệt qua danh sách 'swearing' và thay thế từng từ nếu chúng xuất hiện trong
         // 'word'
         for (String bannedWord : swearing) {
+            word = word.replaceAll("\\b" + bannedWord + "\\b", "***");
+        }
+        for (String bannedWord : swearingEnglish) {
             word = word.replaceAll("\\b" + bannedWord + "\\b", "***");
         }
 
