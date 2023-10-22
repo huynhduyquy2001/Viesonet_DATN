@@ -24,10 +24,4 @@ public class MediaService {
         mediaDao.save(obj);
         return obj;
     }
-
-    public Media deleteMedia(int media) {
-        Media obj = mediaDao.findById(media).orElse(null);
-        mediaDao.deleteById(media);
-        return obj;
-    }
 }
