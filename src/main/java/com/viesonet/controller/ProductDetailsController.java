@@ -69,7 +69,6 @@ public class ProductDetailsController {
     ProductColorsService productColorsService;
 
     @GetMapping("/get-product/{productId}")
-
     public Products getProduct(@PathVariable int productId) {
         return productsService.getProduct(productId);
     }

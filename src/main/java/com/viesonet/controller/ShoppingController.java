@@ -62,7 +62,7 @@ public class ShoppingController {
                 .collect(Collectors.toList());
         Page<Products> list = productsService.getShoppingByPage(followedUserIds, page, 10);
         return list;
-    }
+    }   
 
     @GetMapping("/get-average-rating/{productId}")
     public Double getAverageRating(@PathVariable int productId) {

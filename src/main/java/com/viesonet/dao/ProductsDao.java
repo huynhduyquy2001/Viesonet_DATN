@@ -18,7 +18,6 @@ public interface ProductsDao extends JpaRepository<Products, Integer> {
     @Query("SELECT p FROM Products p " +
             "INNER JOIN p.favoriteProducts f " +
             "WHERE f.user.userId = :userId")
-
     List<Products> findFavoriteProductsByUserId(String userId);
 
     @Query("SELECT p FROM Products p WHERE p.user.userId IN :userId AND p.productStatus.statusId=1")
