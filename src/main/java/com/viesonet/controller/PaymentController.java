@@ -20,10 +20,12 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.viesonet.config.PaymentConfig;
 import com.viesonet.entity.PaymentResDTO;
+import com.viesonet.entity.TransactionStatusDTO;
 
 @RestController
 @CrossOrigin("*")
@@ -107,4 +109,24 @@ public class PaymentController {
         // ResponseEntity.ok(paymentUrl);
         return ResponseEntity.ok(ResponseEntity.ok(paymentUrl));
     }
+
+    @GetMapping("/payment_infor")
+    public ResponseEntity<?> transaction(
+            @RequestParam(value = "vnp_Amount") String amount,
+            @RequestParam(value = "vnp_BankCode") String bankCode,
+            @RequestParam(value = "vnp_OrderInfo") String order,
+            @RequestParam(value = "vnp_ResponseCode") String responseCode) {
+        TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
+        if (responseCode.equals("00")) {
+            transactionStatusDTO.setStatus("Ok");
+            transactionStatusDTO.setMessage("Successfully");
+            transactionStatusDTO.setDate("");
+        } else {
+            transactionStatusDTO.setStatus("No");
+            transactionStatusDTO.setMessage("Failed");
+            transactionStatusDTO.setDate("");
+        }
+        return ResponseEntity.ok();
+    }
+
 }
