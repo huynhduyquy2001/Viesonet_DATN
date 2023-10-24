@@ -30,15 +30,23 @@ public class Notifications {
 	private Integer notificationId;
 
 	private String notificationContent;
-	
+
 	@ManyToOne
 	@JoinColumn(name = "receiverId")
 	private Users receiver;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "senderId")
+	private Users sender;
+
 	@ManyToOne
 	@JoinColumn(name = "postId")
 	private Posts post;
-	
+
+	@ManyToOne
+	@JoinColumn(name = "productId")
+	private Products product;
+
 	@ManyToOne
 	@JoinColumn(name = "notificationTypeId")
 	private NotificationType notificationType;
