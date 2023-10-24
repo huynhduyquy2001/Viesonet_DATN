@@ -2,7 +2,6 @@ package com.viesonet.entity;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -63,11 +62,7 @@ public class Products {
 
     @JsonIgnore
     @OneToMany(mappedBy = "product")
-    private List<Notifications> notifications;
-
-    @JsonIgnore
-    @OneToMany(mappedBy = "product")
-    private List<ViolationProducts> violationProducts;
+    private List<ViolationProducts> violationProduct;
 
     @JsonIgnore
     @OneToMany(mappedBy = "product")

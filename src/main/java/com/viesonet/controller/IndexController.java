@@ -1,6 +1,5 @@
 package com.viesonet.controller;
 
-import java.io.File;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -20,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import com.viesonet.entity.AccountAndFollow;
@@ -50,9 +48,6 @@ import com.viesonet.service.WordBannedService;
 
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 
 @RestController
 @CrossOrigin("*")
@@ -81,9 +76,6 @@ public class IndexController {
 
 	@Autowired
 	InteractionService interactionService;
-
-	@Autowired
-	private ServletContext servletContext;
 
 	@Autowired
 	CookieService cookieService;
