@@ -1,6 +1,9 @@
 package com.viesonet.controller;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +24,8 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.web.servlet.ModelAndView;
 
+import com.auth0.jwt.JWT;
+import com.auth0.jwt.algorithms.Algorithm;
 import com.viesonet.entity.AccountAndFollow;
 import com.viesonet.entity.Comments;
 import com.viesonet.entity.Follow;
@@ -296,6 +301,47 @@ public class IndexController {
 	public ModelAndView getAccessDenied() {
 		ModelAndView modelAndView = new ModelAndView("error");
 		return modelAndView;
+	}
+
+	@GetMapping("/generateToken")
+	public ResponseEntity<Map<String, String>> generateToken() {
+		String keySid = "SK.0.Yeem1S5NlZ4ecOdZjUIQSn1rXd5Lk00y";
+		String keySecret = "SWt4blRzeThYWDlyeFFyelMwNFFhUjJ6bzF3SDVQbFA=";
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+
+		String token = genAccessToken(keySid, keySecret, userId, 3600);
+
+		Map<String, String> response = new HashMap<>();
+		response.put("token", token);
+
+		return ResponseEntity.ok(response);
+	}
+
+	public static String genAccessToken(String keySid, String keySecret, String userId, int expireInSecond) {
+		try {
+			Algorithm algorithmHS = Algorithm.HMAC256(keySecret);
+
+			Map<String, Object> headerClaims = new HashMap<String, Object>();
+			headerClaims.put("typ", "JWT");
+			headerClaims.put("alg", "HS256");
+			headerClaims.put("cty", "stringee-api;v=1");
+
+			long exp = (long) (System.currentTimeMillis()) + expireInSecond * 1000;
+
+			String token = JWT.create().withHeader(headerClaims)
+					.withClaim("jti", keySid + "-" + System.currentTimeMillis())
+					.withClaim("iss", keySid)
+					.withClaim("rest_api", true)
+					.withClaim("userId", userId) // Thêm userId vào token
+					.withExpiresAt(new Date(exp))
+					.sign(algorithmHS);
+
+			return token;
+		} catch (Exception ex) {
+			ex.printStackTrace();
+		}
+
+		return null;
 	}
 
 }
