@@ -5,12 +5,22 @@ import java.util.List;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 import com.viesonet.entity.Orders;
 import com.viesonet.entity.ShoppingCart;
+import com.viesonet.entity.ViolationsPosts;
 
 public interface OrdersDao extends JpaRepository<Orders, Integer> {
+
+        // đếm số lượng đơn hàng
+        @Procedure("sp_SoLuongDonHangDuyet")
+        List<Object[]> execountApprovedOrdersByMonth(String sellerId);
+
+        // doanh thu theo tháng
+        @Procedure("sp_doanhThuThang")
+        List<Object[]> exeTotalAmountByMonth(String sellerId);
 
         @Query("SELECT p.orderId FROM Orders p WHERE p.orderDate >= :startDate")
         List<Integer> getShoppingWithinLast7Days(Date startDate);
@@ -30,25 +40,22 @@ public interface OrdersDao extends JpaRepository<Orders, Integer> {
                         "JOIN o.orderStatus os " +
                         "JOIN o.orderDetails od " +
                         "JOIN od.product p " +
-                        "WHERE u.userId = :sellerId " +
+                        "WHERE u.userId <> :sellerId " + // Chọn các đơn hàng mà userId của người dùng không phải là
+                                                         // người bán
                         "AND od.product.productId = p.productId")
         List<Object[]> getPendingConfirmationOrdersForSeller(@Param("sellerId") String sellerId);
 
         @Query("SELECT obj FROM Orders obj WHERE obj.orderId = :orderID")
         public Orders findCartByOrderId(@Param("orderID") int orderID);
 
-        // đếm số lượng đơn hàng đã duyệt
-        @Query(value = "SELECT t.thang, COALESCE(COUNT(o.OrderId), 0) AS doanh_thu_thang "
-                        + "FROM (SELECT 1 AS thang UNION SELECT 2 UNION SELECT 3 UNION SELECT 4 "
-                        + "UNION SELECT 5 UNION SELECT 6 UNION SELECT 7 UNION SELECT 8 UNION SELECT 9 "
-                        + "UNION SELECT 10 UNION SELECT 11 UNION SELECT 12) t "
-                        + "LEFT JOIN Orders o ON MONTH(o.OrderDate) = t.thang "
-                        + "LEFT JOIN OrderStatus os ON o.StatusId = os.StatusId "
-                        + "LEFT JOIN OrderDetails od ON o.OrderId = od.OrderId "
-                        + "LEFT JOIN Products p ON od.ProductId = p.ProductId "
-                        + "LEFT JOIN Users u ON u.UserId = p.UserId "
-                        + "AND os.StatusId = 4 AND u.UserId = :sellerId "
-                        + "GROUP BY t.thang ORDER BY t.thang", nativeQuery = true)
-        List<Object[]> countApprovedOrdersByMonth(@Param("sellerId") String sellerId);
+        @Query("SELECT os.statusName, COALESCE(COUNT(o.orderStatus), 0) AS so_don_hang " +
+                        "FROM Orders o " +
+                        "JOIN o.orderStatus os " +
+                        "JOIN o.orderDetails od " +
+                        "JOIN od.product p " +
+                        "JOIN p.user u " +
+                        "WHERE u.userId <> :userId " +
+                        "GROUP BY os.statusName")
+        List<Object[]> getOrderStatusCountsForOtherBuyers(@Param("userId") String userId);
 
 }

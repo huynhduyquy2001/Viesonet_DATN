@@ -14,6 +14,7 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.viesonet.dao.ProductStatusDao;
 import com.viesonet.dao.ProductsDao;
@@ -44,7 +45,6 @@ public class ProductsService {
     public Page<Products> findProductByName(int page, String key) {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "datePost"));
         Page<Products> list = productsDao.findProductByName(pageable, key);
-
         if (list.isEmpty()) {
             // Nếu danh sách kết quả rỗng, tách chuỗi thành các từ và tìm kiếm theo từng từ
             String[] words = key.split("\\s+");
@@ -69,7 +69,6 @@ public class ProductsService {
             Page<Products> finalPage = new PageImpl<>(resultList, pageable, resultList.size());
             return finalPage;
         }
-
         return list;
     }
 
@@ -159,6 +158,41 @@ public class ProductsService {
         p.setStatusId(3);
         product.setProductStatus(p);
         return productsDao.save(product);
+    }
+
+    @Transactional // Thêm @Transactional trước phương thức
+    public List<Object[]> exeproductBestSelling(String sellerId) {
+        return productsDao.exeproductBestSelling(sellerId);
+    }
+
+    public Page<Products> findProductFavoritByName(int page, String keyF) {
+        Pageable pageable = PageRequest.of(page, 10);
+        Page<Products> list = productsDao.findProductByName(pageable, keyF);
+        if (list.isEmpty()) {
+            // Nếu danh sách kết quả rỗng, tách chuỗi thành các từ và tìm kiếm theo từng từ
+            String[] words = keyF.split("\\s+");
+            Map<Integer, Products> resultMap = new HashMap<>();
+
+            for (String word : words) {
+                Page<Products> wordList = productsDao.findProductByName(pageable, word);
+                if (!wordList.isEmpty()) {
+                    // Lặp qua danh sách từng từ để kiểm tra sản phẩm và thêm vào Map nếu chưa có
+                    for (Products product : wordList.getContent()) {
+                        if (!resultMap.containsKey(product.getProductId())) {
+                            resultMap.put(product.getProductId(), product);
+                        }
+                    }
+                }
+            }
+
+            // Tạo một danh sách mới từ Map resultMap
+            List<Products> resultList = new ArrayList<>(resultMap.values());
+
+            // Tạo một Page từ danh sách kết quả
+            Page<Products> finalPage = new PageImpl<>(resultList, pageable, resultList.size());
+            return finalPage;
+        }
+        return list;
     }
 
 }
