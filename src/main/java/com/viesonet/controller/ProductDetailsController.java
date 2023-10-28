@@ -138,14 +138,9 @@ public class ProductDetailsController {
     }
 
     @PostMapping("/products/add")
-    public Products addProduct(@RequestBody Products products) {
+    public Products addProduct(@RequestBody Products product) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return productsService.addProduct(products, usersService.findUserById(userId));
-    }
-
-    @PostMapping("/delete-media/{mediaId}")
-    public Media addProduct(@PathVariable int mediaId) {
-        return mediaService.deleteMedia(mediaId);
+        return productsService.addProduct(product, usersService.findUserById(userId));
     }
 
     @PostMapping("/send-media/{productId}")
@@ -164,12 +159,6 @@ public class ProductDetailsController {
             @PathVariable int productId) {
         return productColorsService.saveProductColor(colorsService.findColorById(colorId),
                 productsService.findProductById(productId), quantity);
-    }
-
-    @PostMapping("/delete-productcolor/{colorId}")
-    public String deleteProductColor(@PathVariable int colorId) {
-        productColorsService.deleteProductColor(colorId);
-        return "ok";
     }
 
     private boolean isImageUrl(String fileUrl) {

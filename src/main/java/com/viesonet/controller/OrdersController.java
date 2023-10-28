@@ -3,6 +3,8 @@ package com.viesonet.controller;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -47,4 +49,14 @@ public class OrdersController {
         return ordersService.getPendingConfirmationOrdersForSeller(userId);
     }
 
+    @PostMapping("/approveorders/{orderID}")
+    public ResponseEntity<String> approveorders(@PathVariable("orderID") int orderId) {
+        try {
+            ordersService.approveorders(orderId);
+            return ResponseEntity.ok("{\"message\": \"Sản phẩm đã được duyệt.\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi duyệt sản phẩm : " + e.getMessage());
+        }
+    }
 }
