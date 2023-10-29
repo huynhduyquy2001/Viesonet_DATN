@@ -25,7 +25,6 @@ import jakarta.transaction.Transactional;
 @CrossOrigin("*")
 public class ViolationsProductController {
 
-    // @Autowired
     // private ViolationProductsService violationsProductService;
 
     // @GetMapping("/staff/violationsproduct/{Page}")
