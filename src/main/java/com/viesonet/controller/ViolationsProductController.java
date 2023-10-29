@@ -18,7 +18,6 @@ import com.viesonet.entity.Notifications;
 import com.viesonet.entity.Posts;
 import com.viesonet.entity.Products;
 import com.viesonet.entity.ViolationsProduct;
-import com.viesonet.service.ViolationProductsService;
 
 import jakarta.transaction.Transactional;
 

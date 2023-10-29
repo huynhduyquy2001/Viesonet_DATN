@@ -32,7 +32,6 @@ import com.viesonet.service.ColorsService;
 import com.viesonet.service.ProductsService;
 import com.viesonet.service.RatingsService;
 import com.viesonet.service.UsersService;
-import com.viesonet.service.ViolationProductsService;
 import com.viesonet.service.ViolationsService;
 import com.viesonet.service.WordBannedService;
 
@@ -66,16 +65,19 @@ public class ProductDetailsController {
     @Autowired
     ProductColorsService productColorsService;
 
-    @Autowired
-    ViolationProductsService violationProductsService;
+    // @Autowired
+    // ViolationProductsService violationProductsService;
 
-    @PostMapping("/report-product/{productId}")
-    public ViolationProducts reportProduct(@PathVariable int productId, @RequestParam String reportContent) {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return violationProductsService.reportProduct(usersService.findUserById(userId),
-                productsService.findProductById(productId),
-                reportContent);
-    }
+    // @PostMapping("/report-product/{productId}")
+    // public ViolationProducts reportProduct(@PathVariable int productId,
+    // @RequestParam String reportContent) {
+    // String userId =
+    // SecurityContextHolder.getContext().getAuthentication().getName();
+    // return
+    // violationProductsService.reportProduct(usersService.findUserById(userId),
+    // productsService.findProductById(productId),
+    // reportContent);
+    // }
 
     @GetMapping("/get-product/{productId}")
     public ResponseEntity<?> getProduct(@PathVariable int productId) {
