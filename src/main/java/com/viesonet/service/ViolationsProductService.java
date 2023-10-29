@@ -1,5 +1,6 @@
 package com.viesonet.service;
 
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -10,6 +11,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
 import com.viesonet.dao.ViolationsProductDao;
+import com.viesonet.entity.Products;
+import com.viesonet.entity.Users;
 import com.viesonet.entity.Violations;
 import com.viesonet.entity.ViolationsProduct;
 
@@ -18,6 +21,22 @@ public class ViolationsProductService {
 
     @Autowired
     ViolationsProductDao violationsProductDao;
+
+    public ViolationsProduct reportProduct(Users user, Products product, String reportContent) {
+        ViolationsProduct obj = violationsProductDao.findViolationProductsById(product.getProductId(),
+                user.getUserId());
+        if (obj != null) {
+            return obj;
+        }
+        ViolationsProduct newObj = new ViolationsProduct();
+        newObj.setProduct(product);
+        newObj.setUserId(user.getUserId());
+        newObj.setReportDate(new Date());
+        newObj.setDescription(reportContent);
+        newObj.setStatus(false);
+        violationsProductDao.saveAndFlush(newObj);
+        return newObj;
+    }
 
     public Page<Object> findProductWithFalse(int page, int size) {
         Pageable pageable = PageRequest.of(page, size);
