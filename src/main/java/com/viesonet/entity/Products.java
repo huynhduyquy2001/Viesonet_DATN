@@ -2,7 +2,6 @@ package com.viesonet.entity;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 

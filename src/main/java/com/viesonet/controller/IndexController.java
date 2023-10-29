@@ -156,7 +156,7 @@ public class IndexController {
 		Notifications ns = notificationsService.findNotificationByPostId(post.getUser().getUserId(), 3, postId);
 		if (ns == null) {
 			Notifications notifications = notificationsService.createNotifications(
-					usersService.findUserById(userId), post.getLikeCount(), post.getUser(), post, 3);
+					usersService.findUserById(userId), post.getLikeCount(), post.getUser(), post, null, 3);
 
 			messagingTemplate.convertAndSend("/private-user", notifications);
 		}
@@ -188,7 +188,7 @@ public class IndexController {
 
 		// thêm thông báo
 		Notifications notifications = notificationsService.createNotifications(
-				usersService.findUserById(userId), post.getCommentCount(), post.getUser(), post, 4);
+				usersService.findUserById(userId), post.getCommentCount(), post.getUser(), post, null, 4);
 
 		messagingTemplate.convertAndSend("/private-user", notifications);
 		content = wordBannedService.wordBanned(content);
@@ -210,7 +210,7 @@ public class IndexController {
 		Users user = usersService.findUserById(receiverId);
 		Posts post = postsService.findPostById(postId);
 		Notifications notifications = notificationsService
-				.createNotifications(usersService.findUserById(userId), 0, user, post, 6);
+				.createNotifications(usersService.findUserById(userId), 0, user, post, null, 6);
 		messagingTemplate.convertAndSend("/private-user", notifications);
 
 		return ResponseEntity.ok(replyService.addReply(usersService.findUserById(userId), replyContent,
