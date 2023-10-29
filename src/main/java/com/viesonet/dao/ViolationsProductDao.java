@@ -12,6 +12,7 @@ import com.viesonet.entity.ViolationsProduct;
 
 public interface ViolationsProductDao extends JpaRepository<ViolationsProduct, Integer> {
 
+    
     @Query("SELECT DISTINCT v FROM ViolationsProduct v WHERE v.status= false")
     Page<Object> findProductWithFalse(Pageable pageable);
 
