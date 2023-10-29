@@ -70,6 +70,10 @@ public class Users {
 	private List<Notifications> notifications;
 
 	@JsonIgnore
+	@OneToMany(mappedBy = "sender")
+	private List<Notifications> senderId;
+
+	@JsonIgnore
 	@OneToMany(mappedBy = "follower")
 	private List<Follow> followers;
 
@@ -116,9 +120,5 @@ public class Users {
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
 	private List<Products> products;
-
-	@JsonIgnore
-	@OneToMany(mappedBy = "user")
-	private List<DeliveryAddress> deliveryAddresses;
 
 }

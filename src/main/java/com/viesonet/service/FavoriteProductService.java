@@ -7,6 +7,10 @@ import java.util.Map;
 
 import org.springframework.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 
@@ -24,7 +28,13 @@ public class FavoriteProductService {
     FavoriteProductsDao favoriteProductsDao;
 
     public List<Products> findFavoriteProductsByUserId(String userId) {
-        return ProductDAO.findFavoriteProductsByUserId(userId);
+        return ProductDAO.findFavoriteProductsByUserId1(userId);
+    }
+
+    public Page<Products> findFavoriteProductsByUserId(String userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size, Sort.by(Sort.Direction.DESC, "favoriteDate"));
+        Page<Products> shoppingList = ProductDAO.findFavoriteProductsByUserId(userId, pageable);
+        return shoppingList;
     }
 
     public boolean getFavoriteProducts(String userId, int productId) {
