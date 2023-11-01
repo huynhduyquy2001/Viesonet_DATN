@@ -28,10 +28,15 @@ public class SearchController {
 	@Autowired
 	private UsersDao UsersDao;
 
-	@GetMapping("/user/search/{username}")
+	@GetMapping("/user/search/{key}")
 
-	public ResponseEntity<List<Users>> searchUsersByUsername(@RequestParam("username") String username) {
-		List<Users> users = SearchService.searchUsersByUsername(username);
+	// public ResponseEntity<List<Users>>
+	// searchUsersByUsername(@RequestParam("username") String username) {
+	// List<Users> users = SearchService.searchUsersByUsername(username);
+	// return ResponseEntity.ok(users);
+	// }
+	public ResponseEntity<List<Users>> searchUsersByUsername(@PathVariable String key) {
+		List<Users> users = SearchService.findUserByName(key);
 		return ResponseEntity.ok(users);
 	}
 	// @GetMapping("/search")

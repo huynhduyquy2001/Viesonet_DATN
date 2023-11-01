@@ -1,5 +1,11 @@
 package com.viesonet.entity;
 
+import java.util.Date;
+
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.Pageable;
+
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,27 +22,27 @@ import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
-@Data
+@Table(name = "ViolationProducts")
 @Getter
+@Data
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-@Table(name = "DeliveryAddress")
-public class DeliveryAddress {
+public class ViolationsProduct {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int Id;
-    private int ProvinceId;
-    private String ProvinceName;
-    private int DistrictId;
-    private String DistrictName;
-    private String WardCode;
-    private String WardName;
-    private String deliveryPhone;
+    private int violationId;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date reportDate;
 
     @ManyToOne
-    @JoinColumn(name = "userId")
-    private Users user;
+    @JoinColumn(name = "productId")
+    private Products product;
 
-    private String DetailAddress;
+    private String userId;
+    private String description;
+    private Boolean status;
+
 }

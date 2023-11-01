@@ -121,8 +121,4 @@ public class Users {
 	@OneToMany(mappedBy = "user")
 	private List<Products> products;
 
-	@JsonIgnore
-	@OneToMany(mappedBy = "user")
-	private List<DeliveryAddress> deliveryAddresses;
-
 }

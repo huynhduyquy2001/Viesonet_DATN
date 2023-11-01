@@ -25,13 +25,9 @@ public class DeliveryAddressService {
         return deliveryAddressDao.findById(id);
     }
 
-    public List<DeliveryAddress> getListAddress(List<String> userId) {
-        return deliveryAddressDao.findByListDeliveryAddress(userId);
-    }
-
     public ResponseEntity<String> addDeliveryAddress(int districtID, int provinceID, String wardCode,
             String districtName, String provinceName, String wardName, String detailAddress, Users user,
-            String deliveryPhone, boolean addressStore) {
+            String deliveryPhone) {
 
         try {
             DeliveryAddress d = new DeliveryAddress();
@@ -44,7 +40,6 @@ public class DeliveryAddressService {
             d.setDetailAddress(detailAddress);
             d.setDeliveryPhone(deliveryPhone);
             d.setUser(user);
-            d.setAddressStore(addressStore);
             deliveryAddressDao.saveAndFlush(d);
             return ResponseEntity.ok("Thêm địa chỉ thành công");
         } catch (Exception e) {

@@ -25,12 +25,10 @@ public class ChangePasswordController {
 
 	@Autowired
 	private AccountsService accountsService;
-	
+
 	@Autowired
 	private AuthConfig authConfig;
 
-
-	
 	@GetMapping("/changepassword")
 	public ModelAndView getChangePasswordPage() {
 		ModelAndView modelAndView = new ModelAndView("ChangePassword");
@@ -40,28 +38,30 @@ public class ChangePasswordController {
 	@PostMapping("/doimatkhau")
 	public ResponseEntity<?> doimatkhau(@RequestBody Map<String, Object> data, Authentication authentication) {
 		Accounts account = authConfig.getLoggedInAccount(authentication);
-	    String matKhau = (String) data.get("matKhau");
-	    String matKhauMoi = (String) data.get("matKhauMoi");
-	    String matKhauXacNhan = (String) data.get("matKhauXacNhan");
-	    
-	    String hashedNewPassword = authConfig.passwordEncoder().encode(matKhauMoi);
-	    Accounts accounts = accountsService.findByPhoneNumber(account.getPhoneNumber());	    
-	    PasswordEncoder passwordEncoder = authConfig.passwordEncoder();
-	    
-	    if (passwordEncoder.matches(matKhau, accounts.getPassword())) {
-	        if (passwordEncoder.matches(matKhauMoi, accounts.getPassword())) {
-	            return ResponseEntity.ok().body(Collections.singletonMap("message", "Mật khẩu mới không được giống mật khẩu cũ"));
-	        }if(!matKhauMoi.equalsIgnoreCase(matKhauXacNhan)) {
-	        	return ResponseEntity.ok().body(Collections.singletonMap("message", "Mật khẩu và mật khẩu xác nhận không khớp"));
-	        }
-	        else {
-	        	account.setPassword(hashedNewPassword);
-	        	accountsService.save(accounts);     
-	        	return ResponseEntity.ok().build();
-	        }
-	    } else {
-	        return ResponseEntity.ok().body(Collections.singletonMap("message", "Mật khẩu cũ không trùng khớp"));
-	    }
+		String matKhau = (String) data.get("matKhau");
+		String matKhauMoi = (String) data.get("matKhauMoi");
+		String matKhauXacNhan = (String) data.get("matKhauXacNhan");
+
+		String hashedNewPassword = authConfig.passwordEncoder().encode(matKhauMoi);
+		Accounts accounts = accountsService.findByPhoneNumber(account.getPhoneNumber());
+		PasswordEncoder passwordEncoder = authConfig.passwordEncoder();
+
+		if (passwordEncoder.matches(matKhau, accounts.getPassword())) {
+			if (passwordEncoder.matches(matKhauMoi, accounts.getPassword())) {
+				return ResponseEntity.ok()
+						.body(Collections.singletonMap("message", "Mật khẩu mới không được giống mật khẩu cũ"));
+			}
+			if (!matKhauMoi.equalsIgnoreCase(matKhauXacNhan)) {
+				return ResponseEntity.ok()
+						.body(Collections.singletonMap("message", "Mật khẩu và mật khẩu xác nhận không khớp"));
+			} else {
+				account.setPassword(hashedNewPassword);
+				accountsService.save(accounts);
+				return ResponseEntity.ok().build();
+			}
+		} else {
+			return ResponseEntity.ok().body(Collections.singletonMap("message", "Mật khẩu cũ không trùng khớp"));
+		}
 	}
 
 }
