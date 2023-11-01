@@ -59,4 +59,26 @@ public class OrdersController {
                     .body("Lỗi khi duyệt sản phẩm : " + e.getMessage());
         }
     }
+
+    @PostMapping("/acceptOrders/{orderID}")
+    public ResponseEntity<String> acceptOrders(@PathVariable("orderID") int orderId) {
+        try {
+            ordersService.acceptOrders(orderId);
+            return ResponseEntity.ok("{\"message\": \"Đã nhận được đơn hàng.\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi nhận sản phẩm: " + e.getMessage());
+        }
+    }
+
+    @PostMapping("/cancelOrders/{orderID}")
+    public ResponseEntity<String> cancelOrders(@PathVariable("orderID") int orderId) {
+        try {
+            ordersService.cancelOrders(orderId);
+            return ResponseEntity.ok("{\"message\": \"Đã nhận hủy đơn hàng.\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi hủy đơn hàng: " + e.getMessage());
+        }
+    }
 }
