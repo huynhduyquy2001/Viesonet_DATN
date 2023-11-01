@@ -46,6 +46,7 @@ public class Orders {
 
     private String address;
     private float totalAmount;
+    private float shippingFee;
 
     @JsonIgnore
     @OneToMany(mappedBy = "order")

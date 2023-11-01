@@ -13,6 +13,8 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -45,6 +47,7 @@ public class ProductsService {
     public Page<Products> findProductByName(int page, String key) {
         Pageable pageable = PageRequest.of(page, 10, Sort.by(Sort.Direction.DESC, "datePost"));
         Page<Products> list = productsDao.findProductByName(pageable, key);
+
         if (list.isEmpty()) {
             // Nếu danh sách kết quả rỗng, tách chuỗi thành các từ và tìm kiếm theo từng từ
             String[] words = key.split("\\s+");
@@ -69,6 +72,7 @@ public class ProductsService {
             Page<Products> finalPage = new PageImpl<>(resultList, pageable, resultList.size());
             return finalPage;
         }
+
         return list;
     }
 
@@ -110,11 +114,9 @@ public class ProductsService {
         return productsDao.findPostsProductMyStore(pageable, userId);
     }
 
-    public Page<Products> filterPostsProductMyStore(int page, int size, String userId, String sortDirection,
-            String sortName) {
-        Sort sort = Sort.by(Sort.Direction.fromString(sortDirection), sortName);
-        Pageable pageable = PageRequest.of(page, size, sort);
-        return productsDao.findPostsProductMyStore(pageable, userId);
+    public Page<Products> findPostsProductPending(int page, int size, String userId) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productsDao.findPostsProductPending(pageable, userId);
     }
 
     public List<Products> getRelatedProducts(String userId) {
@@ -128,6 +130,11 @@ public class ProductsService {
 
     public List<Object> findSearchProducts(String name) {
         return productsDao.findSearchProducts(name);
+    }
+
+    public Page<Products> findSearchProductMyStore(String name, String userId, int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return productsDao.findSearchProductMyStore(name, userId, pageable);
     }
 
     public Products findProductById(int productId) {
@@ -155,9 +162,30 @@ public class ProductsService {
         ProductStatus p = new ProductStatus();
         product.setUser(userId);
         product.setDatePost(new Date());
-        p.setStatusId(3);
+
+        // Kiểm tra nếu product.getProductStatus() != null và getStatusId() == 1
+        if (product.getProductStatus() != null) {
+            p.setStatusId(1);
+        } else {
+            p.setStatusId(3);
+        }
+
         product.setProductStatus(p);
-        return productsDao.save(product);
+        return productsDao.saveAndFlush(product);
+    }
+
+    public ResponseEntity<String> hideProductMyStore(int productId) {
+        try {
+            Products products = productsDao.findByProductId(productId);
+
+            ProductStatus p = new ProductStatus();
+            p.setStatusId(2);
+            products.setProductStatus(p);
+            productsDao.saveAndFlush(products);
+            return ResponseEntity.ok("Đã ẩn sản phẩm.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Có lỗi xảy ra: " + e.getMessage());
+        }
     }
 
     @Transactional // Thêm @Transactional trước phương thức
