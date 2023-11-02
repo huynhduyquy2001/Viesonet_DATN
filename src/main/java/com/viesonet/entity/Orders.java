@@ -33,7 +33,8 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
-
+ 
+    
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
 
