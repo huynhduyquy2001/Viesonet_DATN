@@ -37,8 +37,6 @@ public class OrderDetails {
     private Products product;
     private int quantity;
     private float originalPrice;
-    private float salePrice;
-    private float shippingFee;
+    private Float salePrice;
     private String color;
-
 }

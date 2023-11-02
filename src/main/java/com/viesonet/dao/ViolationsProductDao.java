@@ -8,11 +8,14 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 
+import com.viesonet.entity.ViolationProducts;
 import com.viesonet.entity.ViolationsProduct;
 
 public interface ViolationsProductDao extends JpaRepository<ViolationsProduct, Integer> {
 
-    
+    @Query("SELECT v FROM ViolationsProduct v WHERE v.product.productId = :productId and v.userId = :userId")
+    ViolationsProduct findViolationProductsById(int productId, String userId);
+
     @Query("SELECT DISTINCT v FROM ViolationsProduct v WHERE v.status= false")
     Page<Object> findProductWithFalse(Pageable pageable);
 

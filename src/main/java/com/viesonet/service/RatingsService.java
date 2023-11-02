@@ -1,5 +1,7 @@
 package com.viesonet.service;
 
+import java.util.Date;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,6 +20,7 @@ public class RatingsService {
 
     public Ratings rateProduct(Ratings rating, Products product) {
         rating.setProduct(product);
+        rating.setRatingDate(new Date());
         return ratingsDao.saveAndFlush(rating);
     }
 }
