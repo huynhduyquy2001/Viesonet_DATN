@@ -6,9 +6,8 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.query.Procedure;
 import com.viesonet.entity.TotalPosts;
 
+public interface sp_TotalPosts extends JpaRepository<TotalPosts, Integer> {
 
-public interface sp_TotalPosts extends JpaRepository<TotalPosts, String> {
- 
     @Procedure("sp_TotalPosts")
     List<TotalPosts> executeTotalPosts();
 }
