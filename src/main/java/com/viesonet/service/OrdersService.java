@@ -107,4 +107,34 @@ public class OrdersService {
         orders.setShippingFee(shipfee);
         return ordersDao.saveAndFlush(orders);
     }
+
+    public ResponseEntity<String> acceptOrders(int orderId) {
+        try {
+            OrderStatus ost = new OrderStatus();
+            Orders o = ordersDao.findCartByOrderId(orderId);
+            ost.setStatusId(4);
+            o.setOrderStatus(ost);
+            ordersDao.saveAndFlush(o);
+            System.out.println("orderId :" + orderId);
+            return ResponseEntity.ok("Khách hàng đã nhận được sản phẩm.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi nhận sản phẩm: " + e.getMessage());
+        }
+    }
+
+    public ResponseEntity<String> cancelOrders(int orderId) {
+        try {
+            OrderStatus ost = new OrderStatus();
+            Orders o = ordersDao.findCartByOrderId(orderId);
+            ost.setStatusId(6);
+            o.setOrderStatus(ost);
+            ordersDao.saveAndFlush(o);
+            System.out.println("orderId :" + orderId);
+            return ResponseEntity.ok("Khách hàng đã hủy đơn hàng.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi hủy đơn hàng: " + e.getMessage());
+        }
+    }
 }

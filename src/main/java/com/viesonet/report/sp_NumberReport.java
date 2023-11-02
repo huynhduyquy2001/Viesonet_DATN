@@ -10,9 +10,8 @@ import org.springframework.stereotype.Repository;
 import com.viesonet.entity.NumberReport;
 import com.viesonet.entity.ViolationsPosts;
 
+public interface sp_NumberReport extends JpaRepository<NumberReport, Integer> {
 
-public interface sp_NumberReport extends JpaRepository<NumberReport, String> {
- 
     @Procedure("sp_NumberReport")
     List<NumberReport> executeNumberReport(int param1);
 }
