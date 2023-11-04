@@ -19,6 +19,7 @@ import lombok.Setter;
 public class SumAccountsByDay {
 	@Id
 	private Date startDate;
+
 	private Date endDate;
 	private int totalAccounts;
 

@@ -7,6 +7,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -54,6 +55,7 @@ import com.viesonet.service.WordBannedService;
 import jakarta.servlet.ServletContext;
 import jakarta.servlet.http.HttpServletRequest;
 
+@SpringBootApplication
 @RestController
 @CrossOrigin("*")
 public class IndexController {
@@ -119,7 +121,6 @@ public class IndexController {
 
 	@GetMapping("/get-more-posts/{page}")
 	public Page<Posts> getMoreFollowedPosts(@PathVariable int page) {
-
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		List<Follow> followList = followService.getFollowing(userId);
 		List<String> followedUserIds = followList.stream()
