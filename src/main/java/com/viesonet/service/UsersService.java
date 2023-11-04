@@ -2,6 +2,8 @@ package com.viesonet.service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -17,6 +19,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.viesonet.dao.UsersDao;
 import com.viesonet.entity.AccountAndFollow;
 import com.viesonet.entity.Accounts;
+import com.viesonet.entity.Posts;
 import com.viesonet.entity.Roles;
 import com.viesonet.entity.UserInformation;
 import com.viesonet.entity.Users;
@@ -98,19 +101,22 @@ public class UsersService {
 		return usersDao.findById(userId).orElse(null);
 	}
 
-	public void updateBackground(String userId, String newBackgroundImageUrl) {
-		Users user = usersDao.findById(userId).orElse(null);
-		if (user != null) {
-			user.setBackground(newBackgroundImageUrl);
-			usersDao.save(user);
-		}
+	public Users updateBackground(Users users, String img) {
+		users.setUserId(users.getUserId());
+		users.setBackground(img);
+		return usersDao.saveAndFlush(users);
 	}
 
-	public void updateAvatar(String userId, String newAvatarImageUrl) {
-		Users user = usersDao.findById(userId).orElse(null);
-		if (user != null) {
-			user.setAvatar(newAvatarImageUrl);
-			usersDao.save(user);
-		}
+	public Users updateAvatar(Users users, String img) {
+		users.setUserId(users.getUserId());
+		users.setAvatar(img);
+		return usersDao.saveAndFlush(users);
 	}
+
+	public Users buyTicket(Users users, int ticket) {
+		users.setUserId(users.getUserId());
+		users.setTicket(ticket);
+		return usersDao.saveAndFlush(users);
+	}
+
 }

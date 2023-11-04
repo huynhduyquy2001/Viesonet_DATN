@@ -7,8 +7,11 @@ import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
+import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -43,6 +46,7 @@ import jakarta.servlet.ServletContext;
 import net.coobird.thumbnailator.Thumbnails;
 
 @RestController
+@CrossOrigin("*")
 public class ProfileController {
 
 	@Autowired
@@ -227,114 +231,31 @@ public class ProfileController {
 		followService.deleteFollowByFollowerAndFollowing(follower, following);
 	}
 
-	// Cập nhật ảnh bìa
-	@ResponseBody
-	@PostMapping("/updateBackground")
-	public String doiAnhBia(@RequestParam("photoFiles2") MultipartFile[] photoFiles, @RequestParam String content) {
+	// Cập nhật ảnh đại diện
+	@PostMapping("/updateAvatar")
+	public ResponseEntity<ResponseEntity<Users>> doiAnhDaiDien(@RequestBody String img) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-		// Lưu bài đăng vào cơ sở dữ liệu
-		Posts myPost = postsService.post(usersService.findUserById(userId), content);
-		// Lưu hình ảnh vào thư mục static/images
-		if (photoFiles != null && photoFiles.length > 0) {
-			for (MultipartFile photoFile : photoFiles) {
-				if (!photoFile.isEmpty()) {
-					String originalFileName = photoFile.getOriginalFilename();
-					String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-					String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-					String newFileName = originalFileName + "-" + timestamp + extension;
-
-					String rootPath = servletContext.getRealPath("/");
-					String parentPath = new File(rootPath).getParent();
-					String pathUpload = parentPath + "/resources/static/images/" + newFileName;
-
-					try {
-						photoFile.transferTo(new File(pathUpload));
-						String contentType = photoFile.getContentType();
-						boolean type = true;
-						if (contentType.startsWith("image")) {
-
-						} else if (contentType.startsWith("video")) {
-							type = false;
-						}
-						if (type == true) {
-							long fileSize = photoFile.getSize();
-							if (fileSize > 1 * 1024 * 1024) {
-								double quality = 0.6;
-								String outputPath = pathUpload;
-								Thumbnails.of(pathUpload).scale(1.0).outputQuality(quality).toFile(outputPath);
-							}
-						}
-						imagesService.saveImage(myPost, newFileName, type);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					// Cập nhật ảnh bìa cho người dùng
-					if (myPost != null) {
-						String newBackgroundImageUrl = newFileName;
-						usersService.updateBackground(userId, newBackgroundImageUrl);
-					}
-				}
-
-			}
-		}
-		// Xử lý và lưu thông tin bài viết kèm ảnh vào cơ sở dữ liệu
-		return "success";
+		Users users = usersService.updateAvatar(usersService.findUserById(userId),
+				img);
+		return ResponseEntity.ok(ResponseEntity.ok(users));
 	}
 
-	// Cập nhật ảnh đại diện
-	@ResponseBody
-	@PostMapping("/updateAvatar")
-	public String doiAnhDaiDien(@RequestParam("photoFiles3") MultipartFile[] photoFiles, @RequestParam String content) {
+	// Cập nhật ảnh bìa
+	@PostMapping("/updateBackground")
+	public ResponseEntity<ResponseEntity<Users>> doiAnhBia(@RequestBody String img) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-		// Lưu bài đăng vào cơ sở dữ liệu
-		Posts myPost = postsService.post(usersService.findUserById(userId), content);
-		// Lưu hình ảnh vào thư mục static/images
-		if (photoFiles != null && photoFiles.length > 0) {
-			for (MultipartFile photoFile : photoFiles) {
-				if (!photoFile.isEmpty()) {
-					// Tạo tên file ảnh
-					String originalFileName = photoFile.getOriginalFilename();
-					String extension = originalFileName.substring(originalFileName.lastIndexOf("."));
-					String timestamp = new SimpleDateFormat("yyyyMMdd_HHmmss").format(new Date());
-					String newFileName = originalFileName + "-" + timestamp + extension;
-					// Tạo đường dẫn để lưu trữ
-					String rootPath = servletContext.getRealPath("/");
-					String parentPath = new File(rootPath).getParent();
-					String pathUpload = parentPath + "/resources/static/images/" + newFileName;
+		Users users = usersService.updateBackground(usersService.findUserById(userId),
+				img);
+		return ResponseEntity.ok(ResponseEntity.ok(users));
+	}
 
-					try {
-						photoFile.transferTo(new File(pathUpload));
-						String contentType = photoFile.getContentType();
-						boolean type = true;
-						if (contentType.startsWith("image")) {
-
-						} else if (contentType.startsWith("video")) {
-							type = false;
-						}
-						if (type == true) {
-							long fileSize = photoFile.getSize();
-							if (fileSize > 1 * 1024 * 1024) {
-								double quality = 0.6;
-								String outputPath = pathUpload;
-								Thumbnails.of(pathUpload).scale(1.0).outputQuality(quality).toFile(outputPath);
-							}
-						}
-						imagesService.saveImage(myPost, newFileName, type);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
-					// Cập nhật ảnh bìa cho người dùng
-					if (myPost != null) {
-						String newAvatarImageUrl = newFileName;
-						usersService.updateAvatar(userId, newAvatarImageUrl);
-
-					}
-				}
-
-			}
-		}
-		// Xử lý và lưu thông tin bài viết kèm ảnh vào cơ sở dữ liệu
-		return "success";
+	// Mua lượt đăng bài
+	@PostMapping("/buyTicket")
+	public ResponseEntity<ResponseEntity<Users>> muaLuotDangBai(@RequestBody int ticket) {
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		Users users = usersService.buyTicket(usersService.findUserById(userId),
+				ticket);
+		return ResponseEntity.ok(ResponseEntity.ok(users));
 	}
 
 	// Cập nhật bài viết

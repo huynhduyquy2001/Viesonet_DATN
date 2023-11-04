@@ -37,6 +37,7 @@ public class Users {
 	private String background;
 	private int violationCount;
 	private Date createDate;
+	private int ticket;
 	@Temporal(TemporalType.DATE)
 	private Date birthday;
 	@Temporal(TemporalType.TIMESTAMP)
