@@ -33,6 +33,7 @@ public class DeliveryAddress {
     private String WardCode;
     private String WardName;
     private String deliveryPhone;
+    private boolean addressStore;
 
     @ManyToOne
     @JoinColumn(name = "userId")

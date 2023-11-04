@@ -14,10 +14,12 @@ import lombok.Setter;
 @Entity
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter @Setter
+@Getter
+@Setter
 public class SumAccountsByDay {
 	@Id
 	private Date startDate;
 	private Date endDate;
 	private int totalAccounts;
+
 }

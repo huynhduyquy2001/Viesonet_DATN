@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.cloud.storage.Acl.User;
 import com.google.firestore.v1.StructuredQuery.Order;
 import com.viesonet.dao.OrderDetailsDao;
 import com.viesonet.dao.OrdersDao;
@@ -90,6 +91,21 @@ public class OrdersService {
 
     public List<Object[]> getOrderStatusCountsForOtherBuyers(String sellerId) {
         return ordersDao.getOrderStatusCountsForOtherBuyers(sellerId);
+    }
+
+    public Orders addOrder(String userId, String address, float totalAmount, float shipfee) {
+        Orders orders = new Orders();
+        OrderStatus ost = new OrderStatus();
+        Users u = new Users();
+        u.setUserId(userId);
+        orders.setCustomer(u);
+        orders.setOrderDate(new Date());
+        ost.setStatusId(1);
+        orders.setOrderStatus(ost);
+        orders.setAddress(address);
+        orders.setTotalAmount(totalAmount);
+        orders.setShippingFee(shipfee);
+        return ordersDao.saveAndFlush(orders);
     }
 
     public ResponseEntity<String> acceptOrders(int orderId) {
