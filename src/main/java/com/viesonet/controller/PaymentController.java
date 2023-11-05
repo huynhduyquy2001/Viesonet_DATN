@@ -110,23 +110,23 @@ public class PaymentController {
         return ResponseEntity.ok(ResponseEntity.ok(paymentUrl));
     }
 
-    // @GetMapping("/payment_infor")
-    // public ResponseEntity<?> transaction(
-    // @RequestParam(value = "vnp_Amount") String amount,
-    // @RequestParam(value = "vnp_BankCode") String bankCode,
-    // @RequestParam(value = "vnp_OrderInfo") String order,
-    // @RequestParam(value = "vnp_ResponseCode") String responseCode) {
-    // TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
-    // if (responseCode.equals("00")) {
-    // transactionStatusDTO.setStatus("Ok");
-    // transactionStatusDTO.setMessage("Successfully");
-    // transactionStatusDTO.setDate("");
-    // } else {
-    // transactionStatusDTO.setStatus("No");
-    // transactionStatusDTO.setMessage("Failed");
-    // transactionStatusDTO.setDate("");
-    // }
-    // return ResponseEntity.ok();
-    // }
+    @GetMapping("/payment_infor")
+    public ResponseEntity<?> transaction(
+            @RequestParam(value = "vnp_Amount") String amount,
+            @RequestParam(value = "vnp_BankCode") String bankCode,
+            @RequestParam(value = "vnp_OrderInfo") String order,
+            @RequestParam(value = "vnp_ResponseCode") String responseCode) {
+        TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
+        if (responseCode.equals("00")) {
+            transactionStatusDTO.setStatus("Ok");
+            transactionStatusDTO.setMessage("Successfully");
+            transactionStatusDTO.setDate("");
+        } else {
+            transactionStatusDTO.setStatus("No");
+            transactionStatusDTO.setMessage("Failed");
+            transactionStatusDTO.setDate("");
+        }
+        return ResponseEntity.ok(transactionStatusDTO.getStatus());
+    }
 
 }

@@ -113,10 +113,4 @@ public class UsersService {
 		return usersDao.saveAndFlush(users);
 	}
 
-	public Users buyTicket(Users users, int ticket) {
-		users.setUserId(users.getUserId());
-		users.setTicket(ticket);
-		return usersDao.saveAndFlush(users);
-	}
-
 }

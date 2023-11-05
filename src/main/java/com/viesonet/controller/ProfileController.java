@@ -250,13 +250,15 @@ public class ProfileController {
 	}
 
 	// Mua lượt đăng bài
-	@PostMapping("/buyTicket")
-	public ResponseEntity<ResponseEntity<Users>> muaLuotDangBai(@RequestBody int ticket) {
-		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-		Users users = usersService.buyTicket(usersService.findUserById(userId),
-				ticket);
-		return ResponseEntity.ok(ResponseEntity.ok(users));
-	}
+	// @PostMapping("/buyTicket")
+	// public ResponseEntity<ResponseEntity<Users>> muaLuotDangBai(@RequestBody int
+	// ticket) {
+	// String userId =
+	// SecurityContextHolder.getContext().getAuthentication().getName();
+	// Users users = usersService.buyTicket(usersService.findUserById(userId),
+	// ticket);
+	// return ResponseEntity.ok(ResponseEntity.ok(users));
+	// }
 
 	// Cập nhật bài viết
 	@PutMapping("/updatePost/{postId}")

@@ -37,7 +37,6 @@ public class Users {
 	private String background;
 	private int violationCount;
 	private Date createDate;
-	private int ticket;
 	@Temporal(TemporalType.DATE)
 	private Date birthday;
 	@Temporal(TemporalType.TIMESTAMP)
@@ -122,4 +121,7 @@ public class Users {
 	@OneToMany(mappedBy = "user")
 	private List<Products> products;
 
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<Ticket> tickets;
 }
