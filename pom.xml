@@ -12,7 +12,7 @@
 	<groupId>com.example</groupId>
 	<artifactId>Viesonet_DATN</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
-	<packaging>jar</packaging>
+	<packaging>war</packaging>
 	<name>Viesonet_DATN</name>
 	<description>Demo project for Spring Boot</description>
 	<properties>
