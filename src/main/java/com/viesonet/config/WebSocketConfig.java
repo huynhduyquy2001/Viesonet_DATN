@@ -37,10 +37,10 @@ public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/chat")
-                .setAllowedOriginPatterns("*") // Cho phép kết nối từ nguồn gốc này
+                .setAllowedOriginPatterns("https://viesonetapi2.azurewebsites.net") // Cho phép kết nối từ nguồn gốc này
                 .withSockJS();
         registry.addEndpoint("/private-notification")
-                .setAllowedOriginPatterns("*") // Cho phép kết nối từ nguồn gốc này
+                .setAllowedOriginPatterns("https://viesonetapi2.azurewebsites.net") // Cho phép kết nối từ nguồn gốc này
                 .withSockJS();
     }
 
