@@ -91,4 +91,29 @@ public class OrdersService {
     public List<Object[]> getOrderStatusCountsForOtherBuyers(String sellerId) {
         return ordersDao.getOrderStatusCountsForOtherBuyers(sellerId);
     }
+
+    @Transactional // Thêm @Transactional trước phương thức
+    public List<Float> getTongTien(String userId, int year) {
+        return ordersDao.getTotalSalesForCustomerByYear(userId, year);
+    }
+
+    @Transactional // Thêm @Transactional trước phương thức
+    public Float exeGetTotalSalesForYearAndCustomer(String sellerId, int year) {
+        return ordersDao.exeGetTotalSalesForYearAndCustomer(sellerId, year);
+    }
+
+    @Transactional // Thêm @Transactional trước phương thức
+    public List<Integer> GetYearsFromOrders() {
+        return ordersDao.getyear();
+    }
+
+    @Transactional // Thêm @Transactional trước phương thức
+    public List<Integer> GetOrderCountByYear(int year) {
+        return ordersDao.GetOrderCountByYear(year);
+    }
+
+    @Transactional // Thêm @Transactional trước phương thức
+    public List<Integer> GetOrderCacelCountByYear(int year) {
+        return ordersDao.GetOrderCacelCountByYear(year);
+    }
 }

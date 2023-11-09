@@ -7,7 +7,7 @@ import org.springframework.data.jpa.repository.Query;
 
 import com.viesonet.entity.DeliveryAddress;
 
-public interface DeliveryAddressDao extends JpaRepository<DeliveryAddress, String> {
+public interface DeliveryAddressDao extends JpaRepository<DeliveryAddress, Integer> {
     @Query("SELECT obj from DeliveryAddress obj where obj.user.userId =:userId")
     List<DeliveryAddress> findByDeliveryAddress(String userId);
 

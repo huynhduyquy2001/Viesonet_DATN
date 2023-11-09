@@ -13,6 +13,7 @@ import com.viesonet.service.OrdersService;
 import com.viesonet.service.ProductsService;
 
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestParam;
 
 @RestController
@@ -42,9 +43,30 @@ public class PersonalStatisticsController {
         return ordersService.execountApprovedOrdersByMonth(userId);
     }
 
-    @GetMapping("/productbestSelling")
-    public List<Object[]> exeproductBestSelling() {
+    @GetMapping("/productbestSelling/{year}")
+    public List<Object[]> exeproductBestSelling(@PathVariable int year) {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return productsService.exeproductBestSelling(userId);
+        return productsService.exeproductBestSelling(userId, year);
+    }
+
+    @GetMapping("/totalamount/{year}")
+    public List<Float> getTotalAmount(@PathVariable int year) {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ordersService.getTongTien(userId, year);
+    }
+
+    @GetMapping("/getyear")
+    public List<Integer> getyear() {
+        return ordersService.GetYearsFromOrders();
+    }
+
+    @GetMapping("/getcoutorder/{year}")
+    public List<Integer> GetOrderCountByYear(@PathVariable int year) {
+        return ordersService.GetOrderCountByYear(year);
+    }
+
+    @GetMapping("/getcoutcancelorder/{year}")
+    public List<Integer> GetOrderCacelCountByYear(@PathVariable int year) {
+        return ordersService.GetOrderCacelCountByYear(year);
     }
 }
