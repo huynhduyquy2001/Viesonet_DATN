@@ -83,7 +83,7 @@ public class PostViolationsManagementController {
 
 			// Thêm thông báo
 			Notifications notifications = notificationsService.createNotifications(
-					post.getUser(), post.getLikeCount(), post.getUser(), post, null, 5);
+					post.getUser(), post.getLikeCount(), post.getUser(), post, 5);
 
 			messagingTemplate.convertAndSend("/private-user", notifications);
 

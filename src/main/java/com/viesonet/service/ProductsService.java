@@ -223,4 +223,20 @@ public class ProductsService {
         return list;
     }
 
+    public ResponseEntity<String> minusProduct(Products product, int quantity) {
+
+        try {
+            Products products = productsDao.findByProductId(product.getProductId());
+            if (products == null) {
+                return ResponseEntity.ok("Không có sản phẩm này để trừ số lượng!");
+            } else {
+                products.setSoldQuantity(products.getSoldQuantity() - quantity);
+                productsDao.saveAndFlush(products);
+                return ResponseEntity.ok("Trừ số lượng thành công");
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Có lỗi xảy ra: " + e.getMessage());
+        }
+    }
+
 }
