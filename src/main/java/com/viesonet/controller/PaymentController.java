@@ -1,5 +1,6 @@
 package com.viesonet.controller;
 
+import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.nio.charset.StandardCharsets;
@@ -12,24 +13,30 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 import java.util.TimeZone;
-
 import org.springframework.http.HttpStatus;
+
+import org.apache.http.annotation.Contract;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.google.api.Http;
 import com.viesonet.config.PaymentConfig;
 import com.viesonet.entity.PaymentResDTO;
 import com.viesonet.entity.TransactionStatusDTO;
 
+import jakarta.servlet.http.HttpServletResponse;
+
 @RestController
 @CrossOrigin("*")
 public class PaymentController {
+
+    private Object responseJSON;
 
     @PostMapping("/create_payment/{amount}")
     public ResponseEntity<ResponseEntity<String>> create_payment(@PathVariable int amount)
@@ -110,23 +117,48 @@ public class PaymentController {
         return ResponseEntity.ok(ResponseEntity.ok(paymentUrl));
     }
 
-    @GetMapping("/payment_infor")
+    @GetMapping("/payment-callback")
     public ResponseEntity<?> transaction(
-            @RequestParam(value = "vnp_Amount") String amount,
-            @RequestParam(value = "vnp_BankCode") String bankCode,
-            @RequestParam(value = "vnp_OrderInfo") String order,
-            @RequestParam(value = "vnp_ResponseCode") String responseCode) {
+            @RequestParam(value = "vnp_Amount") String vnpAmount,
+            @RequestParam(value = "vnp_BankCode") String vnpBankCode,
+            @RequestParam(value = "vnp_OrderInfo") String vnpOrderInfo,
+            @RequestParam(value = "vnp_ResponseCode") String vnpResponseCode,
+            HttpServletResponse httpResponse) {
         TransactionStatusDTO transactionStatusDTO = new TransactionStatusDTO();
-        if (responseCode.equals("00")) {
-            transactionStatusDTO.setStatus("Ok");
-            transactionStatusDTO.setMessage("Successfully");
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        // Kiểm tra vnpResponseCode để xác định trạng thái thanh toán
+        if ("00".equals(vnpResponseCode)) {
+            // Giao dịch thành công
+            transactionStatusDTO.setStatus("ok");
+            transactionStatusDTO.setMessage("Succesfully");
             transactionStatusDTO.setDate("");
+            transactionStatusDTO.setAmount(vnpAmount);
+            // Thực hiện các xử lý cần thiết, ví dụ: cập nhật CSDL
         } else {
-            transactionStatusDTO.setStatus("No");
+            // Giao dịch thất bại
+            transactionStatusDTO.setStatus("no");
             transactionStatusDTO.setMessage("Failed");
             transactionStatusDTO.setDate("");
+            transactionStatusDTO.setAmount(vnpAmount);
+            // Thực hiện các xử lý cần thiết, ví dụ: không cập nhật CSDL
+
         }
-        return ResponseEntity.ok(transactionStatusDTO.getStatus());
+        // Tạo JSON response
+        // String responseJSON = "{\"status\":\"" + transactionStatusDTO.getStatus() +
+        // "\", \"message\":\""
+        // + transactionStatusDTO.getMessage() + "\", \"date\":\"" +
+        // transactionStatusDTO.getDate()
+        // + "\", \"amount\":\"" + vnpAmount + "\"}";
+
+        if ("00".equals(vnpResponseCode)) {
+            String responseJSON = "<script>window.location.href='http://127.0.0.1:5501/Index.html#!/order/" + userId
+                    + "';</script>";
+            return ResponseEntity.status(HttpStatus.OK).body(responseJSON);
+        } else {
+            String responseJSON = "<script>window.location.href='http://127.0.0.1:5501/Index.html#!/shoppingcart';</script>";
+            return ResponseEntity.status(HttpStatus.OK).body(responseJSON);
+        }
+
     }
 
 }

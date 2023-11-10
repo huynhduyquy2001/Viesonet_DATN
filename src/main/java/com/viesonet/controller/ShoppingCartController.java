@@ -1,5 +1,6 @@
 package com.viesonet.controller;
 
+import java.io.IOException;
 import java.net.URI;
 import java.net.http.HttpClient;
 import java.net.http.HttpRequest;
@@ -21,6 +22,7 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.viesonet.config.PaymentConfig;
 import com.viesonet.entity.DeliveryAddress;
 import com.viesonet.entity.Orders;
 import com.viesonet.entity.ShoppingCart;
@@ -31,6 +33,8 @@ import com.viesonet.service.OrdersService;
 import com.viesonet.service.ProductsService;
 import com.viesonet.service.ShoppingCartService;
 import com.viesonet.service.UsersService;
+
+import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
 @CrossOrigin("*")
@@ -223,4 +227,63 @@ public class ShoppingCartController {
             return ResponseEntity.ok(ResponseEntity.ok("Lỗi"));
         }
     }
+
+    @PostMapping("/payToCartWithVnpay/{totalAmount}/{address}/{shipfee}")
+    public ResponseEntity<ResponseEntity<String>> payToCartWithVnpay(
+            @RequestBody List<Map<String, String>> requestData,
+            @PathVariable float totalAmount,
+            @PathVariable String address,
+            @PathVariable float shipfee) {
+
+        try {
+            String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+            List<Integer> productIdList = new ArrayList<>();
+            List<String> colorList = new ArrayList<>();
+
+            for (Map<String, String> data : requestData) {
+                String productId = data.get("productId");
+                String color = data.get("color");
+
+                try {
+                    int productIdInt = Integer.parseInt(productId);
+                    productIdList.add(productIdInt);
+                    colorList.add(color);
+                } catch (NumberFormatException e) {
+                    // Xử lý nếu productId không phải là số
+                }
+            }
+
+            // Tạo đơn hàng và lưu vào CSDL
+            Orders orders = ordersService.addOrder(userId, address, totalAmount, shipfee);
+
+            // Lấy danh sách sản phẩm từ giỏ hàng
+            List<ShoppingCart> shoppingCart = shoppingCartService.getListProductToCart(userId, productIdList,
+                    colorList);
+
+            // Thực hiện chuyển hướng đến VNPAY
+
+            // Lưu thông tin thanh toán vào đơn hàng
+            // orders.setPaymentUrl(paymentUrl);
+            // ordersService.updateOrder(orders);
+            for (int i = 0; i < shoppingCart.size(); i++) {
+                // Lưu vào orderDetails
+                float sale = shoppingCart.get(i).getProduct().getOriginalPrice()
+                        - (shoppingCart.get(i).getProduct().getOriginalPrice()
+                                * shoppingCart.get(i).getProduct().getPromotion()) / 100;
+                orderDetailsService.addOrderDetail(orders.getOrderId(), shoppingCart.get(i).getProduct(),
+                        shoppingCart.get(i).getQuantity(),
+                        shoppingCart.get(i).getProduct().getOriginalPrice(), sale, shoppingCart.get(i).getColor());
+                // Xóa các sản phẩm đã thêm vào orderDetail ra khỏi giỏ hàng
+                shoppingCartService.deleteToCart(String.valueOf(shoppingCart.get(i).getProduct().getProductId()),
+                        userId, shoppingCart.get(i).getColor());
+            }
+
+            // Chuyển hướng người dùng đến trang thanh toán của VNPAY
+            return ResponseEntity.ok(ResponseEntity.ok("Thanh toán thành công đơn hàng đang chờ xác nhận"));
+        } catch (Exception e) {
+            e.printStackTrace(); // log lỗi
+            return ResponseEntity.ok(ResponseEntity.ok("Lỗi"));
+        }
+    }
+
 }
