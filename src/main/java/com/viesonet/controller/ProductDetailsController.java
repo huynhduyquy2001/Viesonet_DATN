@@ -21,6 +21,7 @@ import com.viesonet.entity.FavoriteProducts;
 import com.viesonet.entity.Media;
 import com.viesonet.entity.ProductColors;
 import com.viesonet.entity.Products;
+import com.viesonet.entity.ProductsTemp;
 import com.viesonet.entity.Ratings;
 import com.viesonet.entity.ViolationProducts;
 import com.viesonet.service.FavoriteProductService;
@@ -30,6 +31,7 @@ import com.viesonet.service.ProductColorsService;
 import com.viesonet.entity.Colors;
 import com.viesonet.service.ColorsService;
 import com.viesonet.service.ProductsService;
+import com.viesonet.service.ProductsTempService;
 import com.viesonet.service.RatingsService;
 import com.viesonet.service.UsersService;
 import com.viesonet.service.ViolationsService;
@@ -64,6 +66,9 @@ public class ProductDetailsController {
 
     @Autowired
     ProductColorsService productColorsService;
+
+    @Autowired
+    ProductsTempService productsTempService;
 
     // @Autowired
     // ViolationProductsService violationProductsService;
@@ -161,6 +166,11 @@ public class ProductDetailsController {
             @PathVariable int productId) {
         return productColorsService.saveProductColor(colorsService.findColorById(colorId),
                 productsService.findProductById(productId), quantity);
+    }
+
+    @PostMapping("/add-product-temp")
+    public ProductsTemp addProductTemp(@RequestBody ProductsTemp productsTemp) {
+        return productsTempService.addProductTemp(productsTemp);
     }
 
     private boolean isImageUrl(String fileUrl) {
