@@ -28,9 +28,6 @@ public class JwtTokenUtil {
     @Value("${bezkoder.app.jwtExpirationMs}")
     private int jwtExpirationMs;
 
-    @Value("${bezkoder.app.jwtRefreshExpirationMs}")
-    private int refreshExpirationDateInMs;
-
     public String generateJwtToken(Authentication authentication) {
 
         UserDetailsImpl userPrincipal = (UserDetailsImpl) authentication.getPrincipal();
@@ -65,14 +62,6 @@ public class JwtTokenUtil {
             logger.error("JWT token validation failed: {}", e.getMessage());
             return false;
         }
-    }
-
-    public String doGenerateRefreshToken(Map<String, Object> claims, String subject) {
-
-        return Jwts.builder().setClaims(claims).setSubject(subject).setIssuedAt(new Date(System.currentTimeMillis()))
-                .setExpiration(new Date(System.currentTimeMillis() + refreshExpirationDateInMs))
-                .signWith(SignatureAlgorithm.HS512, jwtSecret).compact();
-
     }
 
     public boolean isJwtTokenExpired(String token) {
