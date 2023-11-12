@@ -41,6 +41,7 @@ public class ViolationsProduct {
     @JoinColumn(name = "productId")
     private Products product;
 
+    
     private String userId;
     private String description;
     private Boolean status;
