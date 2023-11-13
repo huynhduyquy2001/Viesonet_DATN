@@ -1,5 +1,7 @@
 package com.viesonet.entity;
 
+import java.util.Date;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -8,6 +10,8 @@ import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.Getter;
@@ -32,4 +36,8 @@ public class Ticket {
     private Users user; // Thay vì Acl.User, bạn sử dụng Users
 
     private int ticket;
+    private float totalAmount;
+
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date buyDate;
 }
