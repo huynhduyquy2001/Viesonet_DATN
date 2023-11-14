@@ -13,16 +13,10 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 //import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.core.Authentication;
-import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.SecurityFilterChain;
-import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.web.cors.CorsConfiguration;
-import org.springframework.web.cors.CorsConfigurationSource;
-import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
-
 import com.viesonet.entity.Accounts;
 
 import static org.springframework.security.config.Customizer.withDefaults;
@@ -31,15 +25,13 @@ import com.viesonet.service.UserDetailsServiceImpl;
 
 @Configuration
 @EnableMethodSecurity
-// (securedEnabled = true,
-// jsr250Enabled = true,
-// prePostEnabled = true) // by default
-public class AuthConfig { // extends WebSecurityConfigurerAdapter {
+
+public class AuthConfig {
     @Autowired
     UserDetailsServiceImpl userDetailsService;
 
     @Autowired
-    private JwtAuthenticationEntryPoint unauthorizedHandler;
+    private JwtAuthenticationEntryPoint JwtAuthenticationEntryPoint;
 
     @Autowired
     AccountsService accountsService;
@@ -49,12 +41,6 @@ public class AuthConfig { // extends WebSecurityConfigurerAdapter {
         return new JwtAuthenticationTokenFilter();
     }
 
-    // @Override
-    // public void configure(AuthenticationManagerBuilder
-    // authenticationManagerBuilder) throws Exception {
-    // authenticationManagerBuilder.userDetailsService(userDetailsService).passwordEncoder(passwordEncoder());
-    // }
-
     @Bean
     public DaoAuthenticationProvider authenticationProvider() {
         DaoAuthenticationProvider authProvider = new DaoAuthenticationProvider();
@@ -63,12 +49,6 @@ public class AuthConfig { // extends WebSecurityConfigurerAdapter {
 
         return authProvider;
     }
-
-    // @Bean
-    // @Override
-    // public AuthenticationManager authenticationManagerBean() throws Exception {
-    // return super.authenticationManagerBean();
-    // }
 
     @Bean
     public AuthenticationManager authenticationManager(AuthenticationConfiguration authConfig) throws Exception {
@@ -86,12 +66,17 @@ public class AuthConfig { // extends WebSecurityConfigurerAdapter {
                 .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests()
-                .requestMatchers("/**", "/chat/**")
-                // .permitAll().requestMatchers("/staff/**").hasAnyRole("2",
-                // "1").requestMatchers("/admin/**").hasRole("1")
-                // .requestMatchers("/**").hasAnyRole("1", "2", "3")
-                // .anyRequest()
+                .requestMatchers("/api/forgetPassword/sendCode", "/api/createToken", "/api/register/sendCode",
+                        "/api/register", "/api/forgetPassword", "/chat/**", "/private-notification/**")
                 .permitAll()
+                .requestMatchers("/staff/**").hasAnyRole("2", "1")
+                .requestMatchers("/admin/**").hasRole("1")
+                .requestMatchers("/**", "/likepost/**")
+                .hasAnyRole("1", "2", "3", "4")
+                .anyRequest().authenticated()
+                .and().rememberMe().rememberMeParameter("remember")
+                .and().exceptionHandling() // Xử lý ngoại lệ khi người dùng chưa đăng nhập
+                .authenticationEntryPoint(JwtAuthenticationEntryPoint)
                 .and()
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(management -> management

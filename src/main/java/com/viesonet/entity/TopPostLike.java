@@ -11,20 +11,17 @@ import lombok.Data;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
-
 @Entity
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-@Getter
-@Setter
+@Getter @Setter
 public class TopPostLike {
-    @Id
-    private int stt;
-
-    private String images;
+	@Id
+	private int stt;
+	private String images;
     private int postId;
-
+    
     @Temporal(TemporalType.TIMESTAMP)
     private Date postDate;
     private String userPost;

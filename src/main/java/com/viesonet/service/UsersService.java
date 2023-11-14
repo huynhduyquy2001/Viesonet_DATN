@@ -2,8 +2,6 @@ package com.viesonet.service;
 
 import java.sql.Timestamp;
 import java.time.LocalDateTime;
-import java.util.Calendar;
-import java.util.Date;
 import java.util.List;
 import java.util.Optional;
 
@@ -19,7 +17,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.viesonet.dao.UsersDao;
 import com.viesonet.entity.AccountAndFollow;
 import com.viesonet.entity.Accounts;
-import com.viesonet.entity.Posts;
 import com.viesonet.entity.Roles;
 import com.viesonet.entity.UserInformation;
 import com.viesonet.entity.Users;
@@ -112,5 +109,4 @@ public class UsersService {
 		users.setAvatar(img);
 		return usersDao.saveAndFlush(users);
 	}
-
 }

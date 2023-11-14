@@ -31,9 +31,6 @@ import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 @CrossOrigin("*")
 public class WebSocketConfig implements WebSocketMessageBrokerConfigurer {
 
-    @Autowired
-    private JwtTokenUtil jwtTokenUtil;
-
     @Override
     public void registerStompEndpoints(StompEndpointRegistry registry) {
         registry.addEndpoint("/chat")

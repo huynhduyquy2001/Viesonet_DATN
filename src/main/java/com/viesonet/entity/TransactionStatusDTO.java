@@ -11,5 +11,4 @@ public class TransactionStatusDTO implements Serializable {
     private String status;
     private String message;
     private String date;
-    private String amount;
 }
