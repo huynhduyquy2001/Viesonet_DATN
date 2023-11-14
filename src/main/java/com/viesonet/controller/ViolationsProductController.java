@@ -50,6 +50,7 @@ public class ViolationsProductController {
         return ResponseEntity.ok(result);
     }
 
+
     @GetMapping("/staff/violationsproduct/detailProduct/{violationId}")
     public ViolationsProduct getViolationsByPostId(@PathVariable int violationId) {
         return violationsProductService.findProductById(violationId);

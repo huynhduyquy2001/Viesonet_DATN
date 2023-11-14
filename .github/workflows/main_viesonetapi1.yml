@@ -49,5 +49,5 @@ jobs:
         with:
           app-name: 'viesonetapi1'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_BE12D96034A3461DABD12466C4013C7A }}
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_EE3C8211DAF74060A0ACFFF7512266D5 }}
           package: '*.war'

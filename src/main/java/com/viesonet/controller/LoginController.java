@@ -77,26 +77,4 @@ public class LoginController {
 
 	}
 
-	@PostMapping("/api/refreshToken")
-	public ResponseEntity<?> refreshToken(@RequestBody Map<String, Object> payload) {
-		String token = (String) payload.get("token"); // Lấy token từ dữ liệu gửi từ phía frontend
-
-		if (jwtUtils.validateJwtToken(token)) {
-			// Token hợp lệ
-			Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-			String newToken = jwtUtils.generateJwtToken(authentication);
-			UserDetailsImpl userDetails = (UserDetailsImpl) authentication.getPrincipal();
-			List<String> roles = userDetails.getAuthorities().stream()
-					.map(item -> item.getAuthority())
-					.collect(Collectors.toList());
-			return ResponseEntity.ok(new JwtResponse(newToken, userDetails.getId(),
-					userDetails.getUsername(),
-					userDetails.getEmail(),
-					roles));
-		} else {
-			// Token không hợp lệ
-			return ResponseEntity.status(HttpStatus.UNAUTHORIZED).body("Invalid or expired token");
-		}
-	}
-
 }

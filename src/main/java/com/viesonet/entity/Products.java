@@ -42,6 +42,7 @@ public class Products {
     private float height;
     private float width;
     private float weight;
+    private float length;
     private String material;
 
     @ManyToOne
@@ -73,6 +74,10 @@ public class Products {
     @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<OrderDetails> orderDetails;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product")
+    private List<ViolationsProduct> violationsProducts;
 
     @OneToMany(mappedBy = "product")
     private List<Ratings> ratings;

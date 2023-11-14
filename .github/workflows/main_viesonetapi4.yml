@@ -1,7 +1,7 @@
 # Docs for the Azure Web Apps Deploy action: https://github.com/Azure/webapps-deploy
 # More GitHub Actions for Azure: https://github.com/Azure/actions
 
-name: Build and deploy WAR app to Azure Web App - viesonetapi4
+name: Build and deploy JAR app to Azure Web App - viesonetapi4
 
 on:
   push:
@@ -28,7 +28,7 @@ jobs:
         uses: actions/upload-artifact@v3
         with:
           name: java-app
-          path: '${{ github.workspace }}/target/*.war'
+          path: '${{ github.workspace }}/target/*.jar'
 
   deploy:
     runs-on: windows-latest
@@ -49,5 +49,5 @@ jobs:
         with:
           app-name: 'viesonetapi4'
           slot-name: 'Production'
-          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_8F11FEEC52C7476EA85903F61D10289D }}
-          package: '*.war'
+          publish-profile: ${{ secrets.AZUREAPPSERVICE_PUBLISHPROFILE_5796D5966E5846038DF3F03B7E3ADC6C }}
+          package: '*.jar'

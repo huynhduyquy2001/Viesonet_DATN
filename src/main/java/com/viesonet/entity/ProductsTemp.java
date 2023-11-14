@@ -33,7 +33,6 @@ public class ProductsTemp {
 
     @Temporal(TemporalType.TIMESTAMP)
     private Date datePost;
-
     private String userName;
 
 }
