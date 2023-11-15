@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.viesonet.entity.DeliveryAddress;
 import com.viesonet.entity.Notifications;
 import com.viesonet.entity.Orders;
+import com.viesonet.entity.Products;
 import com.viesonet.entity.ShoppingCart;
 import com.viesonet.service.DeliveryAddressService;
 import com.viesonet.service.FavoriteProductService;
@@ -68,7 +69,17 @@ public class ShoppingCartController {
     @GetMapping("/get-product-shoppingcart")
     public List<ShoppingCart> getProductByShoppingCart() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return shoppingCartService.findShoppingCartByUserId(userId);
+
+        List<ShoppingCart> shoppingCarts = shoppingCartService.findShoppingCartByUserId(userId);
+
+        for (int i = 0; i < shoppingCarts.size(); i++) {
+            Products products = productsService.findProductById(shoppingCarts.get(i).getProduct().getProductId());
+            if (products.getSoldQuantity() < shoppingCarts.get(i).getQuantity()) {
+                shoppingCarts.get(i).setQuantity(0);
+            }
+        }
+
+        return shoppingCarts;
     }
 
     @GetMapping("/get-address")
