@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,10 +23,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.viesonet.entity.DeliveryAddress;
+import com.viesonet.entity.Notifications;
 import com.viesonet.entity.Orders;
+import com.viesonet.entity.Products;
 import com.viesonet.entity.ShoppingCart;
 import com.viesonet.service.DeliveryAddressService;
 import com.viesonet.service.FavoriteProductService;
+import com.viesonet.service.NotificationsService;
 import com.viesonet.service.OrderDetailsService;
 import com.viesonet.service.OrdersService;
 import com.viesonet.service.ProductsService;
@@ -48,6 +52,9 @@ public class ShoppingCartController {
     OrderDetailsService orderDetailsService;
 
     @Autowired
+    NotificationsService notificationsService;
+
+    @Autowired
     FavoriteProductService favoriteProductService;
 
     @Autowired
@@ -56,9 +63,13 @@ public class ShoppingCartController {
     @Autowired
     DeliveryAddressService deliveryAddressService;
 
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
+
     @GetMapping("/get-product-shoppingcart")
     public List<ShoppingCart> getProductByShoppingCart() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+
         return shoppingCartService.findShoppingCartByUserId(userId);
     }
 
@@ -201,6 +212,11 @@ public class ShoppingCartController {
             List<ShoppingCart> shoppingCart = shoppingCartService.getListProductToCart(userId, productIdList,
                     colorList);
 
+            // Trừ số lượng trong Product
+            for (int i = 0; i < shoppingCart.size(); i++) {
+                productsService.minusProduct(shoppingCart.get(i).getProduct(), shoppingCart.get(i).getQuantity());
+            }
+
             // Lưu vào order
             Orders orders = ordersService.addOrder(userId, address, totalAmount, shipfee);
 
@@ -215,6 +231,25 @@ public class ShoppingCartController {
                 // Xóa các sản phẩm đã thêm vào orderDetail ra khỏi giỏ hàng
                 shoppingCartService.deleteToCart(String.valueOf(shoppingCart.get(i).getProduct().getProductId()),
                         userId, shoppingCart.get(i).getColor());
+            }
+
+            // thêm thông báo
+            String previousUserId = "";
+
+            for (int i = 0; i < shoppingCart.size(); i++) {
+                String currentUserId = shoppingCart.get(i).getProduct().getUser().getUserId();
+                if (currentUserId.equals(previousUserId) == false) {
+                    System.out.println("1");
+                    // thêm thông báo
+                    Notifications notifications = notificationsService.createNotifications(
+                            usersService.findUserById(userId), 0,
+                            shoppingCart.get(i).getProduct().getUser(), null, 7);
+
+                    messagingTemplate.convertAndSend("/private-user", notifications);
+
+                    // Update the previous user ID
+                    previousUserId = currentUserId;
+                }
             }
 
             return ResponseEntity.ok(ResponseEntity.ok("Thanh toán thành công đơn hàng đang chờ xác nhận"));

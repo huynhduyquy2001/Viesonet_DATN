@@ -1,13 +1,13 @@
 package com.viesonet.dao;
 
 import com.viesonet.entity.Ticket;
-import com.viesonet.entity.Users;
 
+import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.jpa.repository.query.Procedure;
 import org.springframework.data.repository.query.Param;
 
 public interface TicketDao extends JpaRepository<Ticket, Integer> {
@@ -20,4 +20,17 @@ public interface TicketDao extends JpaRepository<Ticket, Integer> {
 
     @Query("SELECT SUM(t.ticket) FROM Ticket t WHERE t.user.userId = :userId")
     Integer getTicketSumByUserId(@Param("userId") String userId);
+
+    @Query("SELECT SUM(t.totalAmount) AS totalAmount FROM Ticket t")
+    Object reportTopTicket();
+
+    @Query("SELECT SUM(t.totalAmount) AS totalAmount FROM Ticket t WHERE MONTH(t.buyDate) =:buyDate")
+    Object reportTicketByMonth(int buyDate);
+
+    @Query("SELECT COUNT(t.ticketId) AS totalTicket FROM Ticket t WHERE MONTH(t.buyDate) =:buyDate")
+    Object reportCountTicketByMonth(int buyDate);
+
+    @Query("SELECT COUNT(DISTINCT t.user.userId) AS totalUsers FROM Ticket t WHERE MONTH(t.buyDate) =:buyDate")
+    Object reportCountUserByMonth(int buyDate);
+
 }

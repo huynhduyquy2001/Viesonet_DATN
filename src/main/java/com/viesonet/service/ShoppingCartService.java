@@ -40,7 +40,6 @@ public class ShoppingCartService {
 
     public ResponseEntity<String> setQuantityToCart(Users user, Products product, int quantity, String color) {
         try {
-
             ShoppingCart o = shoppingCartDao.findCartByProductId(user.getUserId(), product.getProductId(), color);
             o.setQuantity(quantity);
             shoppingCartDao.saveAndFlush(o);
