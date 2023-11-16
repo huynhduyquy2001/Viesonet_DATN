@@ -22,10 +22,12 @@ import com.viesonet.dao.ProductStatusDao;
 import com.viesonet.dao.ProductsDao;
 import com.viesonet.dao.ProductsTempDao;
 import com.viesonet.entity.Posts;
+import com.viesonet.entity.ProductColors;
 import com.viesonet.entity.Products;
 import com.viesonet.entity.ProductsTemp;
 import com.viesonet.entity.Violations;
 import com.viesonet.dao.ColorsDao;
+import com.viesonet.dao.ProductColorsDao;
 import com.viesonet.dao.ProductsDao;
 import com.viesonet.dao.UsersDao;
 import com.viesonet.entity.Colors;
@@ -40,6 +42,9 @@ public class ProductsService {
 
     @Autowired
     ProductStatusDao productStatusDao;
+
+    @Autowired
+    ProductColorsDao productColorsDao;
 
     @Autowired
     ProductsTempDao productsTempDao;

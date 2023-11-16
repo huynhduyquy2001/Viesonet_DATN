@@ -1,6 +1,5 @@
 package com.viesonet.admin;
 
-import java.util.Date;
 import java.time.LocalDate;
 import java.time.Period;
 import java.time.ZoneId;
@@ -11,13 +10,9 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
-import org.springframework.web.servlet.ModelAndView;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.viesonet.security.AuthConfig;
 import com.viesonet.entity.*;
 import com.viesonet.service.PostsService;
+import com.viesonet.service.TicketService;
 import com.viesonet.service.UsersService;
 import com.viesonet.service.sp_FilterPostLikeService;
 import com.viesonet.service.sp_Last7DaySumAccountsService;
@@ -69,11 +64,34 @@ public class ReportController {
 	@Autowired
 	sp_SumAccountsByDayService sumAccountsByDay;
 
-	// @GetMapping("/admin/report")
-	// public ModelAndView getHomePage() {
-	// ModelAndView modelAndView = new ModelAndView("/admin/report");
-	// return modelAndView;
-	// }
+	@Autowired
+	TicketService ticketService;
+
+	@GetMapping("/admin/reportTicket")
+	public Object listTicket() {
+		return ticketService.reportTopTicket();
+	}
+
+	@GetMapping("/admin/reportTotalTicket")
+	public Object listTotalTicket() {
+		LocalDate currentDate = LocalDate.now();
+		int currentMonth = currentDate.getMonthValue();
+		return ticketService.reportTicketBuyMonth(currentMonth);
+	}
+
+	@GetMapping("/admin/reportCountTicket")
+	public Object listCountTicket() {
+		LocalDate currentDate = LocalDate.now();
+		int currentMonth = currentDate.getMonthValue();
+		return ticketService.reportCountTicketBuyMonth(currentMonth);
+	}
+
+	@GetMapping("/admin/reportCountTicketUser")
+	public Object listCountTicketUser() {
+		LocalDate currentDate = LocalDate.now();
+		int currentMonth = currentDate.getMonthValue();
+		return ticketService.reportCountUserBuyMonth(currentMonth);
+	}
 
 	@GetMapping("/admin/reportViolationsPosts")
 	public List<ViolationsPosts> violationsPosts() {

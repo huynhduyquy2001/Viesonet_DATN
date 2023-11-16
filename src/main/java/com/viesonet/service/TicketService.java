@@ -2,16 +2,16 @@ package com.viesonet.service;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.google.cloud.storage.Acl.User;
 import com.viesonet.dao.TicketDao;
 import com.viesonet.dao.UsersDao;
 import com.viesonet.entity.Ticket;
 import com.viesonet.entity.Users;
+
+import jakarta.transaction.Transactional;
 
 @Service
 public class TicketService {
@@ -61,6 +61,23 @@ public class TicketService {
             // bạn
             return 0;
         }
+    }
+
+    // Thống kê người mua lượt đăng bài
+    public Object reportTopTicket() {
+        return ticketDao.reportTopTicket();
+    }
+
+    public Object reportTicketBuyMonth(int buyDate) {
+        return ticketDao.reportTicketByMonth(buyDate);
+    }
+
+    public Object reportCountTicketBuyMonth(int buyDate) {
+        return ticketDao.reportCountTicketByMonth(buyDate);
+    }
+
+    public Object reportCountUserBuyMonth(int buyDate) {
+        return ticketDao.reportCountUserByMonth(buyDate);
     }
 
 }

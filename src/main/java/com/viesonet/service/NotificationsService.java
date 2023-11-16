@@ -24,7 +24,7 @@ public class NotificationsService {
 	@Autowired
 	UsersDao usersDao;
 
-	public Notifications createNotifications(Users sender, int count, Users receiverId, Posts post, Products products,
+	public Notifications createNotifications(Users sender, int count, Users receiverId, Posts post,
 			int notificationType) {
 		Notifications notifications = new Notifications();
 		if (notificationType == 1) {
@@ -49,6 +49,8 @@ public class NotificationsService {
 			notifications.setNotificationContent("Bài viết của bạn đã bị phạm!");
 		} else if (notificationType == 6) {
 			notifications.setNotificationContent(sender.getUsername() + " đã trả lời bình luận của bạn");
+		} else if (notificationType == 7) {
+			notifications.setNotificationContent(sender.getUsername() + " vừa mua hàng trong cửa hàng của bạn");
 		}
 		notifications.setReceiver(receiverId);
 		notifications.setSender(sender);
