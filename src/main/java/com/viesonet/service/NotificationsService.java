@@ -53,7 +53,6 @@ public class NotificationsService {
 		notifications.setReceiver(receiverId);
 		notifications.setSender(sender);
 		notifications.setPost(post);
-		notifications.setProduct(products);
 		NotificationType nT = new NotificationType();
 		nT.setTypeId(notificationType);
 		notifications.setNotificationType(nT);

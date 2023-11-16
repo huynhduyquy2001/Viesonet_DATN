@@ -79,20 +79,6 @@ public class OrdersService {
         }
     }
 
-    @Transactional // Thêm @Transactional trước phương thức
-    public List<Object[]> execountApprovedOrdersByMonth(String sellerId) {
-        return ordersDao.execountApprovedOrdersByMonth(sellerId);
-    }
-
-    @Transactional // Thêm @Transactional trước phương thức
-    public List<Object[]> exeTotalAmountByMonth(String sellerId) {
-        return ordersDao.exeTotalAmountByMonth(sellerId);
-    }
-
-    public List<Object[]> getOrderStatusCountsForOtherBuyers(String sellerId) {
-        return ordersDao.getOrderStatusCountsForOtherBuyers(sellerId);
-    }
-
     public Orders addOrder(String userId, String address, float totalAmount, float shipfee) {
         Orders orders = new Orders();
         OrderStatus ost = new OrderStatus();
@@ -136,5 +122,44 @@ public class OrdersService {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi khi hủy đơn hàng: " + e.getMessage());
         }
+    }
+
+    @Transactional // Thêm @Transactional trước phương thức
+    public List<Object[]> execountApprovedOrdersByMonth(String sellerId) {
+        return ordersDao.execountApprovedOrdersByMonth(sellerId);
+    }
+
+    @Transactional // Thêm @Transactional trước phương thức
+    public List<Object[]> exeTotalAmountByMonth(String sellerId) {
+        return ordersDao.exeTotalAmountByMonth(sellerId);
+    }
+
+    public List<Object[]> getOrderStatusCountsForOtherBuyers(String sellerId) {
+        return ordersDao.getOrderStatusCountsForOtherBuyers(sellerId);
+    }
+
+    @Transactional // Thêm @Transactional trước phương thức
+    public List<Float> getTongTien(String userId, int year) {
+        return ordersDao.getTotalSalesForCustomerByYear(userId, year);
+    }
+
+    @Transactional // Thêm @Transactional trước phương thức
+    public Float exeGetTotalSalesForYearAndCustomer(String sellerId, int year) {
+        return ordersDao.exeGetTotalSalesForYearAndCustomer(sellerId, year);
+    }
+
+    @Transactional // Thêm @Transactional trước phương thức
+    public List<Integer> GetYearsFromOrders() {
+        return ordersDao.getyear();
+    }
+
+    @Transactional // Thêm @Transactional trước phương thức
+    public List<Integer> GetOrderCountByYear(int year) {
+        return ordersDao.GetOrderCountByYear(year);
+    }
+
+    @Transactional // Thêm @Transactional trước phương thức
+    public List<Integer> GetOrderCacelCountByYear(int year) {
+        return ordersDao.GetOrderCacelCountByYear(year);
     }
 }

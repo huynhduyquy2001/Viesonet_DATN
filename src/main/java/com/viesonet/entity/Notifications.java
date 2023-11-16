@@ -44,10 +44,6 @@ public class Notifications {
 	private Posts post;
 
 	@ManyToOne
-	@JoinColumn(name = "productId")
-	private Products product;
-
-	@ManyToOne
 	@JoinColumn(name = "notificationTypeId")
 	private NotificationType notificationType;
 
