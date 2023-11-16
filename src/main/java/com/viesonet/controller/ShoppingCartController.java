@@ -25,6 +25,7 @@ import org.springframework.web.bind.annotation.RestController;
 import com.viesonet.entity.DeliveryAddress;
 import com.viesonet.entity.Notifications;
 import com.viesonet.entity.Orders;
+import com.viesonet.entity.ProductColors;
 import com.viesonet.entity.Products;
 import com.viesonet.entity.ShoppingCart;
 import com.viesonet.service.DeliveryAddressService;
@@ -32,6 +33,7 @@ import com.viesonet.service.FavoriteProductService;
 import com.viesonet.service.NotificationsService;
 import com.viesonet.service.OrderDetailsService;
 import com.viesonet.service.OrdersService;
+import com.viesonet.service.ProductColorsService;
 import com.viesonet.service.ProductsService;
 import com.viesonet.service.ShoppingCartService;
 import com.viesonet.service.UsersService;
@@ -61,6 +63,9 @@ public class ShoppingCartController {
     UsersService usersService;
 
     @Autowired
+    ProductColorsService productColorsService;
+
+    @Autowired
     DeliveryAddressService deliveryAddressService;
 
     @Autowired
@@ -70,13 +75,37 @@ public class ShoppingCartController {
     public List<ShoppingCart> getProductByShoppingCart() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        return shoppingCartService.findShoppingCartByUserId(userId);
+        List<ShoppingCart> shoppingCart = shoppingCartService.findShoppingCartByUserId(userId);
+
+        for (int i = 0; i < shoppingCart.size(); i++) {
+            ProductColors productColors = productColorsService.findByProductIdAndColor(shoppingCart.get(i).getProduct(),
+                    shoppingCart.get(i).getColor());
+            if (productColors.getQuantity() == 0) {
+                shoppingCart.get(i).setQuantity(0);
+            } else if (productColors.getQuantity() < shoppingCart.get(i).getQuantity()) {
+                shoppingCart.get(i).setQuantity(productColors.getQuantity());
+            }
+        }
+        return shoppingCart;
+
     }
 
     @GetMapping("/get-address")
     public List<DeliveryAddress> getAddress() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return deliveryAddressService.getAddress(userId);
+    }
+
+    @GetMapping("/checkQuantity/{productId}/{color}/{totalQuantity}")
+    public Boolean checkQuantity(@PathVariable int productId, @PathVariable String color,
+            @PathVariable int totalQuantity) {
+        ProductColors productColors = productColorsService
+                .findByProductIdAndColor(productsService.findProductById(productId), color);
+        if (productColors.getQuantity() < totalQuantity) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @PostMapping("/setQuantity-to-cart")
@@ -214,7 +243,8 @@ public class ShoppingCartController {
 
             // Trừ số lượng trong Product
             for (int i = 0; i < shoppingCart.size(); i++) {
-                productsService.minusProduct(shoppingCart.get(i).getProduct(), shoppingCart.get(i).getQuantity());
+                productColorsService.minusProduct(shoppingCart.get(i).getProduct(), shoppingCart.get(i).getQuantity(),
+                        shoppingCart.get(i).getColor());
             }
 
             // Lưu vào order
