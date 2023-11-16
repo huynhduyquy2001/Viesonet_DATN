@@ -70,16 +70,7 @@ public class ShoppingCartController {
     public List<ShoppingCart> getProductByShoppingCart() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 
-        List<ShoppingCart> shoppingCarts = shoppingCartService.findShoppingCartByUserId(userId);
-
-        for (int i = 0; i < shoppingCarts.size(); i++) {
-            Products products = productsService.findProductById(shoppingCarts.get(i).getProduct().getProductId());
-            if (products.getSoldQuantity() < shoppingCarts.get(i).getQuantity()) {
-                shoppingCarts.get(i).setQuantity(0);
-            }
-        }
-
-        return shoppingCarts;
+        return shoppingCartService.findShoppingCartByUserId(userId);
     }
 
     @GetMapping("/get-address")
