@@ -33,6 +33,7 @@ import com.viesonet.service.ColorsService;
 import com.viesonet.service.ProductsService;
 import com.viesonet.service.ProductsTempService;
 import com.viesonet.service.RatingsService;
+import com.viesonet.service.TicketService;
 import com.viesonet.service.UsersService;
 import com.viesonet.service.ViolationsService;
 import com.viesonet.service.WordBannedService;
@@ -70,6 +71,8 @@ public class ProductDetailsController {
     @Autowired
     ProductsTempService productsTempService;
 
+    @Autowired
+    TicketService ticketService;
     // @Autowired
     // ViolationProductsService violationProductsService;
 
@@ -185,6 +188,12 @@ public class ProductDetailsController {
     @GetMapping("/products/color")
     public List<Colors> getAllColors() {
         return colorsService.getAllColors();
+    }
+
+    @GetMapping("/get-ticket")
+    public int getTicket() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ticketService.getTicket(userId);
     }
 
 }

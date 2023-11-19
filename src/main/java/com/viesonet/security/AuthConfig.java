@@ -66,7 +66,8 @@ public class AuthConfig {
                 .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests()
-                .requestMatchers("/**")
+                .requestMatchers("/api/forgetPassword/sendCode", "/api/createToken", "/api/register/sendCode",
+                        "/api/register", "/api/forgetPassword", "/chat/**", "/private-notification/**")
                 .permitAll()
                 .requestMatchers("/staff/**").hasAnyRole("2", "1")
                 .requestMatchers("/admin/**").hasRole("1")
@@ -74,7 +75,7 @@ public class AuthConfig {
                 .anyRequest().authenticated()
                 .and().rememberMe().rememberMeParameter("remember")
                 .and().exceptionHandling() // Xử lý ngoại lệ khi người dùng chưa đăng nhập
-                .accessDeniedPage("/error").authenticationEntryPoint(JwtAuthenticationEntryPoint)
+                .authenticationEntryPoint(JwtAuthenticationEntryPoint)
                 .and()
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(management -> management
