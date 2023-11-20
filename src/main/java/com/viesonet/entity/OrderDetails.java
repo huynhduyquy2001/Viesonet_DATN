@@ -38,6 +38,6 @@ public class OrderDetails {
     private int quantity;
     private float originalPrice;
     private Float salePrice;
-    private float shippingFee;
+
     private String color;
 }

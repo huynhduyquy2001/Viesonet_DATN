@@ -53,5 +53,6 @@ public class Orders {
     @JsonIgnore
     @OneToMany(mappedBy = "order")
     private List<Returns> returns;
+    private float shippingFee;
 
 }

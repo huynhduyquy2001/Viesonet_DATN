@@ -47,13 +47,12 @@ public interface OrdersDao extends JpaRepository<Orders, Integer> {
                         "WHERE o.customer.userId = :customerId")
         List<Object[]> findOrdersByCustomerId(@Param("customerId") String customerId);
 
-        @Query("SELECT o, p, od, os, u FROM Orders o " +
-                        "JOIN o.customer u " +
-                        "JOIN o.orderStatus os " +
+        @Query("SELECT o, od, p ,u FROM Orders o " +
                         "JOIN o.orderDetails od " +
                         "JOIN od.product p " +
-                        "WHERE u.userId <> :sellerId " + // Chọn các đơn hàng mà userId của người dùng không phải là
-                                                         // người bán
+                        "JOIN p.user u " +
+                        "WHERE u.userId = :sellerId " + // Chọn các đơn hàng mà userId của người dùng không phải là
+                                                        // người bán
                         "AND od.product.productId = p.productId")
         List<Object[]> getPendingConfirmationOrdersForSeller(@Param("sellerId") String sellerId);
 
