@@ -2,7 +2,6 @@ package com.viesonet.entity;
 
 import java.util.Date;
 import java.util.List;
-import java.util.Optional;
 
 import com.fasterxml.jackson.annotation.JsonIgnore;
 
@@ -43,6 +42,7 @@ public class Products {
     private float height;
     private float width;
     private float weight;
+    private float length;
     private String material;
 
     @ManyToOne
@@ -62,7 +62,7 @@ public class Products {
 
     @JsonIgnore
     @OneToMany(mappedBy = "product")
-    private List<ViolationProducts> violationProducts;
+    private List<ViolationProducts> violationProduct;
 
     @JsonIgnore
     @OneToMany(mappedBy = "product")
@@ -74,6 +74,10 @@ public class Products {
     @JsonIgnore
     @OneToMany(mappedBy = "product")
     private List<OrderDetails> orderDetails;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "product")
+    private List<ViolationsProduct> violationsProducts;
 
     @OneToMany(mappedBy = "product")
     private List<Ratings> ratings;

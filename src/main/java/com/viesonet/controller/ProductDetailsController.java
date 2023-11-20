@@ -1,7 +1,9 @@
 package com.viesonet.controller;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -9,7 +11,6 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -18,24 +19,23 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.viesonet.entity.FavoriteProducts;
 import com.viesonet.entity.Media;
-import com.viesonet.entity.Message;
 import com.viesonet.entity.ProductColors;
 import com.viesonet.entity.Products;
+import com.viesonet.entity.ProductsTemp;
 import com.viesonet.entity.Ratings;
-import com.viesonet.entity.Users;
+import com.viesonet.entity.ViolationProducts;
 import com.viesonet.service.FavoriteProductService;
 import com.viesonet.service.MediaService;
 import com.viesonet.service.OrdersService;
 import com.viesonet.service.ProductColorsService;
-import com.google.cloud.storage.Acl.User;
 import com.viesonet.entity.Colors;
-import com.viesonet.entity.Products;
-import com.viesonet.entity.Ratings;
-import com.viesonet.entity.Users;
 import com.viesonet.service.ColorsService;
 import com.viesonet.service.ProductsService;
+import com.viesonet.service.ProductsTempService;
 import com.viesonet.service.RatingsService;
+import com.viesonet.service.TicketService;
 import com.viesonet.service.UsersService;
+import com.viesonet.service.ViolationsService;
 import com.viesonet.service.WordBannedService;
 
 @RestController
@@ -68,9 +68,35 @@ public class ProductDetailsController {
     @Autowired
     ProductColorsService productColorsService;
 
+    @Autowired
+    ProductsTempService productsTempService;
+
+    @Autowired
+    TicketService ticketService;
+    // @Autowired
+    // ViolationProductsService violationProductsService;
+
+    // @PostMapping("/report-product/{productId}")
+    // public ViolationProducts reportProduct(@PathVariable int productId,
+    // @RequestParam String reportContent) {
+    // String userId =
+    // SecurityContextHolder.getContext().getAuthentication().getName();
+    // return
+    // violationProductsService.reportProduct(usersService.findUserById(userId),
+    // productsService.findProductById(productId),
+    // reportContent);
+    // }
+
     @GetMapping("/get-product/{productId}")
-    public Products getProduct(@PathVariable int productId) {
-        return productsService.getProduct(productId);
+    public ResponseEntity<?> getProduct(@PathVariable int productId) {
+        Products product = productsService.getProduct(productId);
+        if (product != null) {
+            return ResponseEntity.ok(product); // Trả về sản phẩm với trạng thái OK (200)
+        } else {
+            Map<String, String> errorResponse = new HashMap<>();
+            errorResponse.put("error", "Product not found");
+            return ResponseEntity.status(HttpStatus.NOT_FOUND).body(errorResponse);
+        }
     }
 
     @PostMapping("/rate-product/{productId}")
@@ -145,6 +171,11 @@ public class ProductDetailsController {
                 productsService.findProductById(productId), quantity);
     }
 
+    @PostMapping("/add-product-temp")
+    public ProductsTemp addProductTemp(@RequestBody ProductsTemp productsTemp) {
+        return productsTempService.addProductTemp(productsTemp);
+    }
+
     private boolean isImageUrl(String fileUrl) {
         // Kiểm tra phần mở rộng của URL để xác định loại tệp tin
         String extension = fileUrl.substring(fileUrl.lastIndexOf(".") + 1).toLowerCase();
@@ -157,6 +188,12 @@ public class ProductDetailsController {
     @GetMapping("/products/color")
     public List<Colors> getAllColors() {
         return colorsService.getAllColors();
+    }
+
+    @GetMapping("/get-ticket")
+    public int getTicket() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ticketService.getTicket(userId);
     }
 
 }

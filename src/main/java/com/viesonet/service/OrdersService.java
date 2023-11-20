@@ -14,6 +14,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import com.google.cloud.storage.Acl.User;
 import com.google.firestore.v1.StructuredQuery.Order;
 import com.viesonet.dao.OrderDetailsDao;
 import com.viesonet.dao.OrdersDao;
@@ -75,6 +76,51 @@ public class OrdersService {
         } catch (Exception e) {
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
                     .body("Lỗi khi duyệt sản phẩm : " + e.getMessage());
+        }
+    }
+
+    public Orders addOrder(String userId, String address, float totalAmount, float shipfee) {
+        Orders orders = new Orders();
+        OrderStatus ost = new OrderStatus();
+        Users u = new Users();
+        u.setUserId(userId);
+        orders.setCustomer(u);
+        orders.setOrderDate(new Date());
+        ost.setStatusId(1);
+        orders.setOrderStatus(ost);
+        orders.setAddress(address);
+        orders.setTotalAmount(totalAmount);
+        orders.setShippingFee(shipfee);
+        return ordersDao.saveAndFlush(orders);
+    }
+
+    public ResponseEntity<String> acceptOrders(int orderId) {
+        try {
+            OrderStatus ost = new OrderStatus();
+            Orders o = ordersDao.findCartByOrderId(orderId);
+            ost.setStatusId(4);
+            o.setOrderStatus(ost);
+            ordersDao.saveAndFlush(o);
+            System.out.println("orderId :" + orderId);
+            return ResponseEntity.ok("Khách hàng đã nhận được sản phẩm.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi nhận sản phẩm: " + e.getMessage());
+        }
+    }
+
+    public ResponseEntity<String> cancelOrders(int orderId) {
+        try {
+            OrderStatus ost = new OrderStatus();
+            Orders o = ordersDao.findCartByOrderId(orderId);
+            ost.setStatusId(6);
+            o.setOrderStatus(ost);
+            ordersDao.saveAndFlush(o);
+            System.out.println("orderId :" + orderId);
+            return ResponseEntity.ok("Khách hàng đã hủy đơn hàng.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi hủy đơn hàng: " + e.getMessage());
         }
     }
 

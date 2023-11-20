@@ -98,19 +98,15 @@ public class UsersService {
 		return usersDao.findById(userId).orElse(null);
 	}
 
-	public void updateBackground(String userId, String newBackgroundImageUrl) {
-		Users user = usersDao.findById(userId).orElse(null);
-		if (user != null) {
-			user.setBackground(newBackgroundImageUrl);
-			usersDao.save(user);
-		}
+	public Users updateBackground(Users users, String img) {
+		users.setUserId(users.getUserId());
+		users.setBackground(img);
+		return usersDao.saveAndFlush(users);
 	}
 
-	public void updateAvatar(String userId, String newAvatarImageUrl) {
-		Users user = usersDao.findById(userId).orElse(null);
-		if (user != null) {
-			user.setAvatar(newAvatarImageUrl);
-			usersDao.save(user);
-		}
+	public Users updateAvatar(Users users, String img) {
+		users.setUserId(users.getUserId());
+		users.setAvatar(img);
+		return usersDao.saveAndFlush(users);
 	}
 }
