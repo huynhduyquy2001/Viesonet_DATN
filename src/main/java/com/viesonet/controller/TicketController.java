@@ -18,7 +18,7 @@ import com.viesonet.service.TicketService;
 import com.viesonet.service.UsersService;
 
 @RestController
-@CrossOrigin()
+@CrossOrigin("*")
 public class TicketController {
     @Autowired
     TicketService ticketService;

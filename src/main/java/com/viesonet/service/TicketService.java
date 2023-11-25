@@ -14,6 +14,7 @@ import com.viesonet.dao.HistoryDao;
 import com.viesonet.dao.TotalTicketDao;
 import com.viesonet.dao.UsersDao;
 import com.viesonet.entity.History;
+import com.viesonet.entity.Ticket;
 import com.viesonet.entity.TotalTicket;
 import com.viesonet.entity.Users;
 
@@ -130,6 +131,18 @@ public class TicketService {
             // Nếu ticketCount là null, trả về 0 hoặc xử lý theo yêu cầu của ứng dụng của
             // bạn
             return 0;
+        }
+    }
+
+    public ResponseEntity<Integer> updateTicket(String userId) {
+        Optional<TotalTicket> obj = ticketDao.findExistTicketByUserId(userId);
+        if (obj != null) {
+            TotalTicket newObj = obj.orElse(null);
+            newObj.setTicket(newObj.getTicket() - 1);
+            ticketDao.saveAndFlush(newObj);
+            return new ResponseEntity<>(newObj.getTicket(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(0, HttpStatus.BAD_REQUEST);
         }
     }
 
