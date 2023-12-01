@@ -159,9 +159,12 @@ public class RegisterService {
 
                 String hashedPassword = authConfig.passwordEncoder().encode(password);
                 Users user = new Users();
-                user.setAvatar(gender ? "avatar1.jpg" : "avatar2.jpg");
+                user.setAvatar(gender
+                        ? "https://firebasestorage.googleapis.com/v0/b/viesonet-datn.appspot.com/o/images%2Favatar1.jpg?alt=media&token=cf64cf86-fabd-46db-9b65-1cf860cc1b8a"
+                        : "https://firebasestorage.googleapis.com/v0/b/viesonet-datn.appspot.com/o/images%2Favatar2.jpg?alt=media&token=77fa7db4-48f5-455e-908d-15ec57f60f7f");
                 user.setViolationCount(0);
-                user.setBackground("nen.jpg");
+                user.setBackground(
+                        "https://firebasestorage.googleapis.com/v0/b/viesonet-datn.appspot.com/o/images%2FAAKl0Wq.jfif_1699179685495?alt=media&token=8a7784ee-a767-4352-bbfd-4a0df2e50feb");
                 user.setCreateDate(new Date());
                 user.setUserId(id);
                 user.setBirthday(eighteenYearsAgo);

@@ -66,8 +66,7 @@ public class AuthConfig {
                 .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests()
-                .requestMatchers("/api/forgetPassword/sendCode", "/api/createToken", "/api/register/sendCode",
-                        "/api/register", "/api/forgetPassword", "/chat/**", "/private-notification/**")
+                .requestMatchers("/**")
                 .permitAll()
                 .requestMatchers("/admin/**").hasRole("1")
                 .requestMatchers("/staff/**").hasAnyRole("2", "1")
