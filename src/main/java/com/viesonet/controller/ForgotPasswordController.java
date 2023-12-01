@@ -55,7 +55,7 @@ public class ForgotPasswordController {
 
 	@PostMapping("/api/forgetPassword/sendCode")
 	public ResponseEntity<?> quenmatkhau(@RequestBody Map<String, Object> data) {
-		String phone = (String) data.get("phone");
+		String email = (String) data.get("email");
 		MimeMessage message = sender.createMimeMessage();
 
 		// Kiểm tra thời gian chờ giữa các lần gửi mã
@@ -69,7 +69,7 @@ public class ForgotPasswordController {
 		// Cập nhật thời gian gửi mã cuối cùng
 		lastSentTime = currentTime;
 
-		return forgotPasswordService.sendCode(phone, message);
+		return forgotPasswordService.sendCode(email, message);
 
 	}
 

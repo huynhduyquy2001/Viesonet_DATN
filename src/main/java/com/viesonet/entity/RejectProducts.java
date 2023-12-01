@@ -31,7 +31,7 @@ public class RejectProducts {
     private int rejectId;
     private int productId;
     private String productName;
-    private String username;
+    private String Username;
     private float originalPrice;
     private Date date;
     private String reason;
