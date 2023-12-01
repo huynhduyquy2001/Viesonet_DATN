@@ -144,8 +144,8 @@ public class OrdersService {
     }
 
     @Transactional // Thêm @Transactional trước phương thức
-    public Float exeGetTotalSalesForYearAndCustomer(String sellerId, int year) {
-        return ordersDao.exeGetTotalSalesForYearAndCustomer(sellerId, year);
+    public List<Float> exeGetTotalSalesForYearAndCustomer(String sellerId, int year) {
+        return ordersDao.getTotalSalesForCustomerByYear(sellerId, year);
     }
 
     @Transactional // Thêm @Transactional trước phương thức
