@@ -12,6 +12,7 @@ import java.util.Map;
 import org.apache.http.HttpStatus;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
+import org.springframework.messaging.simp.SimpMessagingTemplate;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -22,12 +23,17 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.viesonet.entity.DeliveryAddress;
+import com.viesonet.entity.Notifications;
 import com.viesonet.entity.Orders;
+import com.viesonet.entity.ProductColors;
+import com.viesonet.entity.Products;
 import com.viesonet.entity.ShoppingCart;
 import com.viesonet.service.DeliveryAddressService;
 import com.viesonet.service.FavoriteProductService;
+import com.viesonet.service.NotificationsService;
 import com.viesonet.service.OrderDetailsService;
 import com.viesonet.service.OrdersService;
+import com.viesonet.service.ProductColorsService;
 import com.viesonet.service.ProductsService;
 import com.viesonet.service.ShoppingCartService;
 import com.viesonet.service.UsersService;
@@ -48,24 +54,58 @@ public class ShoppingCartController {
     OrderDetailsService orderDetailsService;
 
     @Autowired
+    NotificationsService notificationsService;
+
+    @Autowired
     FavoriteProductService favoriteProductService;
 
     @Autowired
     UsersService usersService;
 
     @Autowired
+    ProductColorsService productColorsService;
+
+    @Autowired
     DeliveryAddressService deliveryAddressService;
+
+    @Autowired
+    private SimpMessagingTemplate messagingTemplate;
 
     @GetMapping("/get-product-shoppingcart")
     public List<ShoppingCart> getProductByShoppingCart() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return shoppingCartService.findShoppingCartByUserId(userId);
+
+        List<ShoppingCart> shoppingCart = shoppingCartService.findShoppingCartByUserId(userId);
+
+        for (int i = 0; i < shoppingCart.size(); i++) {
+            ProductColors productColors = productColorsService.findByProductIdAndColor(shoppingCart.get(i).getProduct(),
+                    shoppingCart.get(i).getColor());
+            if (productColors.getQuantity() == 0) {
+                shoppingCart.get(i).setQuantity(0);
+            } else if (productColors.getQuantity() < shoppingCart.get(i).getQuantity()) {
+                shoppingCart.get(i).setQuantity(productColors.getQuantity());
+            }
+        }
+        return shoppingCart;
+
     }
 
     @GetMapping("/get-address")
     public List<DeliveryAddress> getAddress() {
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
         return deliveryAddressService.getAddress(userId);
+    }
+
+    @GetMapping("/checkQuantity/{productId}/{color}/{totalQuantity}")
+    public Boolean checkQuantity(@PathVariable int productId, @PathVariable String color,
+            @PathVariable int totalQuantity) {
+        ProductColors productColors = productColorsService
+                .findByProductIdAndColor(productsService.findProductById(productId), color);
+        if (productColors.getQuantity() < totalQuantity) {
+            return false;
+        } else {
+            return true;
+        }
     }
 
     @PostMapping("/setQuantity-to-cart")
@@ -201,6 +241,12 @@ public class ShoppingCartController {
             List<ShoppingCart> shoppingCart = shoppingCartService.getListProductToCart(userId, productIdList,
                     colorList);
 
+            // Trừ số lượng trong Product
+            for (int i = 0; i < shoppingCart.size(); i++) {
+                productColorsService.minusProduct(shoppingCart.get(i).getProduct(), shoppingCart.get(i).getQuantity(),
+                        shoppingCart.get(i).getColor());
+            }
+
             // Lưu vào order
             Orders orders = ordersService.addOrder(userId, address, totalAmount, shipfee);
 
@@ -215,6 +261,25 @@ public class ShoppingCartController {
                 // Xóa các sản phẩm đã thêm vào orderDetail ra khỏi giỏ hàng
                 shoppingCartService.deleteToCart(String.valueOf(shoppingCart.get(i).getProduct().getProductId()),
                         userId, shoppingCart.get(i).getColor());
+            }
+
+            // thêm thông báo
+            String previousUserId = "";
+
+            for (int i = 0; i < shoppingCart.size(); i++) {
+                String currentUserId = shoppingCart.get(i).getProduct().getUser().getUserId();
+                if (currentUserId.equals(previousUserId) == false) {
+                    System.out.println("1");
+                    // thêm thông báo
+                    Notifications notifications = notificationsService.createNotifications(
+                            usersService.findUserById(userId), 0,
+                            shoppingCart.get(i).getProduct().getUser(), null, 7);
+
+                    messagingTemplate.convertAndSend("/private-user", notifications);
+
+                    // Update the previous user ID
+                    previousUserId = currentUserId;
+                }
             }
 
             return ResponseEntity.ok(ResponseEntity.ok("Thanh toán thành công đơn hàng đang chờ xác nhận"));

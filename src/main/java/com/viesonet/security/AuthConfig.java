@@ -69,10 +69,9 @@ public class AuthConfig {
                 .requestMatchers("/api/forgetPassword/sendCode", "/api/createToken", "/api/register/sendCode",
                         "/api/register", "/api/forgetPassword", "/chat/**", "/private-notification/**")
                 .permitAll()
-                .requestMatchers("/staff/**").hasAnyRole("2", "1")
                 .requestMatchers("/admin/**").hasRole("1")
-                .requestMatchers("/**", "/likepost/**")
-                .hasAnyRole("1", "2", "3", "4")
+                .requestMatchers("/staff/**").hasAnyRole("2", "1")
+                .requestMatchers("/**").hasAnyRole("1", "2", "3", "4")
                 .anyRequest().authenticated()
                 .and().rememberMe().rememberMeParameter("remember")
                 .and().exceptionHandling() // Xử lý ngoại lệ khi người dùng chưa đăng nhập

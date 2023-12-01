@@ -14,14 +14,6 @@ import com.viesonet.entity.ViolationsPosts;
 
 public interface OrdersDao extends JpaRepository<Orders, Integer> {
 
-        // đếm số lượng đơn hàng
-        @Procedure("sp_SoLuongDonHangDuyet")
-        List<Object[]> execountApprovedOrdersByMonth(String sellerId);
-
-        // doanh thu theo tháng
-        @Procedure("sp_doanhThuThang")
-        List<Object[]> exeTotalAmountByMonth(String sellerId);
-
         @Query("SELECT p.orderId FROM Orders p WHERE p.orderDate >= :startDate")
         List<Integer> getShoppingWithinLast7Days(Date startDate);
 
@@ -58,4 +50,27 @@ public interface OrdersDao extends JpaRepository<Orders, Integer> {
                         "GROUP BY os.statusName")
         List<Object[]> getOrderStatusCountsForOtherBuyers(@Param("userId") String userId);
 
+        // đếm số lượng đơn hàng
+        @Procedure("sp_SoLuongDonHangDuyet")
+        List<Object[]> execountApprovedOrdersByMonth(String sellerId);
+
+        @Procedure("GetGroupedYearsFromOrders")
+        List<Integer> getyear();
+
+        @Procedure("GetOrderCountByYear")
+        List<Integer> GetOrderCountByYear(int year);
+
+        @Procedure("GetOrderCacelCountByYear")
+        List<Integer> GetOrderCacelCountByYear(int year);
+
+        // doanh thu theo tháng
+        @Procedure("sp_doanhThuThang")
+        List<Object[]> exeTotalAmountByMonth(String sellerId);
+
+        @Procedure("GetTotalSalesForYearAndCustomer")
+        Float exeGetTotalSalesForYearAndCustomer(String sellerId, int year);
+
+        // lấy tổng số tiền theo năm
+        @Procedure("YourStoredProcedureName")
+        List<Float> getTotalSalesForCustomerByYear(String customerId, int year);
 }

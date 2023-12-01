@@ -280,7 +280,8 @@ public class PaymentController {
         }
 
         if ("00".equals(vnpResponseCode) && checkTransaction == 2) {
-            ticketService.buyTicket(usersService.findUserById(currentUserId), ticketCount, totalAmount);
+            ticketService.buyTicket(usersService.findUserById(currentUserId), ticketCount);
+            ticketService.addNewHistory(usersService.findUserById(currentUserId), ticketCount, totalAmount);
             totalAmount = 0;
             ticketCount = 0;
         }

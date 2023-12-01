@@ -3,6 +3,7 @@ package com.viesonet.admin;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -41,7 +42,8 @@ public class UsermanagerController {
 
 	@GetMapping("/admin/usermanager/profile")
 	public Users profile() {
-		return userDAO.findUserById("UI001");
+		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+		return userDAO.findUserById(userId);
 	}
 
 	@GetMapping("/admin/usermanager/search/{key}")

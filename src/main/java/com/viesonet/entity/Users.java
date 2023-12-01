@@ -123,5 +123,9 @@ public class Users {
 
 	@JsonIgnore
 	@OneToMany(mappedBy = "user")
-	private List<Ticket> tickets;
+	private List<History> history;
+
+	@JsonIgnore
+	@OneToMany(mappedBy = "user")
+	private List<TotalTicket> tickets;
 }
