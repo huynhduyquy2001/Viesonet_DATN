@@ -69,7 +69,7 @@ public class AuthConfig {
                 .requestMatchers("/api/forgetPassword/sendCode", "/api/createToken",
                         "/api/register/sendCode",
                         "/api/register", "/api/forgetPassword", "/chat/**", "/private-notification/**",
-                        "/loadnotification", "/loadallnotification", "/error")
+                        "/loadnotification", "/loadallnotification", "/error", "payment-callback")
                 .permitAll()
                 .requestMatchers("/staff/**").hasAnyRole("2", "1")
                 .requestMatchers("/admin/**").hasRole("1")
