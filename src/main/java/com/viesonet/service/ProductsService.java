@@ -194,8 +194,8 @@ public class ProductsService {
     }
 
     @Transactional // Thêm @Transactional trước phương thức
-    public List<Object[]> exeproductBestSelling(String sellerId) {
-        return productsDao.exeproductBestSelling(sellerId);
+    public List<Object[]> exeproductBestSelling(String sellerId, int year) {
+        return productsDao.exeproductBestSelling(sellerId, year);
     }
 
     public Page<Products> findProductFavoritByName(int page, String keyF) {

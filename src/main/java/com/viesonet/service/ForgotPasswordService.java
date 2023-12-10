@@ -33,7 +33,7 @@ public class ForgotPasswordService {
 
     private int[] randomNumbers;
 
-    String savedPhone;
+    String savedEmail;
 
     private static final long MAX_CODE_LIFETIME = 60 * 1000;
 
@@ -50,8 +50,8 @@ public class ForgotPasswordService {
         return numbers;
     }
 
-    public ResponseEntity<?> sendCode(String phone, MimeMessage message) {
-        Accounts accounts = accountsService.findByPhoneNumber(phone);
+    public ResponseEntity<?> sendCode(String email, MimeMessage message) {
+        Accounts accounts = accountsService.findByEmail(email);
         randomNumbers = getRandomNumbers();
 
         if (accounts == null) {
@@ -70,7 +70,7 @@ public class ForgotPasswordService {
             return ResponseEntity.badRequest().body(Collections.singletonMap("message", "Tài khoản này đã bị khóa !"));
         } else {
             Users users = usersService.getById(accounts.getUser().getUserId());
-            savedPhone = phone;
+            savedEmail = email;
             try {
                 MimeMessageHelper helper = new MimeMessageHelper(message, true, "utf-8");
                 helper.setFrom("VIE_SONET");
@@ -91,7 +91,7 @@ public class ForgotPasswordService {
 
     public ResponseEntity<?> forgetPass(String code, String matKhauMoi, String matKhauXacNhan, String hashedNewPassword,
             PasswordEncoder passwordEncoder) {
-        Accounts accounts = accountsService.findByPhoneNumber(savedPhone);
+        Accounts accounts = accountsService.findByEmail(savedEmail);
 
         String expectedCode = Arrays.toString(randomNumbers).replaceAll("\\[|\\]|,|\\s", "");
 

@@ -62,5 +62,5 @@ public interface ProductsDao extends JpaRepository<Products, Integer> {
         Products findByProductId(int productId);
 
         @Procedure("sp_SPBANCHAY")
-        List<Object[]> exeproductBestSelling(String sellerId);
+        List<Object[]> exeproductBestSelling(String sellerId, int year);
 }

@@ -11,32 +11,20 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 import org.springframework.http.HttpStatus;
-import com.viesonet.entity.Ticket;
+import com.viesonet.entity.History;
+import com.viesonet.entity.TotalTicket;
 import com.viesonet.entity.Users;
 import com.viesonet.service.TicketService;
 import com.viesonet.service.UsersService;
 
 @RestController
-@CrossOrigin()
+@CrossOrigin("*")
 public class TicketController {
     @Autowired
     TicketService ticketService;
 
     @Autowired
     UsersService usersService;
-
-    @PostMapping("/buyTicket/{ticket}/{totalAmount}")
-    public ResponseEntity<Ticket> buyTicket(@PathVariable int ticket, @PathVariable float totalAmount) {
-        try {
-            String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-            Ticket purchasedTicket = ticketService.buyTicket(usersService.findUserById(userId), ticket, totalAmount);
-            return ResponseEntity.ok(purchasedTicket);
-        } catch (Exception e) {
-            // Log the exception for debugging purposes
-            e.printStackTrace();
-            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-        }
-    }
 
     @GetMapping("/getUserTicketCount")
     public ResponseEntity<Integer> getUserTicketCount() {
@@ -54,4 +42,16 @@ public class TicketController {
         }
     }
 
+    @PostMapping("/add-ticket")
+    public ResponseEntity<TotalTicket> addTicketOnRole() {
+        try {
+            String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+            Users user = usersService.findUserById(userId);
+            ResponseEntity<TotalTicket> add = ticketService.addTicket(user);
+            return ResponseEntity.ok(add.getBody()); // Unwrap the ResponseEntity
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

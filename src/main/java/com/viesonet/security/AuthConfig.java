@@ -66,16 +66,19 @@ public class AuthConfig {
                 .cors(withDefaults())
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests()
-                .requestMatchers("/api/forgetPassword/sendCode", "/api/createToken", "/api/register/sendCode",
-                        "/api/register", "/api/forgetPassword", "/chat/**", "/private-notification/**")
+                .requestMatchers("/api/forgetPassword/sendCode", "/api/createToken",
+                        "/api/register/sendCode",
+                        "/api/register", "/api/forgetPassword", "/chat/**", "/private-notification/**",
+                        "/loadnotification", "/loadallnotification", "/error")
                 .permitAll()
                 .requestMatchers("/staff/**").hasAnyRole("2", "1")
                 .requestMatchers("/admin/**").hasRole("1")
-                .requestMatchers("/**").hasAnyRole("1", "2", "3", "4")
+                .requestMatchers("/**", "/api/changePassword")
+                .hasAnyRole("1", "2", "3", "4")
                 .anyRequest().authenticated()
                 .and().rememberMe().rememberMeParameter("remember")
                 .and().exceptionHandling() // Xử lý ngoại lệ khi người dùng chưa đăng nhập
-                .accessDeniedPage("/error").authenticationEntryPoint(JwtAuthenticationEntryPoint)
+                .authenticationEntryPoint(JwtAuthenticationEntryPoint)
                 .and()
                 .addFilterBefore(authenticationJwtTokenFilter(), UsernamePasswordAuthenticationFilter.class)
                 .sessionManagement(management -> management

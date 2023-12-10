@@ -27,12 +27,13 @@ public class UserDetailsImpl implements UserDetails {
     }
 
     public static UserDetailsImpl build(Accounts user) {
+        System.out.println("role la: " + user.getRole().getRoleId());
         return new UserDetailsImpl(
                 user.getPhoneNumber(),
                 user.getUser().getUserId(),
                 user.getEmail(),
                 user.getPassword(),
-                user.getRole().getRoleId()); // Sử dụng .name() để lấy tên vai trò
+                user.getRole().getRoleId());
     }
 
     public String getId() {

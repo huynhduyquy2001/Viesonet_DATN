@@ -1,6 +1,9 @@
 package com.viesonet.entity;
 
 import java.util.Date;
+import java.util.List;
+
+import com.fasterxml.jackson.annotation.JsonIgnore;
 
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
@@ -18,21 +21,26 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+// Trong class Ticket
 @Entity
-@Table(name = "RejectProducts")
+@Table(name = "TotalTicket")
 @Data
 @Getter
 @Setter
 @NoArgsConstructor
 @AllArgsConstructor
-public class RejectProducts {
+public class TotalTicket {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int rejectId;
-    private int productId;
-    private String productName;
-    private String Username;
-    private float originalPrice;
-    private Date date;
-    private String reason;
+    private int ticketId;
+
+    @ManyToOne
+    @JoinColumn(name = "userId") // Tên cột tham chiếu trong bảng Ticket
+    private Users user; // Thay vì Acl.User, bạn sử dụng Users
+
+    private int ticket;
+
+    @JsonIgnore
+    @OneToMany(mappedBy = "ticket")
+    private List<History> histories;
 }

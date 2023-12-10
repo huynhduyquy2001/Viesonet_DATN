@@ -18,6 +18,15 @@ public interface OrdersDao extends JpaRepository<Orders, Integer> {
         @Procedure("sp_SoLuongDonHangDuyet")
         List<Object[]> execountApprovedOrdersByMonth(String sellerId);
 
+        @Procedure("GetGroupedYearsFromOrders")
+        List<Integer> getyear();
+
+        @Procedure("GetOrderCountByYear")
+        List<Integer> GetOrderCountByYear(int year);
+
+        @Procedure("GetOrderCacelCountByYear")
+        List<Integer> GetOrderCacelCountByYear(int year);
+
         // doanh thu theo tháng
         @Procedure("sp_doanhThuThang")
         List<Object[]> exeTotalAmountByMonth(String sellerId);
@@ -35,13 +44,12 @@ public interface OrdersDao extends JpaRepository<Orders, Integer> {
                         "WHERE o.customer.userId = :customerId")
         List<Object[]> findOrdersByCustomerId(@Param("customerId") String customerId);
 
-        @Query("SELECT o, p, od, os, u FROM Orders o " +
-                        "JOIN o.customer u " +
-                        "JOIN o.orderStatus os " +
+        @Query("SELECT o, od, p ,u FROM Orders o " +
                         "JOIN o.orderDetails od " +
                         "JOIN od.product p " +
-                        "WHERE u.userId <> :sellerId " + // Chọn các đơn hàng mà userId của người dùng không phải là
-                                                         // người bán
+                        "JOIN p.user u " +
+                        "WHERE u.userId = :sellerId " + // Chọn các đơn hàng mà userId của người dùng không phải là
+                                                        // người bán
                         "AND od.product.productId = p.productId")
         List<Object[]> getPendingConfirmationOrdersForSeller(@Param("sellerId") String sellerId);
 
@@ -57,5 +65,9 @@ public interface OrdersDao extends JpaRepository<Orders, Integer> {
                         "WHERE u.userId <> :userId " +
                         "GROUP BY os.statusName")
         List<Object[]> getOrderStatusCountsForOtherBuyers(@Param("userId") String userId);
+
+        // lấy tổng số tiền theo năm
+        @Procedure("YourStoredProcedureName")
+        List<Float> getTotalSalesForCustomerByYear(String customerId, int year);
 
 }
