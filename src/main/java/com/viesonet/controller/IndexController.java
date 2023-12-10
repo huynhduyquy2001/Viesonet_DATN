@@ -31,6 +31,7 @@ import com.viesonet.entity.AccountAndFollow;
 import com.viesonet.entity.Comments;
 import com.viesonet.entity.Follow;
 import com.viesonet.entity.Images;
+import com.viesonet.entity.Interaction;
 import com.viesonet.entity.Notifications;
 import com.viesonet.entity.Posts;
 import com.viesonet.entity.Reply;
@@ -229,6 +230,22 @@ public class IndexController {
 	public ResponseEntity<Posts> dangBai(@RequestParam String content) {
 		String userId = SecurityContextHolder.getContext().getAuthentication().getName();
 		Posts post = postsService.post(usersService.findUserById(userId), content);
+		// Thêm thông báo
+		List<Follow> fl = followService.getFollowing(userId);
+		List<Interaction> itn = interactionService.findListInteraction(userId);
+		if (itn.size() == 0) {
+			for (Follow list : fl) {
+				Notifications notifications = notificationsService.createNotifications(
+						usersService.findUserById(userId), 0, list.getFollower(), post, 1);
+				messagingTemplate.convertAndSend("/private-user", notifications);
+			}
+		} else {
+			for (Interaction it : itn) {
+				Notifications notifications = notificationsService.createNotifications(
+						usersService.findUserById(userId), 0, it.getInteractingPerson(), post, 1);
+				messagingTemplate.convertAndSend("/private-user", notifications);
+			}
+		}
 		return new ResponseEntity<>(post, HttpStatus.OK);
 	}
 
