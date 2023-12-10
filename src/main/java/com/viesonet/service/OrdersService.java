@@ -79,6 +79,22 @@ public class OrdersService {
         }
     }
 
+    // Duyệt đơn háng
+    public ResponseEntity<String> approveorders3(int orderId) {
+        try {
+            OrderStatus ost = new OrderStatus();
+            Orders o = ordersDao.findCartByOrderId(orderId);
+            ost.setStatusId(3);
+            o.setOrderStatus(ost);
+            ordersDao.saveAndFlush(o);
+            System.out.println("orderId :" + orderId);
+            return ResponseEntity.ok("Sản phẩm đã được duyệt.");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi duyệt sản phẩm : " + e.getMessage());
+        }
+    }
+
     public Orders addOrder(String userId, String address, float totalAmount, float shipfee) {
         Orders orders = new Orders();
         OrderStatus ost = new OrderStatus();

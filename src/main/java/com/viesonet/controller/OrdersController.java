@@ -60,6 +60,17 @@ public class OrdersController {
         }
     }
 
+    @PostMapping("/approveorders3/{orderID}")
+    public ResponseEntity<String> approveorders3(@PathVariable("orderID") int orderId) {
+        try {
+            ordersService.approveorders3(orderId);
+            return ResponseEntity.ok("{\"message\": \"Sản phẩm đã được duyệt.\"}");
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR)
+                    .body("Lỗi khi duyệt sản phẩm : " + e.getMessage());
+        }
+    }
+
     @PostMapping("/acceptOrders/{orderID}")
     public ResponseEntity<String> acceptOrders(@PathVariable("orderID") int orderId) {
         try {
