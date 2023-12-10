@@ -34,15 +34,6 @@ public class MyStoreController {
     @Autowired
     UsersService userDAO;
 
-    @Autowired
-    OrderDetailsService orderDetailsService;
-
-    @Autowired
-    AccountsService accountService;
-
-    @Autowired
-    UsersService userDAO;
-
     @GetMapping("/mystore/{userId}/{page}")
     public Page<Products> getShoppingByPage(@PathVariable int page, @PathVariable String userId) {
         return productsService.findPostsProductMyStore(page, 9, userId);
