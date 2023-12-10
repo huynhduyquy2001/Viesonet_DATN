@@ -31,9 +31,6 @@ public interface OrdersDao extends JpaRepository<Orders, Integer> {
         @Procedure("sp_doanhThuThang")
         List<Object[]> exeTotalAmountByMonth(String sellerId);
 
-        @Procedure("GetTotalSalesForYearAndCustomer")
-        Float exeGetTotalSalesForYearAndCustomer(String sellerId, int year);
-
         @Query("SELECT p.orderId FROM Orders p WHERE p.orderDate >= :startDate")
         List<Integer> getShoppingWithinLast7Days(Date startDate);
 

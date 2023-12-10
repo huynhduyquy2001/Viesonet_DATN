@@ -85,20 +85,6 @@ public class TicketService {
         }
     }
 
-    public int getTicket(String userId) {
-        Integer ticketCount = ticketDao.findTicketByUserId(userId);
-
-        // Kiểm tra nếu ticketCount không null
-        if (ticketCount != null) {
-            // Chuyển đổi ticketCount thành int (hoặc bất kỳ kiểu phù hợp nào khác)
-            return ticketCount.intValue();
-        } else {
-            // Nếu ticketCount là null, trả về 0 hoặc xử lý theo yêu cầu của ứng dụng của
-            // bạn
-            return 0;
-        }
-    }
-
     // Thống kê người mua lượt đăng bài
     public Object reportTopTicket() {
         return ticketDao.reportTopTicket();

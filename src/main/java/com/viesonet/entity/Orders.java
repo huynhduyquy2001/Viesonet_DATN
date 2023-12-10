@@ -33,8 +33,7 @@ public class Orders {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int orderId;
- 
-    
+
     @Temporal(TemporalType.TIMESTAMP)
     private Date orderDate;
 
@@ -54,6 +53,5 @@ public class Orders {
     @JsonIgnore
     @OneToMany(mappedBy = "order")
     private List<Returns> returns;
-    private float shippingFee;
 
 }

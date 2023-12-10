@@ -190,10 +190,11 @@ public class ProductDetailsController {
         return colorsService.getAllColors();
     }
 
-    @GetMapping("/get-ticket")
-    public int getTicket() {
-        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
-        return ticketService.getTicket(userId);
-    }
+    // @GetMapping("/get-ticket")
+    // public int getTicket() {
+    // String userId =
+    // SecurityContextHolder.getContext().getAuthentication().getName();
+    // return ticketService.getTicket(userId);
+    // }
 
 }
