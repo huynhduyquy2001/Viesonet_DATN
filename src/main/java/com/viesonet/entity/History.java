@@ -21,7 +21,7 @@ import lombok.Setter;
 import jakarta.persistence.Temporal;
 
 @Entity
-@Table(name = "Images")
+@Table(name = "History")
 @Data
 @NoArgsConstructor
 @AllArgsConstructor

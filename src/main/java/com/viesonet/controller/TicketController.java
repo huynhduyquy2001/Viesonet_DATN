@@ -18,7 +18,7 @@ import com.viesonet.service.TicketService;
 import com.viesonet.service.UsersService;
 
 @RestController
-@CrossOrigin()
+@CrossOrigin("*")
 public class TicketController {
     @Autowired
     TicketService ticketService;
@@ -42,4 +42,16 @@ public class TicketController {
         }
     }
 
+    @PostMapping("/add-ticket")
+    public ResponseEntity<TotalTicket> addTicketOnRole() {
+        try {
+            String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+            Users user = usersService.findUserById(userId);
+            ResponseEntity<TotalTicket> add = ticketService.addTicket(user);
+            return ResponseEntity.ok(add.getBody()); // Unwrap the ResponseEntity
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
 }

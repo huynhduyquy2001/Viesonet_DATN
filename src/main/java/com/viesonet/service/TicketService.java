@@ -14,6 +14,7 @@ import com.viesonet.dao.HistoryDao;
 import com.viesonet.dao.TotalTicketDao;
 import com.viesonet.dao.UsersDao;
 import com.viesonet.entity.History;
+import com.viesonet.entity.Ticket;
 import com.viesonet.entity.TotalTicket;
 import com.viesonet.entity.Users;
 
@@ -30,25 +31,15 @@ public class TicketService {
     @Autowired
     HistoryDao historyDao;
 
-    public ResponseEntity<?> buyTicket(Users user, int ticket, float totalAmount) {
+    public ResponseEntity<?> buyTicket(Users user, int ticket) {
         // Kiểm tra xem có bản ghi TotalTicket với userId tương ứng không
         Optional<TotalTicket> existingTotalTicket = ticketDao.findExistTicketByUserId(user.getUserId());
-        // Lấy thông tin về vé từ TicketDao
-        Integer totalTicket = ticketDao.findTicketIdByUserId(user.getUserId());
+
         if (existingTotalTicket.isPresent()) {
             // Nếu đã tồn tại, cộng thêm vào giá trị đã mua
             TotalTicket currentTotalTicket = existingTotalTicket.get();
             currentTotalTicket.setTicket(currentTotalTicket.getTicket() + ticket);
             ticketDao.saveAndFlush(currentTotalTicket);
-
-            // Tạo một lịch sử mới
-            History newTicket = new History();
-            newTicket.setUser(user);
-            newTicket.setTicketId(totalTicket);
-            newTicket.setTicketCount(ticket);
-            newTicket.setBuyDate(new Date());
-            newTicket.setTotalAmount(totalAmount);
-            historyDao.saveAndFlush(newTicket);
 
             return ResponseEntity.status(HttpStatus.OK).body("Ticket purchased successfully.");
         } else {
@@ -58,16 +49,35 @@ public class TicketService {
             newTotalTicket.setTicket(ticket);
             ticketDao.saveAndFlush(newTotalTicket);
 
-            // Tạo một lịch sử mới
-            History newTicket = new History();
-            newTicket.setUser(user);
-            newTicket.setTicketId(totalTicket);
-            newTicket.setTicketCount(ticket);
-            newTicket.setBuyDate(new Date());
-            newTicket.setTotalAmount(totalAmount);
-            historyDao.saveAndFlush(newTicket);
-
             return ResponseEntity.status(HttpStatus.OK).body("Ticket purchased successfully.");
+        }
+    }
+
+    public ResponseEntity<?> addNewHistory(Users user, int ticketCount, float totalAmount) {
+        try {
+            // Lấy thông tin vé từ TicketDao
+            Integer ticketId = ticketDao.findTicketIdByUserId(user.getUserId());
+
+            // Kiểm tra xem ticketId có tồn tại hay không
+            if (ticketId != null) {
+                TotalTicket totalTicket = new TotalTicket();
+                totalTicket.setTicketId(ticketId);
+
+                History newHistory = new History();
+                newHistory.setUser(user);
+                newHistory.setTicket(totalTicket);
+                newHistory.setTicketCount(ticketCount);
+                newHistory.setTotalAmount(totalAmount);
+                newHistory.setBuyDate(new Date());
+
+                historyDao.saveAndFlush(newHistory);
+                return ResponseEntity.status(HttpStatus.OK).body("History added successfully.");
+            } else {
+                return ResponseEntity.status(HttpStatus.NOT_FOUND).body("Ticket not found for the specified user.");
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 
@@ -85,6 +95,14 @@ public class TicketService {
         }
     }
 
+    public ResponseEntity<TotalTicket> addTicket(Users user) {
+        TotalTicket newTotalTicket = new TotalTicket();
+        newTotalTicket.setUser(user);
+        newTotalTicket.setTicket(0);
+        ticketDao.saveAndFlush(newTotalTicket);
+        return ResponseEntity.ok(newTotalTicket);
+    }
+
     // Thống kê người mua lượt đăng bài
     public Object reportTopTicket() {
         return ticketDao.reportTopTicket();
@@ -100,6 +118,32 @@ public class TicketService {
 
     public Object reportCountUserBuyMonth(int buyDate) {
         return ticketDao.reportCountUserByMonth(buyDate);
+    }
+
+    public int getTicket(String userId) {
+        Integer ticketCount = ticketDao.findTicketByUserId(userId);
+
+        // Kiểm tra nếu ticketCount không null
+        if (ticketCount != null) {
+            // Chuyển đổi ticketCount thành int (hoặc bất kỳ kiểu phù hợp nào khác)
+            return ticketCount.intValue();
+        } else {
+            // Nếu ticketCount là null, trả về 0 hoặc xử lý theo yêu cầu của ứng dụng của
+            // bạn
+            return 0;
+        }
+    }
+
+    public ResponseEntity<Integer> updateTicket(String userId) {
+        Optional<TotalTicket> obj = ticketDao.findExistTicketByUserId(userId);
+        if (obj != null) {
+            TotalTicket newObj = obj.orElse(null);
+            newObj.setTicket(newObj.getTicket() - 1);
+            ticketDao.saveAndFlush(newObj);
+            return new ResponseEntity<>(newObj.getTicket(), HttpStatus.OK);
+        } else {
+            return new ResponseEntity<>(0, HttpStatus.BAD_REQUEST);
+        }
     }
 
 }

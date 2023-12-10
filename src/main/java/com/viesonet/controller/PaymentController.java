@@ -280,22 +280,24 @@ public class PaymentController {
         }
 
         if ("00".equals(vnpResponseCode) && checkTransaction == 2) {
-            ticketService.buyTicket(usersService.findUserById(currentUserId), ticketCount, totalAmount);
+            ticketService.buyTicket(usersService.findUserById(currentUserId), ticketCount);
+            ticketService.addNewHistory(usersService.findUserById(currentUserId), ticketCount, totalAmount);
             totalAmount = 0;
             ticketCount = 0;
         }
         String responseJSON = null;
         if ("00".equals(vnpResponseCode) && checkTransaction == 1) {
             // Chuyển sang trang đơn hàng
-            responseJSON = "<script>window.location.href='http://127.0.0.1:5501/Index.html#!/order/" +
+            responseJSON = "<script>window.location.href='http://127.0.0.1:5501/#!/order/"
+                    +
                     currentUserId
                     + "';</script>";
         } else if ("00".equals(vnpResponseCode) && checkTransaction == 2) {
-            responseJSON = "<script>window.location.href='http://127.0.0.1:5501/Index.html#!/mystore/"
+            responseJSON = "<script>window.location.href='http://127.0.0.1:5501/#!/mystore/"
                     + currentUserId + "/0';</script>";
         } else {
             // Chuyển sang trang giỏ hàng
-            responseJSON = "<script>window.location.href='http://127.0.0.1:5501/Index.html#!';</script>";
+            responseJSON = "<script>window.location.href='http://127.0.0.1:5501/#!/';</script>";
         }
         checkTransaction = 0;
         return ResponseEntity.status(HttpStatus.OK).body(responseJSON);

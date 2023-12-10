@@ -197,4 +197,10 @@ public class ProductDetailsController {
     // return ticketService.getTicket(userId);
     // }
 
+    @GetMapping("/update-ticket")
+    public ResponseEntity<Integer> updateTicket() {
+        String userId = SecurityContextHolder.getContext().getAuthentication().getName();
+        return ticketService.updateTicket(userId);
+    }
+
 }
