@@ -69,10 +69,10 @@ public class PostProductController {
     }
 
     @PostMapping("/staff/postsproduct/accept/{productId}")
-    public ResponseEntity<Object> accept(@PathVariable int productId) {
+    public ResponseEntity<?> accept(@PathVariable int productId) {
         productsService.acceptByProductId(productId);
-        Page<Object> result = productsService.findPostsProductWithProcessing(0, 9);
-        return ResponseEntity.ok(result);
+        // Page<Object> result = productsService.findPostsProductWithProcessing(0, 9);
+        return ResponseEntity.ok().build();
     }
 
 }

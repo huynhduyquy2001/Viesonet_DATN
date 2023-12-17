@@ -42,6 +42,7 @@ import com.viesonet.service.ShoppingCartService;
 import com.viesonet.service.TicketService;
 import com.viesonet.service.UsersService;
 
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 
 @RestController
@@ -72,12 +73,19 @@ public class PaymentController {
     private static int checkTransaction = 0;
     private static int ticketCount;
 
+    public String getIp(HttpServletRequest request) {
+        // Lấy địa chỉ IP của người gửi yêu cầu
+        String ipAddress = request.getRemoteAddr();
+        return ipAddress;
+    }
+
     @PostMapping("/create_payment_shoppingcart/{amount}/{address}/{shipfee}")
     public ResponseEntity<?> create_payment_shoppingcart(
             @RequestBody List<Map<String, String>> requestData,
             @PathVariable int amount,
             @PathVariable String address,
-            @PathVariable float shipfee)
+            @PathVariable float shipfee,
+            HttpServletRequest request)
             throws UnsupportedEncodingException {
 
         String userId = SecurityContextHolder.getContext().getAuthentication().getName();
@@ -104,7 +112,7 @@ public class PaymentController {
         // String bankCode = req.getParameter("bankCode");
         long totalPrice = Long.parseLong(String.valueOf(amount));
         String vnp_TxnRef = PaymentConfig.getRandomNumber(8);
-        String vnp_IpAddr = "127.0.0.1";
+        String vnp_IpAddr = "d3s1t2rcfq9f81.cloudfront.net";
 
         String vnp_TmnCode = PaymentConfig.vnp_TmnCode;
 
@@ -124,6 +132,7 @@ public class PaymentController {
         vnp_Params.put("vnp_IpAddr", vnp_IpAddr);
 
         Calendar cld = Calendar.getInstance(TimeZone.getTimeZone("Etc/GMT+7"));
+        System.out.println(cld);
         SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMddHHmmss");
         String vnp_CreateDate = formatter.format(cld.getTime());
         vnp_Params.put("vnp_CreateDate", vnp_CreateDate);
@@ -181,7 +190,7 @@ public class PaymentController {
 
         long totalPrice = Long.parseLong(String.valueOf(amount));
         String vnp_TxnRef = PaymentConfig.getRandomNumber(8);
-        String vnp_IpAddr = "127.0.0.1";
+        String vnp_IpAddr = "d3s1t2rcfq9f81.cloudfront.net";
 
         String vnp_TmnCode = PaymentConfig.vnp_TmnCode;
 
@@ -288,16 +297,16 @@ public class PaymentController {
         String responseJSON = null;
         if ("00".equals(vnpResponseCode) && checkTransaction == 1) {
             // Chuyển sang trang đơn hàng
-            responseJSON = "<script>window.location.href='http://127.0.0.1:5501/#!/order/"
+            responseJSON = "<script>window.location.href='https://d3s1t2rcfq9f81.cloudfront.net/#!/order/"
                     +
                     currentUserId
                     + "';</script>";
         } else if ("00".equals(vnpResponseCode) && checkTransaction == 2) {
-            responseJSON = "<script>window.location.href='http://127.0.0.1:5501/#!/mystore/"
+            responseJSON = "<script>window.location.href='https://d3s1t2rcfq9f81.cloudfront.net/#!/mystore/"
                     + currentUserId + "/0';</script>";
         } else {
             // Chuyển sang trang giỏ hàng
-            responseJSON = "<script>window.location.href='http://127.0.0.1:5501/#!/';</script>";
+            responseJSON = "<script>window.location.href='https://d3s1t2rcfq9f81.cloudfront.net/#!/';</script>";
         }
         checkTransaction = 0;
         return ResponseEntity.status(HttpStatus.OK).body(responseJSON);
